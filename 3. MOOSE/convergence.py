@@ -9,6 +9,8 @@
 import sys; sys.path += ["/home/janzen/code/moose_sim"]
 import os, math, numpy as np
 import matplotlib.pyplot as plt
+from neml.math import rotations
+from neml.cp import crystallography
 from scipy.interpolate import splev, splrep, splder
 from scipy.spatial.transform import Rotation
 from moose_sim.helper.general import transpose
@@ -103,7 +105,7 @@ def main():
     for resolution in RESOLUTIONS[1:]:
         res_kw = resolution["resolution"]
         comp_results = results_dict[res_kw]
-        errors_dict[res_kw] = {"stress": [], "geodesic": []}
+        errors_dict[res_kw] = {"stress": [], "orientation": []}
         for param_kw in PARAM_KW_LIST:
             
             # Get results with different resolutions but same parameters
@@ -116,8 +118,13 @@ def main():
             stress_error = [abs((base_stress-comp_stress)/base_stress)
                             for base_stress, comp_stress in zip(base_stress_list, comp_stress_list)]
 
+            # # Get common grains
+            # base_grain_ids = [int(key.replace("g","").replace("_phi_1","")) for key in base_result.keys() if "_phi_1" in key]
+            # comp_grain_ids = [int(key.replace("g","").replace("_phi_1","")) for key in comp_result.keys() if "_phi_1" in key]
+            # common_grain_ids = list(filter(lambda g_id: g_id in base_grain_ids, comp_grain_ids))
+
             # Calculate orientation error for each common grain
-            geodesic_error = []
+            orientation_error = []
             for grain_id in common_grain_ids:
                 base_phi_1_list = intervaluate(base_result, f"g{grain_id}_phi_1")
                 base_Phi_list   = intervaluate(base_result, f"g{grain_id}_Phi")
@@ -128,18 +135,16 @@ def main():
                 for i in range(len(STRAIN_LIST)):
                     base_euler = [base_phi_1_list[i], base_Phi_list[i], base_phi_2_list[i]]
                     comp_euler = [comp_phi_1_list[i], comp_Phi_list[i], comp_phi_2_list[i]]
-                    base_quat = euler_to_quat(base_euler)
-                    comp_quat = euler_to_quat(comp_euler)
-                    geodesic = get_geodesic(base_quat, comp_quat)
-                    geodesic_error.append(geodesic)
+                    misorientation = get_cubic_misorientation(base_euler, comp_euler)
+                    orientation_error.append(misorientation)
         
             # Compile errors
             errors_dict[res_kw]["stress"].append(np.average(stress_error))
-            errors_dict[res_kw]["geodesic"].append(np.average(geodesic_error))
+            errors_dict[res_kw]["orientation"].append(np.average(orientation_error))
     
         # Average errors
         errors_dict[res_kw]["stress"] = np.average(errors_dict[res_kw]["stress"])
-        errors_dict[res_kw]["geodesic"] = np.average(errors_dict[res_kw]["geodesic"])
+        errors_dict[res_kw]["orientation"] = np.average(errors_dict[res_kw]["orientation"])
     
     # Plot stress-strain errors
     initialise_plot("Resolution (µm)", "Relative Error (%)")
@@ -147,11 +152,29 @@ def main():
     plt.plot([res["resolution"] for res in RESOLUTIONS[1:]], errors, marker="*")
     format_and_save_plot("results/err_ss.png", False)
 
-    # Plot geodesic errors
-    initialise_plot("Resolution (µm)", "Geodesic Error")
-    errors = [errors_dict[res["resolution"]]["geodesic"] for res in RESOLUTIONS[1:]]
+    # Plot orientation errors
+    initialise_plot("Resolution (µm)", "Misorientation (rads)")
+    errors = [errors_dict[res["resolution"]]["orientation"] for res in RESOLUTIONS[1:]]
     plt.plot([res["resolution"] for res in RESOLUTIONS[1:]], errors, marker="*")
     format_and_save_plot("results/err_rt.png", False)
+
+def get_cubic_misorientation(euler_1:list, euler_2:list):
+    """
+    Determines the misorientation of two sets of euler angles (rads);
+    assumes cubic structure
+
+    Parameters:
+    * `euler_1`: The first euler angle
+    * `euler_2`: The second euler angle
+    
+    Returns the misorientation angle
+    """
+    euler_1 = rotations.CrystalOrientation(*euler_1, angle_type="radians", convention="bunge")
+    euler_2 = rotations.CrystalOrientation(*euler_2, angle_type="radians", convention="bunge")
+    sym_group = crystallography.SymmetryGroup("432")
+    mori = sym_group.misorientation(euler_1, euler_2)
+    _, mori_angle = mori.to_axis_angle()
+    return mori_angle
 
 def convert_grain_ids(data_dict:dict, ebsd_id:str) -> dict:
     """
