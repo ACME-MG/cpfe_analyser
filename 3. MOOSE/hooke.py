@@ -1,11 +1,11 @@
 # Libraries
-import sys; sys.path += ["/home/janzen/code/deer_sim"]
+import sys; sys.path += ["/home/janzen/code/moose_sim"]
 import cv2, numpy as np
 import matplotlib.pyplot as plt
-from deer_sim.helper.io import csv_to_dict
-from deer_sim.helper.general import transpose, flatten
-from deer_sim.analyse.plotter import save_plot
-from deer_sim.analyse.pole_figure import IPF, get_lattice, get_colour_map
+from moose_sim.helper.io import csv_to_dict
+from moose_sim.helper.general import transpose, flatten
+from moose_sim.analyse.plotter import save_plot
+from moose_sim.analyse.pole_figure import IPF, get_lattice, get_colour_map
 
 
 def get_stress(e_11, e_22, e_33):

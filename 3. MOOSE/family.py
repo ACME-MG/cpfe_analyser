@@ -6,12 +6,12 @@
 """
 
 # Libraries
-import sys; sys.path += ["/home/janzen/code/deer_sim"]
-from deer_sim.analyse.plotter import save_plot
-from deer_sim.analyse.pole_figure import IPF, get_lattice
-from deer_sim.helper.general import transpose, remove_consecutive_duplicates
-from deer_sim.helper.io import csv_to_dict
-from deer_sim.maths.familiser import get_grain_family
+import sys; sys.path += ["/home/janzen/code/moose_sim"]
+from moose_sim.analyse.plotter import save_plot
+from moose_sim.analyse.pole_figure import IPF, get_lattice
+from moose_sim.helper.general import transpose, remove_consecutive_duplicates
+from moose_sim.helper.io import csv_to_dict
+from moose_sim.maths.familiser import get_grain_family
 
 def get_trajectories(data_dict:dict) -> list:
     """

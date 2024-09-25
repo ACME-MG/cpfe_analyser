@@ -6,14 +6,14 @@
 """
 
 # Libraries
-import sys; sys.path += ["/home/janzen/code/deer_sim"]
+import sys; sys.path += ["/home/janzen/code/moose_sim"]
 import numpy as np
 import matplotlib.pyplot as plt
-from deer_sim.analyse.plotter import Plotter, save_plot, define_legend
-from deer_sim.analyse.pole_figure import PF, IPF, get_lattice, get_colour_map
-from deer_sim.maths.familiser import get_grain_family
-from deer_sim.helper.general import transpose, remove_consecutive_duplicates
-from deer_sim.helper.io import csv_to_dict, safe_mkdir
+from moose_sim.analyse.plotter import Plotter, save_plot, define_legend
+from moose_sim.analyse.pole_figure import PF, IPF, get_lattice, get_colour_map
+from moose_sim.maths.familiser import get_grain_family
+from moose_sim.helper.general import transpose, remove_consecutive_duplicates
+from moose_sim.helper.io import csv_to_dict, safe_mkdir
 
 # Constants
 EXP_PATH = "../data/617_s3/617_s3_exp.csv"

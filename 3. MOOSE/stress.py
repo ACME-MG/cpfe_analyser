@@ -6,13 +6,13 @@
 """
 
 # Libraries
-import sys; sys.path += ["/home/janzen/code/deer_sim"]
+import sys; sys.path += ["/home/janzen/code/moose_sim"]
 import numpy as np
-from deer_sim.helper.general import transpose
-from deer_sim.helper.io import csv_to_dict
-from deer_sim.analyse.plotter import Plotter, save_plot
-from deer_sim.maths.familiser import get_grain_family
-from deer_sim.analyse.pole_figure import IPF, get_lattice, get_colour_map
+from moose_sim.helper.general import transpose
+from moose_sim.helper.io import csv_to_dict
+from moose_sim.analyse.plotter import Plotter, save_plot
+from moose_sim.maths.familiser import get_grain_family
+from moose_sim.analyse.pole_figure import IPF, get_lattice, get_colour_map
 
 # Read data
 SUMMARY_PATH = "data/summary_ae.csv"
