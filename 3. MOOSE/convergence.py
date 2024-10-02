@@ -26,10 +26,12 @@ RESOLUTIONS = [
     {"resolution": 30, "ebsd_id": "ebsd_3", "colour": "magenta"},
     {"resolution": 35, "ebsd_id": "ebsd_2", "colour": "purple"},
     {"resolution": 40, "ebsd_id": "ebsd_4", "colour": "blue"},
+    {"resolution": 45, "ebsd_id": "ebsd_3", "colour": "cyan"},
+    {"resolution": 50, "ebsd_id": "ebsd_4", "colour": "green"},
 ]
-PARAM_KW_LIST = ["p0", "p1", "p2", "p3"]
+PARAM_KW_LIST = ["p0", "p1", "p2", "p3", "p4", "p5", "p6", "p7"]
 GRAIN_MAP     = "data/res_grain_map.csv"
-SIM_PATH      = "/mnt/c/Users/z5208868/OneDrive - UNSW/PhD/results/moose_sim/2024-09-24 (617_s3_convergence_offset)"
+SIM_PATH      = "/mnt/c/Users/z5208868/OneDrive - UNSW/PhD/results/moose_sim/2024-09-26 (617_s3_converge_5pct_8p)"
 STRAIN_KEY    = "average_strain"
 STRAIN_LIST   = [0.01, 0.02, 0.03, 0.04, 0.05]
 
@@ -62,7 +64,7 @@ def main():
         for param_kw in PARAM_KW_LIST:
             sum_dict = results_dict[res_kw][param_kw]
             plt.plot(sum_dict["average_strain"], sum_dict["average_stress"], colour, **settings)
-        plt.plot([], [], label=f"{res_kw}µm", color=colour)
+        plt.plot([], [], label=f"{res_kw}µm", color=colour, **settings)
     format_and_save_plot("results/plot_ss.png")
     
     # Identify common grains across all meshes
@@ -96,7 +98,8 @@ def main():
             else:
                 ipf.plot_ipf_trajectory(trajectories, direction, "plot", {"color": colour, "linewidth": 1, "zorder": 3})
                 ipf.plot_ipf_trajectory([[t[0]] for t in trajectories], direction, "scatter", {"color": colour, "s": 3**2, "zorder": 3})
-        plt.plot([], [], label=f"{res_kw}µm", color=colour)
+        settings = {"linewidth": 3} if i == 0 else {}
+        plt.plot([], [], label=f"{res_kw}µm", color=colour, **settings)
     format_and_save_plot("results/plot_rt.png")
     
     # Calculate the errors based on the first resolution
@@ -115,8 +118,9 @@ def main():
             # Calculate stress error
             base_stress_list = intervaluate(base_result, "average_grain_stress")
             comp_stress_list = intervaluate(comp_result, "average_grain_stress")
-            stress_error = [abs((base_stress-comp_stress)/base_stress)
+            stress_error = [abs((base_stress-comp_stress)) 
                             for base_stress, comp_stress in zip(base_stress_list, comp_stress_list)]
+            stress_error = np.average(stress_error)*100/np.average(base_stress_list)
 
             # # Get common grains
             # base_grain_ids = [int(key.replace("g","").replace("_phi_1","")) for key in base_result.keys() if "_phi_1" in key]
@@ -137,26 +141,38 @@ def main():
                     comp_euler = [comp_phi_1_list[i], comp_Phi_list[i], comp_phi_2_list[i]]
                     misorientation = get_cubic_misorientation(base_euler, comp_euler)
                     orientation_error.append(misorientation)
+            orientation_error = np.average(orientation_error)
         
             # Compile errors
-            errors_dict[res_kw]["stress"].append(np.average(stress_error))
-            errors_dict[res_kw]["orientation"].append(np.average(orientation_error))
+            errors_dict[res_kw]["stress"].append(stress_error)
+            errors_dict[res_kw]["orientation"].append(orientation_error)
     
-        # Average errors
-        errors_dict[res_kw]["stress"] = np.average(errors_dict[res_kw]["stress"])
-        errors_dict[res_kw]["orientation"] = np.average(errors_dict[res_kw]["orientation"])
+    # Prepare error plotting
+    resolution_list = [res["resolution"] for res in RESOLUTIONS[1:]]
     
     # Plot stress-strain errors
     initialise_plot("Resolution (µm)", "Relative Error (%)")
-    errors = [errors_dict[res["resolution"]]["stress"] for res in RESOLUTIONS[1:]]
-    plt.plot([res["resolution"] for res in RESOLUTIONS[1:]], errors, marker="*")
-    format_and_save_plot("results/err_ss.png", False)
+    for res in resolution_list:
+        plt.scatter([res]*len(errors_dict[res]["stress"]), errors_dict[res]["stress"], marker="o", s=6**2, alpha=0.50)
+    average_errors = [np.average(errors_dict[res]["stress"]) for res in resolution_list]
+    plt.plot(resolution_list, average_errors, color="black", linestyle="dashed", label="Average")
+    plt.xlim(min(resolution_list)-2.5, max(resolution_list)+2.5)
+    plt.ylim(0, 1.6)
+    plt.gca().set_xticks(resolution_list)
+    plt.gca().set_xticklabels(resolution_list)
+    format_and_save_plot("results/err_ss.png", settings={"loc": "upper left"})
 
     # Plot orientation errors
     initialise_plot("Resolution (µm)", "Misorientation (rads)")
-    errors = [errors_dict[res["resolution"]]["orientation"] for res in RESOLUTIONS[1:]]
-    plt.plot([res["resolution"] for res in RESOLUTIONS[1:]], errors, marker="*")
-    format_and_save_plot("results/err_rt.png", False)
+    for res in resolution_list:
+        plt.scatter([res]*len(errors_dict[res]["orientation"]), errors_dict[res]["orientation"], marker="o", s=6**2, alpha=0.50)
+    average_errors = [np.average(errors_dict[res]["orientation"]) for res in resolution_list]
+    plt.plot(resolution_list, average_errors, color="black", linestyle="dashed", label="Average")
+    plt.xlim(min(resolution_list)-2.5, max(resolution_list)+2.5)
+    plt.ylim(0.002, 0.008)
+    plt.gca().set_xticks(resolution_list)
+    plt.gca().set_xticklabels(resolution_list)
+    format_and_save_plot("results/err_rt.png", settings={"loc": "upper left"})
 
 def get_cubic_misorientation(euler_1:list, euler_2:list):
     """
@@ -235,16 +251,17 @@ def initialise_plot(x_label:str="", y_label:str="", x_max:float=None, y_max:floa
     plt.xlim(0,x_max) if x_max != None else None
     plt.ylim(0,y_max) if y_max != None else None
     
-def format_and_save_plot(plot_path:str, add_legend:bool=True) -> None:
+def format_and_save_plot(plot_path:str, add_legend:bool=True, settings:dict={}) -> None:
     """
     Formats and saves a plot
     
     Parameters:
     * `plot_path`:  Path to save the plot
     * `add_legend`: Whether to add a legend
+    * `settings`:   Settings for the legend
     """
     if add_legend:
-        plt.legend(framealpha=1, edgecolor="black", fancybox=True, facecolor="white")
+        plt.legend(framealpha=1, edgecolor="black", fancybox=True, facecolor="white", **settings)
     plt.savefig(plot_path)
     plt.cla()
     plt.clf()

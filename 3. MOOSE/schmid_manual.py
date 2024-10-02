@@ -65,6 +65,34 @@ def get_lattice(structure:str="fcc"):
         raise ValueError(f"Crystal structure '{structure}' unsupported!")
     return lattice
 
+def get_schmid(euler:list) -> float:
+    """
+    Gets the Schmid factor
+    
+    Parameters:
+    * `euler`: The euler-bunge angle (rads)
+    
+    Returns the Schmid factor
+    """
+    
+    # Iniitalise
+    get_term = lambda u_1, v_1, w_1, u_2, v_2, w_2 : (u_1*u_2+v_1*v_2+w_1*w_2)/math.sqrt((u_1**2+v_1**2+w_1**2)*(u_2**2+v_2**2+w_2**2))
+    matrix = euler_to_matrix(euler)
+    vector = np.dot(np.array(matrix), np.array(direction))
+    
+    # Calculate schmid factors
+    schmid_factors = []
+    for fcc_plane in fcc_planes:
+        term_1 = get_term(*fcc_plane, *vector)
+        for fcc_direction in fcc_directions:
+            term_2 = get_term(*vector, *fcc_direction)
+            schmid_factor = term_1*term_2
+            schmid_factors.append(schmid_factor)
+    
+    # Get averaged schmid factors and return
+    average_schmid = np.average(schmid_factors)
+    return average_schmid
+    
 # Extract initialisation information
 summary_dict = csv_to_dict(SUMMARY_PATH)
 grain_ids = [int(key.replace("_phi_1","").replace("g","")) for key in summary_dict.keys() if "_phi_1" in key]
@@ -86,33 +114,13 @@ schmid_history = []
 fcc_planes = [[1,1,1], [1,-1,1], [-1,1,1], [-1,-1,1]]
 fcc_directions = [[1,-1,0], [0,1,-1], [1,0,-1]]
 
-# Define equations
-get_term = lambda u_1, v_1, w_1, u_2, v_2, w_2 : (u_1*u_2+v_1*v_2+w_1*w_2)/math.sqrt((u_1**2+v_1**2+w_1**2)*(u_2**2+v_2**2+w_2**2))
-
 # Iterate through orientations
 for orientation_list in orientation_history:
     schmid_list = []
     for orientation in orientation_list:
-        
-        # Direction vector from orientation
         euler = reorient_euler(orientation)
-        matrix = euler_to_matrix(euler)
-        # vector = np.dot(np.array(matrix), np.array(direction))
-        vector = direction
-        
-        # Calculate schmid factors
-        schmid_factors = []
-        for fcc_plane in fcc_planes:
-            term_1 = get_term(*fcc_plane, *vector)
-            for fcc_direction in fcc_directions:
-                term_2 = get_term(*vector, *fcc_direction)
-                schmid_factor = term_1*term_2
-                schmid_factors.append(schmid_factor)
-        
-        # Get averaged schmid factors
-        schmid = np.average(schmid_factors)
+        schmid = get_schmid(euler)
         schmid_list.append(schmid)
-
     schmid_history.append(schmid_list)
 all_schmids = flatten(schmid_history)
 
