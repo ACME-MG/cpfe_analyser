@@ -2,6 +2,7 @@
  Title:         Manual
  Description:   Manual calculation of elastic strain
  References:    [1] https://www.researchgate.net/publication/324088567_Computing_Euler_angles_with_Bunge_convention_from_rotation_matrix
+                [2] https://pdf.sciencedirectassets.com/271567/1-s2.0-S0749641913X00026/1-s2.0-S0749641912001635/main.pdf?X-Amz-Security-Token=IQoJb3JpZ2luX2VjEPr%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLWVhc3QtMSJHMEUCIBd5u6Hel8h21ZBNTE3ssZC3U4k2dNfF%2BlrT96Yfz3J7AiEAryt%2FKXUre7Vr3KC06OI7xTRtS%2BITfcm%2BZ1iYkwI%2BjkIqsgUIUhAFGgwwNTkwMDM1NDY4NjUiDPxCAb2vsQKyAgBjmyqPBX%2FnPzY3Nzj8Q4H0bVggHkPZNoojAyM22e7zyhWNk29EHkqeYbEH6cOGXfTBzDR4Lm962gI51lwuQXBB7vC7NIPBs9FiF3Z6O2HdRybHpJ80dFEgYKySeHSCg5YccjEXbFNcnXDdeYHFpnFQdl7n%2B3uJ9of1tz1ifOYHzBgqBTWGjUyJUdcR1DDxGguzxEMGf4JZOCM26bK0oQdyD0iXOfW5XfRg65aa34JbTiuEj4OZa%2FHzsna482j9Rgo1%2FYUXPp9wufWlEuqWjFxEeog%2BBIzX9unVQyuz%2BfZsjHjZ3VhLzBubyg%2BbOrKsudYNSOeEXS2z3KnCxxdFtX3mEmLbSg%2FynKm7SooLMMSk248m1D12x3iH3tPjYnW6vDMc%2FvY2V1srWm1MNlmXJSJ4SjkT31fHZGMHqEErPTmL3VZOI%2FxsE02Bh%2FNlIy7aFRKTbrKBYMB%2BLegbhBAqj6eJYzHbavs85aQ2Glyf7mQS%2B2W49XOzPRpaOmeMjkbCYSJOUnbc%2Fk5RLrVYPhQ8lbjsd7VhmPVxdBAWELPS%2BokMXYfIsEsD5abYFxOhg1X9XrB6Pc5Mj8EjZ5zB%2BqSXP23dxc0CQTi8CjqzdJh1uN37VscGwnh07h6fIZxKgNMSq%2B1kksHJnaHDGb7zqfHwOXL0Bl4vgqvdKrfvUnVXm95LgioU8JYi6aEGrphdJm8RGDvvqvTsYqwfSb4WOXB14HizNWPpYSMqZHzxR9McAMfTLce5eKwPHbjvW5449qHQnvDZIYOzgyYi13E8jJh7nqUqcHyN2w%2BsmOOgTkQoVs%2Fy0MNWr0xszY367EE8IccUVE6l3fCQsyJ%2BfKY1yPhHdyLRBk1aHAP5FsKieNX8J9SN%2BYtIKTgwtrGXuAY6sQEyENrWgFSOjkPwzuNgiFTFk%2B563V402Ya%2F%2FLHQVztH0QrFlV4u0TL07GSCtInZeT%2FlcMG5I%2FVtMFSXgDi1mq%2BnqsUjZ%2FAyb9Fi4Ei4yQINtAiWwhelY%2B1N65jbCGoT9Mp%2BatxfocRTeZeOGnhGwaszVbmEcOnXjWSO%2BEqqSZTMVrCOPd0lBkE1vp8COKM4aGhTyTGrEFPZP0iLpM870CIt%2B8xzOFaRHGujaFqNaf587Yc%3D&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20241009T015940Z&X-Amz-SignedHeaders=host&X-Amz-Expires=300&X-Amz-Credential=ASIAQ3PHCVTYUQF4X53J%2F20241009%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Signature=ea74c3b5f90a6ec9fd47c08b35dd2234fd4694044b5a3cf8952beb40fbf9224c&hash=51d2311a9ba522febc66efa72c488a6cc5df37bfef658c6e52017d7bcd6add84&host=68042c943591013ac2b2430a89b270f6af2c76d8dfd086a07176afe7c76c2c61&pii=S0749641912001635&tid=spdf-8e330e4f-a442-464f-b587-27a11e861216&sid=57902e0d439955488648e384d345c8bf9647gxrqa&type=client&tsoh=d3d3LnNjaWVuY2VkaXJlY3QuY29t&ua=07135b0301030057005e&rr=8cfac5c82c86a817&cc=au
  Author:        Janzen Choi
 
 """
@@ -9,11 +10,12 @@
 # Libraries
 import math, numpy as np
 import matplotlib.pyplot as plt
+import sys; sys.path += [".."]
 import pyDOE2
 from neml import elasticity, drivers
 from neml.cp import crystallography, slipharden, sliprules, inelasticity, kinematics, singlecrystal, polycrystal
 from neml.math import rotations, matrix, tensors
-from pole_figure import IPF, get_lattice
+from __common__.pole_figure import IPF, get_lattice
 
 # Define families
 COLOUR_LIST = ["green", "black", "blue", "red"]
@@ -198,7 +200,7 @@ def csv_to_dict(csv_path:str, delimeter:str=",") -> dict:
     return csv_dict
 
 def run_model(tau_0:float, gamma_0:float, n:float, lh_0:float, lh_1:float,
-            #   lh_2:float, lh_3:float, lh_4:float, lh_5:float,
+              lh_2:float, lh_3:float, lh_4:float, lh_5:float,
               passive_eulers:list, weights:list) -> tuple:
     """
     Runs the crystal plasticity model
@@ -210,6 +212,13 @@ def run_model(tau_0:float, gamma_0:float, n:float, lh_0:float, lh_1:float,
     Returns the elastic model, single crystal model, polycrystal model, and driver results
     """
     
+    # Change LH parameters
+    # lh_1 *= lh_0
+    # lh_2 *= lh_0
+    # lh_3 *= lh_0
+    # lh_4 *= lh_0
+    # lh_5 *= lh_0
+
     # Get lattice
     lattice = crystallography.CubicLattice(1.0)
     lattice.add_slip_system([1,1,0], [1,1,1])
@@ -220,8 +229,8 @@ def run_model(tau_0:float, gamma_0:float, n:float, lh_0:float, lh_1:float,
 
     # Define model
     e_model    = elasticity.CubicLinearElasticModel(250000, 151000, 123000, "components")
-    # lh_matrix  = get_lh_matrix((lh_0, lh_1, lh_2, lh_3, lh_4, lh_5))
-    lh_matrix  = get_lh_matrix((lh_0, lh_1))
+    lh_matrix  = get_big_lh_matrix((lh_0, lh_1, lh_2, lh_3, lh_4, lh_5))
+    # lh_matrix  = get_lh_matrix((lh_0, lh_1))
     sm_object  = matrix.SquareMatrix(lattice.ntotal, type="dense", data=np.array(lh_matrix).flatten())
     str_model  = slipharden.GeneralLinearHardening(sm_object, [tau_0]*lattice.ntotal, absval=True)
     slip_model = sliprules.PowerLawSlipRule(str_model, gamma_0, n)
@@ -269,17 +278,15 @@ for exp_trajectory, grain_id in zip(exp_trajectories, exp_grain_ids):
 
 # Get CP parameter combinations
 bounds_dict = {
-    "cp_lh_0":    (60, 60), # main diagonal
-    "cp_lh_1":    (180, 180),
-    "cp_tau_0":   (60, 60), # yield/3
-    "cp_n":       (5, 5),
-    "cp_gamma_0": (1e-4/3, 1e-4/3)
-    # "cp_lh_0":    (0, 200), # main diagonal
-    # "cp_lh_1":    (0, 200),
-    # # "cp_lh_2":    (0, 1000),
-    # # "cp_lh_3":    (0, 1000),
-    # # "cp_lh_4":    (0, 1000),
-    # # "cp_lh_5":    (0, 1000),
+    "cp_tau_0":   (0, 200), # yield/3
+    "cp_gamma_0": (1e-4/3, 1e-4/3),
+    "cp_n":       (1, 16),
+    "cp_lh_0":    (0, 400), # main diagonal
+    "cp_lh_1":    (0, 400),
+    "cp_lh_2":    (0, 400),
+    "cp_lh_3":    (0, 400),
+    "cp_lh_4":    (0, 400),
+    "cp_lh_5":    (0, 400),
     # "cp_tau_0":   (0, 200), # yield/3
     # "cp_n":       (1, 16),
     # "cp_gamma_0": (1e-4/3, 1e-4/3)
@@ -303,10 +310,10 @@ for count, params in enumerate(params_list):
             n              = params["cp_n"],
             lh_0           = params["cp_lh_0"],
             lh_1           = params["cp_lh_1"],
-            # lh_2           = params["cp_lh_2"],
-            # lh_3           = params["cp_lh_3"],
-            # lh_4           = params["cp_lh_4"],
-            # lh_5           = params["cp_lh_5"],
+            lh_2           = params["cp_lh_2"],
+            lh_3           = params["cp_lh_3"],
+            lh_4           = params["cp_lh_4"],
+            lh_5           = params["cp_lh_5"],
             passive_eulers = passive_eulers,
             weights        = weights
         )
@@ -323,7 +330,7 @@ for count, params in enumerate(params_list):
     plt.figure(1)
     plt.plot(strain_list, stress_list)
     plt.text(strain_list[-1], stress_list[-1], f"{count}")
-    plt.savefig("plot_ss.png")
+    plt.savefig("results/plot_ss.png")
 
     # Calculate reorientation trajectories
     orientation_history = [[list(orientation.to_euler(angle_type="radians", convention="bunge"))
@@ -340,4 +347,4 @@ for count, params in enumerate(params_list):
         ipf.plot_ipf_trajectory([trajectory], direction, "plot", {"color": colour, "linewidth": 1, "zorder": 3})
         ipf.plot_ipf_trajectory([trajectory], direction, "arrow", {"color": colour, "head_width": 0.0075, "head_length": 0.0075*1.5, "zorder": 3})
         ipf.plot_ipf_trajectory([[trajectory[0]]], direction, "scatter", {"color": colour, "s": 6**2, "zorder": 3})
-    plt.savefig("plot_rt.png")
+    plt.savefig("results/plot_rt.png")

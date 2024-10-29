@@ -82,16 +82,17 @@ def plot_distribution(value_list:list, colour:str, label:str, min_value:float=No
 
 # Define mesh information
 mesh_info_list = [
-    {"path": "data/617_s3_z1/5um/mesh.e",  "colour": "silver",  "label": "5µm  "},
-    {"path": "data/617_s3_z1/10um/mesh.e", "colour": "orange",  "label": "10µm"},
-    {"path": "data/617_s3_z1/15um/mesh.e", "colour": "gold",    "label": "15µm"},
-    {"path": "data/617_s3_z1/20um/mesh.e", "colour": "brown",   "label": "20µm"},
-    {"path": "data/617_s3_z1/25um/mesh.e", "colour": "red",     "label": "25µm"},
-    {"path": "data/617_s3_z1/30um/mesh.e", "colour": "magenta", "label": "30µm"},
-    {"path": "data/617_s3_z1/35um/mesh.e", "colour": "purple",  "label": "35µm"},
+    # {"path": "data/617_s3_z1/5um/mesh.e",  "colour": "silver",  "label": "5µm  "},
+    # {"path": "data/617_s3_z1/10um/mesh.e", "colour": "orange",  "label": "10µm"},
+    # {"path": "data/617_s3_z1/15um/mesh.e", "colour": "gold",    "label": "15µm"},
+    # {"path": "data/617_s3_z1/20um/mesh.e", "colour": "brown",   "label": "20µm"},
+    # {"path": "data/617_s3_z1/25um/mesh.e", "colour": "red",     "label": "25µm"},
+    # {"path": "data/617_s3_z1/30um/mesh.e", "colour": "magenta", "label": "30µm"},
+    # {"path": "data/617_s3_z1/35um/mesh.e", "colour": "purple",  "label": "35µm"},
     {"path": "data/617_s3_z1/40um/mesh.e", "colour": "blue",    "label": "40µm"},
-    {"path": "data/617_s3_z1/45um/mesh.e", "colour": "cyan",    "label": "45µm"},
-    {"path": "data/617_s3_z1/50um/mesh.e", "colour": "green",   "label": "50µm"},
+    # {"path": "data/617_s3_z1/45um/mesh.e", "colour": "cyan",    "label": "45µm"},
+    # {"path": "data/617_s3_z1/50um/mesh.e", "colour": "green",   "label": "50µm"},
+    {"path": "data/617_s3/40um/mesh.e", "colour": "green",   "label": "TEST"},
 ]
 
 # Plot equivalent radius distribution

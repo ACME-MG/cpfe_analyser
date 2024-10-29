@@ -8,7 +8,6 @@
 # Libraries
 import sys; sys.path += ["/home/janzen/code/moose_sim"]
 import numpy as np
-import matplotlib.pyplot as plt
 from moose_sim.analyse.plotter import Plotter, save_plot, define_legend
 from moose_sim.analyse.pole_figure import PF, IPF, get_lattice, get_colour_map
 from moose_sim.maths.familiser import get_grain_family
@@ -16,10 +15,10 @@ from moose_sim.helper.general import transpose, remove_consecutive_duplicates
 from moose_sim.helper.io import csv_to_dict, safe_mkdir
 
 # Constants
-EXP_PATH = "../data/617_s3/617_s3_exp.csv"
-MAP_PATH = "../data/617_s3/grain_map.csv"
-# SIM_PATH = "./data/summary_617_s3.csv"
-SIM_PATH = "./data/summary.csv"
+EXP_PATH = "./data/617_s3_20um_exp.csv"
+MAP_PATH = "./data/617_s3_40um_grain_map.csv"
+# SIM_PATH = "./data/617_s3_40um_lh_summary.csv"
+SIM_PATH = "./data/sim_data.csv"
 EVP_PATH = "./data/evp_data.csv"
 
 def get_grain_ids(exp_path:str, mesh_path:str) -> dict:

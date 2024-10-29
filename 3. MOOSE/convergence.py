@@ -31,7 +31,7 @@ RESOLUTIONS = [
 ]
 PARAM_KW_LIST = ["p0", "p1", "p2", "p3", "p4", "p5", "p6", "p7"]
 GRAIN_MAP     = "data/res_grain_map.csv"
-SIM_PATH      = "/mnt/c/Users/z5208868/OneDrive - UNSW/PhD/results/moose_sim/2024-09-26 (617_s3_converge_5pct_8p)"
+SIM_PATH      = "/mnt/c/Users/janzen/OneDrive - UNSW/PhD/results/moose_sim/2024-09-26 (617_s3_converge_5pct_8p)"
 STRAIN_KEY    = "average_strain"
 STRAIN_LIST   = [0.01, 0.02, 0.03, 0.04, 0.05]
 
@@ -139,8 +139,8 @@ def main():
                 for i in range(len(STRAIN_LIST)):
                     base_euler = [base_phi_1_list[i], base_Phi_list[i], base_phi_2_list[i]]
                     comp_euler = [comp_phi_1_list[i], comp_Phi_list[i], comp_phi_2_list[i]]
-                    misorientation = get_cubic_misorientation(base_euler, comp_euler)
-                    orientation_error.append(misorientation)
+                    # orientation_error.append(get_cubic_misorientation(base_euler, comp_euler))
+                    orientation_error.append(get_geodesic(euler_to_quat(base_euler), euler_to_quat(comp_euler)))
             orientation_error = np.average(orientation_error)
         
             # Compile errors
@@ -163,13 +163,15 @@ def main():
     format_and_save_plot("results/err_ss.png", settings={"loc": "upper left"})
 
     # Plot orientation errors
-    initialise_plot("Resolution (µm)", "Misorientation (rads)")
+    initialise_plot("Resolution (µm)", "Geodesic Distance (rads)")
+    # initialise_plot("Resolution (µm)", "Misorientation (rads)")
     for res in resolution_list:
         plt.scatter([res]*len(errors_dict[res]["orientation"]), errors_dict[res]["orientation"], marker="o", s=6**2, alpha=0.50)
     average_errors = [np.average(errors_dict[res]["orientation"]) for res in resolution_list]
     plt.plot(resolution_list, average_errors, color="black", linestyle="dashed", label="Average")
     plt.xlim(min(resolution_list)-2.5, max(resolution_list)+2.5)
-    plt.ylim(0.002, 0.008)
+    # plt.ylim(0.002, 0.008)
+    plt.ylim(0.0, 0.005)
     plt.gca().set_xticks(resolution_list)
     plt.gca().set_xticklabels(resolution_list)
     format_and_save_plot("results/err_rt.png", settings={"loc": "upper left"})

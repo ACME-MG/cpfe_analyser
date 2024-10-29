@@ -9,10 +9,11 @@
 # Libraries
 import math, numpy as np
 import matplotlib.pyplot as plt
+import sys; sys.path += [".."]
 from neml import elasticity, drivers
 from neml.cp import crystallography, slipharden, sliprules, inelasticity, kinematics, singlecrystal, polycrystal
 from neml.math import rotations, matrix, tensors
-from pole_figure import IPF, get_lattice
+from __common__.pole_figure import IPF, get_lattice
 
 # Define families
 COLOUR_LIST = ["green", "black", "blue", "red"]
