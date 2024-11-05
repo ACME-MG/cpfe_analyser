@@ -17,14 +17,14 @@ from __common__.interpolator import intervaluate
 from __common__.orientation import euler_to_quat, get_geodesic
 
 # Paths
-DIRECTORY = "617_s3_40um_lh6"
+DIRECTORY = "617_s3_40um_lh2"
 SUR_PATH = f"data/{DIRECTORY}/sm.pt"
 MAP_PATH = f"data/{DIRECTORY}/map.csv"
+SIM_PATH = f"data/{DIRECTORY}_opt.csv"
 EXP_PATH = "data/617_s3_exp.csv"
-SIM_PATH = "data/summary.csv"
 
 # Constants
-EVAL_STRAINS = [0.05, 0.10, 0.15, 0.20, 0.25]
+EVAL_STRAINS = [0, 0.05, 0.10, 0.15, 0.20, 0.25]
 MAX_STRAIN = 0.1
 PLOT_SIM = True
 
@@ -49,16 +49,20 @@ def main():
 
     # Get geodesic distances
     all_grain_ids = [int(key.replace("g","").replace("_phi_1","")) for key in res_dict.keys() if "_phi_1" in key]
-    geodesic_grid = get_geodesics(CAL_GRAIN_IDS, res_dict, exp_dict, res_strain_list, exp_strain_list)
+    geodesic_grid = get_geodesics(all_grain_ids, res_dict, exp_dict, res_strain_list, exp_strain_list)
     remove_outlier = lambda data : [x for x in data if (q1 := np.percentile(data, 25)) - 1.5 *
                                     (iqr := np.percentile(data, 75) - q1) <= x <= q1 + 1.5 * iqr]
-    print(geodesic_grid)
+    geodesic_grid = transpose(geodesic_grid)
     geodesic_grid = [remove_outlier(geodesic_list) for geodesic_list in geodesic_grid]
-    print(geodesic_grid)
 
     # Plot geodesic errors
-    plt.figure(figsize=(6, 6))
-    plot_boxplots(transpose(geodesic_grid), ["green"]*5)
+    plt.figure(figsize=(5, 5))
+    plt.grid(True)
+    plot_boxplots(geodesic_grid, ["green"]*len(EVAL_STRAINS))
+    plt.xticks([i+1 for i in range(len(EVAL_STRAINS))], [f"{int(es*100)}" for es in EVAL_STRAINS])
+    plt.xlabel("Strain (%)")
+    plt.ylabel("Geodesic Distance (rads)")
+    plt.ylim(0, 0.25)
     save_plot("results/boxplot.png")
 
 def get_geodesics(grain_ids:list, data_dict_1:dict, data_dict_2:dict,
@@ -67,9 +71,9 @@ def get_geodesics(grain_ids:list, data_dict_1:dict, data_dict_2:dict,
     Gets the geodesic distances from two sets of data
     
     Parameters:
-    * `grain_ids`:    List of grain IDs to conduct evaluation
-    * `data_dict_1`:  First set of data
-    * `data_dict_2`:  Second set of data
+    * `grain_ids`:     List of grain IDs to conduct evaluation
+    * `data_dict_1`:   First set of data
+    * `data_dict_2`:   Second set of data
     * `strain_list_1`: First list of strain values
     * `strain_list_2`: Second list of strain values
     
@@ -298,7 +302,7 @@ def plot_boxplots(y_list_list:list, colours:list) -> None:
     """
 
     # Plot boxplots
-    boxplots = plt.boxplot(y_list_list, patch_artist=True, vert=True, widths=0.7)
+    boxplots = plt.boxplot(y_list_list, showfliers=False, patch_artist=True, vert=True, widths=0.7)
     
     # Add scattered data and format each boxplot
     for i, (y_list, colour) in enumerate(zip(y_list_list, colours)):

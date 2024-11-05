@@ -15,11 +15,11 @@ from __common__.pole_figure import get_lattice, IPF
 from __common__.plotter import define_legend, save_plot, Plotter
 
 # Paths
-DIRECTORY = "617_s3_40um_lh6"
-SUR_PATH = f"data/{DIRECTORY}/sm.pt"
-MAP_PATH = f"data/{DIRECTORY}/map.csv"
-EXP_PATH = "data/617_s3_exp.csv"
-SIM_PATH = "data/summary.csv"
+DIRECTORY = "617_s3_40um_lh2"
+SUR_PATH = f"data/{DIRECTORY}/1_sm.pt"
+MAP_PATH = f"data/{DIRECTORY}/1_map.csv"
+EXP_PATH = f"data/{DIRECTORY}/exp.csv"
+SIM_PATH = f"data/{DIRECTORY}/1_opt.csv"
 
 # Constants
 EVAL_STRAINS = [0.05, 0.10, 0.15, 0.20, 0.25]
@@ -27,10 +27,10 @@ MAX_STRAIN = 0.1
 PLOT_SIM = True
 
 # Define model parameters
-PARAM_LIST = [267.79, 122.95, 181.97, 328.73, 295.15, 238.77, 88.089, 7.65]
-CAL_GRAIN_IDS = [243, 53, 240, 279, 256]
-VAL_GRAIN_IDS = [54, 137, 271, 239, 207]
-# VAL_GRAIN_IDS = [54, 137, 271, 239, 207, 68, 224, 265, 32, 56, 21, 115, 306, 101, 312]
+PARAM_LIST = [396.17, 32.234, 79.898, 7.5364]
+# CAL_GRAIN_IDS = [145, 243, 111, 49, 136]
+CAL_GRAIN_IDS = [207, 79, 164, 167, 309]
+VAL_GRAIN_IDS = []
 
 # Main function
 def main():
@@ -71,7 +71,7 @@ def main():
 
     # Plot stress-strain curve
     if PLOT_SIM:
-        res_dict["strain"] = res_dict["average_strain"]
+        res_dict["strain"] = res_dict["average_grain_strain"]
         res_dict["stress"] = res_dict["average_stress"]
     if "stress" in res_dict.keys():
         plotter = Plotter("strain", "stress", "mm/mm", "MPa")

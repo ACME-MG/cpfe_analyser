@@ -63,5 +63,5 @@ def intervaluate(x_list:list, y_list:list, x_value:float) -> float:
     Returns the evaluated y value
     """
     interpolator = Interpolator(x_list, y_list, len(x_list))
-    y_value = interpolator.evaluate([x_value])[0]
+    y_value = interpolator.evaluate(x_value) if isinstance(x_value, list) else interpolator.evaluate([x_value])[0]
     return y_value
