@@ -216,5 +216,5 @@ def get_geodesic(quat_1:list, quat_2:list) -> float:
     quat_2 = quat_2 / np.linalg.norm(quat_2)
     dot_product = np.dot(quat_1, quat_2)
     dot_product = np.clip(dot_product, -1.0, 1.0)
-    distance = np.arccos(np.abs(dot_product))
+    distance = 2*np.arccos(np.abs(dot_product))
     return distance

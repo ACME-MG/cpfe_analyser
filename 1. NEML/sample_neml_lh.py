@@ -200,7 +200,7 @@ def csv_to_dict(csv_path:str, delimeter:str=",") -> dict:
     return csv_dict
 
 def run_model(tau_0:float, gamma_0:float, n:float, lh_0:float, lh_1:float,
-              lh_2:float, lh_3:float, lh_4:float, lh_5:float,
+            #   lh_2:float, lh_3:float, lh_4:float, lh_5:float,
               passive_eulers:list, weights:list) -> tuple:
     """
     Runs the crystal plasticity model
@@ -229,8 +229,8 @@ def run_model(tau_0:float, gamma_0:float, n:float, lh_0:float, lh_1:float,
 
     # Define model
     e_model    = elasticity.CubicLinearElasticModel(250000, 151000, 123000, "components")
-    lh_matrix  = get_big_lh_matrix((lh_0, lh_1, lh_2, lh_3, lh_4, lh_5))
-    # lh_matrix  = get_lh_matrix((lh_0, lh_1))
+    # lh_matrix  = get_big_lh_matrix((lh_0, lh_1, lh_2, lh_3, lh_4, lh_5))
+    lh_matrix  = get_lh_matrix((lh_0, lh_1))
     sm_object  = matrix.SquareMatrix(lattice.ntotal, type="dense", data=np.array(lh_matrix).flatten())
     str_model  = slipharden.GeneralLinearHardening(sm_object, [tau_0]*lattice.ntotal, absval=True)
     slip_model = sliprules.PowerLawSlipRule(str_model, gamma_0, n)
@@ -278,20 +278,21 @@ for exp_trajectory, grain_id in zip(exp_trajectories, exp_grain_ids):
 
 # Get CP parameter combinations
 bounds_dict = {
-    "cp_tau_0":   (0, 200), # yield/3
-    "cp_gamma_0": (1e-4/3, 1e-4/3),
-    "cp_n":       (1, 16),
     "cp_lh_0":    (0, 400), # main diagonal
     "cp_lh_1":    (0, 400),
-    "cp_lh_2":    (0, 400),
-    "cp_lh_3":    (0, 400),
-    "cp_lh_4":    (0, 400),
-    "cp_lh_5":    (0, 400),
+    # "cp_lh_2":    (0, 800),
+    # "cp_lh_3":    (0, 800),
+    # "cp_lh_4":    (0, 800),
+    # "cp_lh_5":    (0, 800),
+    "cp_tau_0":   (0, 200), # yield/3
+    "cp_n":       (1, 16),
+    "cp_gamma_0": (1e-4/3, 1e-4/3),
     # "cp_tau_0":   (0, 200), # yield/3
     # "cp_n":       (1, 16),
     # "cp_gamma_0": (1e-4/3, 1e-4/3)
 }
 params_list = get_lhs(bounds_dict, 32)
+params_list = [dict(zip(bounds_dict.keys(), [398.21, 6.856, 69.407, 15.658] + [1e-4/3]))]
 
 # Iterate through parameters
 for count, params in enumerate(params_list):
@@ -310,10 +311,10 @@ for count, params in enumerate(params_list):
             n              = params["cp_n"],
             lh_0           = params["cp_lh_0"],
             lh_1           = params["cp_lh_1"],
-            lh_2           = params["cp_lh_2"],
-            lh_3           = params["cp_lh_3"],
-            lh_4           = params["cp_lh_4"],
-            lh_5           = params["cp_lh_5"],
+            # lh_2           = params["cp_lh_2"],
+            # lh_3           = params["cp_lh_3"],
+            # lh_4           = params["cp_lh_4"],
+            # lh_5           = params["cp_lh_5"],
             passive_eulers = passive_eulers,
             weights        = weights
         )
