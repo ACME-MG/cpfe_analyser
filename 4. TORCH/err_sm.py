@@ -10,7 +10,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import sys; sys.path += ["..", "/home/janzen/code/mms"]
 from __common__.io import csv_to_dict
-from __common__.general import flatten
+from __common__.general import flatten, round_sf
 from __common__.plotter import save_plot
 from __common__.analyse import get_geodesics, get_stress
 from __common__.surrogate import Model
@@ -19,16 +19,14 @@ from __common__.surrogate import Model
 EXP_PATH = "data/617_s3_exp.csv"
 SMS_PATH = "/mnt/c/Users/janzen/OneDrive - UNSW/PhD/results/mms"
 SM_DICT  = [
-    {"dir": "2024-11-06 (617_s3_40um_lh2)", "params": [310.52, 19.295, 84.487, 8.2568]},
-    {"dir": "2024-11-08 (617_s3_40um_lh2b)", "params": [34.025, 4.6936, 132.24, 1.9797]},
-    # {"dir": "2024-11-06 (617_s3_40um_lh2)", "params": [297.43, 209.27, 87.053, 15.861]},
-    # {"dir": "2024-11-07 (617_s3_40um_lh2)", "params": [398.94, 7.6195, 114.22, 3.9469]},
-    # {"dir": "2024-11-08 (617_s3_40um_lh2)", "params": [397.54, 5.3307, 67.688, 14.695]},
-    # {"dir": "2024-11-08 (617_s3_40um_lh2)", "params": [398.21, 6.856, 69.407, 15.658]},
+    {"dir": "2024-11-10 (617_s3_40um_lh2_s32)",    "params": [310.52, 19.295, 84.487, 8.2568]},
+    {"dir": "2024-11-19 (617_s3_40um_lh2_s32_i1)", "params": [192.34, 223.94, 114.91, 2.6902]},
+    {"dir": "2024-11-19 (617_s3_40um_lh2_s32_i2)", "params": [398.62, 92.177, 91.524, 10.625]},
+    {"dir": "2024-11-20 (617_s3_40um_lh2_s32_i3)", "params": [226.29, 296.72, 114.27, 2.4587]},
 ]
 
 # Constants
-EVAL_STRAINS  = np.linspace(0, 0.1, 50)
+EVAL_STRAINS  = np.linspace(0, 0.1, 32)
 MAX_STRAIN    = 0.1
 CAL_GRAIN_IDS = [207, 79, 164, 167, 309]
 
@@ -76,7 +74,7 @@ def main():
         # Add errors
         ori_error_list.append(average_geodesic)
         stress_error_list.append(stress_error)
-        print(average_geodesic, stress_error)
+        print(f"{round_sf(average_geodesic, 5)}\t{round_sf(stress_error, 5)}\t{round_sf(average_geodesic+stress_error*np.pi, 5)}")
 
     # # Plot geodesic errors
     # plt.figure(figsize=(5, 5))

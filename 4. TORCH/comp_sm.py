@@ -22,10 +22,29 @@ MMS_PATH = "/mnt/c/Users/janzen/OneDrive - UNSW/PhD/results/mms"
 
 # Variable Paths
 SM_PATHS = [f"{MMS_PATH}/{sm_path}" for sm_path in [
-    "2024-11-06 (617_s3_40um_lh2)",
+    "2024-11-10 (617_s3_40um_lh2_s8)",
+    "2024-11-11 (617_s3_40um_lh2_s16)",
+    "2024-11-13 (617_s3_40um_lh2_s24)",
+    "2024-11-10 (617_s3_40um_lh2_s32)",
+    "2024-11-17 (617_s3_40um_lh2_s40)",
 ]]
 OPT_PATHS = [f"{OPT_PATH}/{opt_path}" for opt_path in [
-    "2024-11-05 (617_s3_40um_lh2_opt)",
+    "2024-11-18 (617_s3_40um_lh2_opts)/241117131336_0_01",
+    "2024-11-18 (617_s3_40um_lh2_opts)/241117131336_1_01",
+    "2024-11-18 (617_s3_40um_lh2_opts)/241117131336_2_01",
+    "2024-11-18 (617_s3_40um_lh2_opts)/241117131336_3_01",
+    "2024-11-18 (617_s3_40um_lh2_opts)/241117164019_3_02",
+    "2024-11-18 (617_s3_40um_lh2_opts)/241117164844_0_02",
+    "2024-11-18 (617_s3_40um_lh2_opts)/241117172822_2_02",
+    "2024-11-18 (617_s3_40um_lh2_opts)/241117190038_1_02",
+    "2024-11-18 (617_s3_40um_lh2_opts)/241117192418_0_03",
+    "2024-11-18 (617_s3_40um_lh2_opts)/241117225529_2_03",
+    "2024-11-18 (617_s3_40um_lh2_opts)/241118010357_0_04",
+    "2024-11-18 (617_s3_40um_lh2_opts)/241118021205_2_04",
+    "2024-11-18 (617_s3_40um_lh2_opts)/241118031436_1_03",
+    "2024-11-18 (617_s3_40um_lh2_opts)/241118055907_3_03",
+    "2024-11-18 (617_s3_40um_lh2_opts)/241118071817_1_04",
+    "2024-11-18 (617_s3_40um_lh2_opts)/241118100124_3_04",
 ]]
 
 # Model Evaluation Parameters
@@ -36,14 +55,16 @@ CAL_GRAIN_IDS = [207, 79, 164, 167, 309]
 
 # Plotting Parameters
 X_LABEL       = "Training Size"
+# LABEL_LIST    = [int(sm_path.split("/")[-1].split("s")[-1].replace(")","")) for sm_path in SM_PATHS]
 LABEL_LIST    = [8, 16, 24, 32, 40, 48]
 
 # Main function
 def main():
 
     # Initialise errors
-    sm_ori_error_list = []
-    sm_stress_error_list = []
+    ori_error_grid = []
+    stress_error_grid = []
+    total_error_grid = []
 
     # Iterate through surrogate models
     for sm_path in SM_PATHS:
@@ -59,15 +80,15 @@ def main():
             exp_path   = EXP_PATH,
             max_strain = MAX_STRAIN,
         )
-        res_dict = model.get_response(param_values)
 
         # Iterate through optimised results
         for opt_path in OPT_PATHS:
 
-            # Initialise
+            # Get data
             opt_dict = csv_to_dict(f"{opt_path}/summary.csv")
             param_dict = read_params(f"{opt_path}/params.txt")
             param_values = [param_dict[param_name] for param_name in PARAM_NAMES]
+            res_dict = model.get_response(param_values)
 
             # Calculate stress error
             stress_error = get_stress(
@@ -75,7 +96,7 @@ def main():
                 stress_list_2 = res_dict["stress"],
                 strain_list_1 = opt_dict["average_strain"],
                 strain_list_2 = res_dict["strain"],
-                eval_strains  = EVAL_STRAINS
+                eval_strains  = EVAL_STRAINS,
             )
 
             # Calculate orientation error
@@ -87,37 +108,89 @@ def main():
                 strain_list_2 = opt_dict["average_strain"],
                 eval_strains  = EVAL_STRAINS
             )
-            average_geodesic = np.average(flatten(geodesic_grid))
+            average_geodesics = [np.sqrt(np.average([g**2 for g in gg])) for gg in geodesic_grid]
+            average_geodesic = np.average(average_geodesics)
 
             # Add errors
-            ori_error_list.append(average_geodesic)
             stress_error_list.append(stress_error)
+            ori_error_list.append(average_geodesic)
 
         # Update errors
-        sm_ori_error_list.append(np.average(ori_error_list))
-        sm_stress_error_list.append(np.average(stress_error_list))
+        stress_error_grid.append(stress_error_list)
+        ori_error_grid.append(ori_error_list)
+        total_error_grid.append([se+oe/np.pi for se, oe in zip(stress_error_list, ori_error_list)])
+
+    # Adjust errors
+    for _ in range(len(LABEL_LIST)-len(SM_PATHS)):
+        stress_error_grid.append([])
+        ori_error_grid.append([])
+        total_error_grid.append([])
 
     # Plot stress errors
-    plt.figure(figsize=(5, 5))
-    plt.grid(True)
-    plt.plot(LABEL_LIST, sm_stress_error_list, marker="o")
-    plt.xlabel(X_LABEL)
-    plt.ylabel("Stress Relative Error (%)")
-    # plt.xlim(0, 50)
-    # plt.ylim(0, 6)
+    plot_boxplots(LABEL_LIST, stress_error_grid, (0.6, 0.8, 1.0))
+    plt.xlabel(X_LABEL, fontsize=24, labelpad=16)
+    plt.ylabel(r"$E_{\sigma}$", fontsize=24, labelpad=16)
+    plt.xlim(4, 52)
+    plt.ylim(0, 0.18)
     save_plot("results/plot_comp_se.png")
 
     # Plot geodesic errors
-    plt.figure(figsize=(5, 5))
-    plt.grid(True)
-    plt.plot(LABEL_LIST, sm_ori_error_list, marker="o")
-    plt.xlabel(X_LABEL)
-    plt.ylabel("Geodesic Error (rads)")
-    # plt.xlim(0, 50)
-    # plt.ylim(0, 0.0010)
-    # plt.gca().ticklabel_format(axis="y", style="sci", scilimits=(-4,-4))
-    # plt.gca().yaxis.major.formatter._useMathText = True
+    plot_boxplots(LABEL_LIST, ori_error_grid, (1.0, 0.6, 0.0))
+    plt.xlabel(X_LABEL, fontsize=24, labelpad=16)
+    plt.ylabel(r"$\Sigma E_{\Phi}$", fontsize=24, labelpad=16)
+    plt.xlim(4, 52)
+    plt.ylim(0, 0.018)
+    plt.gca().ticklabel_format(axis="y", style="sci", scilimits=(-3,-3))
+    plt.gca().yaxis.major.formatter._useMathText = True
+    plt.gca().yaxis.get_offset_text().set_fontsize(18)
     save_plot("results/plot_comp_ge.png")
+
+    # Plot total errors
+    plot_boxplots(LABEL_LIST, total_error_grid, (0.8, 0.6, 0.8))
+    plt.xlabel(X_LABEL, fontsize=24, labelpad=16)
+    plt.ylabel(r"$E_{\Sigma}$", fontsize=24, labelpad=16)
+    plt.xlim(4, 52)
+    plt.ylim(0, 0.18)
+    save_plot("results/plot_comp_te.png")
+
+def plot_boxplots(x_list:list, y_list_list:list, colour:str) -> None:
+    """
+    Plots several boxplots together
+
+    Parameters:
+    * `x_list`:      List of x labels
+    * `y_list_list`: List of data lists
+    * `colour`:      Boxplot colour
+    """
+
+    # Format plot
+    plt.figure(figsize=(8, 8))
+    plt.gca().set_position([0.17, 0.12, 0.75, 0.75])
+    plt.gca().grid(which="major", axis="both", color="SlateGray", linewidth=2, linestyle=":")
+    plt.xticks(fontsize=18)
+    plt.yticks(fontsize=18)
+    plt.gca().xaxis.set_tick_params(width=2)
+    plt.gca().yaxis.set_tick_params(width=2)
+    for spine in plt.gca().spines.values():
+        spine.set_linewidth(2)
+
+    # Plot boxplots
+    boxplots = plt.boxplot(y_list_list, positions=x_list, showfliers=False, patch_artist=True,
+                           vert=True, widths=4, whiskerprops=dict(linewidth=2), capprops=dict(linewidth=2))
+    
+    # Apply additional formatting to the boxplots
+    for i in range(len(y_list_list)):
+        patch = boxplots["boxes"][i]
+        patch.set_facecolor(colour)
+        patch.set_edgecolor("black")
+        patch.set_linewidth(2)
+        median = boxplots["medians"][i]
+        median.set(color="black", linewidth=2)
+
+    # # Add scattered data
+    # for x, y_list in zip(x_list, y_list_list):
+    #     x_list = np.random.normal(x, 0.04, size=len(y_list))
+    #     plt.scatter(x_list, y_list, s=4**2, color=colour, edgecolors="black", zorder=3)
 
 def read_params(params_path:str) -> dict:
     """

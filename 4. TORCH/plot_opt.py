@@ -1,5 +1,5 @@
 """
- Title:         Plot Optimmised
+ Title:         Plot Optimised
  Description:   Plots the response of the optimised simulation
  Author:        Janzen Choi
 
@@ -14,7 +14,10 @@ from __common__.plotter import define_legend, save_plot, Plotter
 
 # Constants
 EXP_PATH = "data/617_s3_exp.csv"
-SIM_PATH = "/mnt/c/Users/janzen/OneDrive - UNSW/PhD/results/moose_sim/2024-11-05 (617_s3_40um_lh2_opt)/summary.csv"
+# SIM_FILE = "2024-11-05 (617_s3_40um_lh2_opt)"
+# SIM_FILE = "2024-11-30 (617_s3_40um_lh2_i2)"
+SIM_FILE = "2024-12-01 (617_s3_40um_lh2_i3)"
+SIM_PATH = f"/mnt/c/Users/janzen/OneDrive - UNSW/PhD/results/moose_sim/{SIM_FILE}/summary.csv"
 CAL_GRAIN_IDS = [207, 79, 164, 167, 309]
 VAL_GRAIN_IDS = []
 
@@ -56,7 +59,7 @@ def main():
 
     # Plot stress-strain curve
     res_dict["strain"] = res_dict["average_grain_strain"]
-    res_dict["stress"] = res_dict["average_stress"]
+    res_dict["stress"] = res_dict["average_grain_stress"]
     plotter = Plotter("strain", "stress", "mm/mm", "MPa")
     plotter.prep_plot()
     plotter.scat_plot(exp_dict, "silver", "Experimental")

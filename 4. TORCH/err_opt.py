@@ -9,7 +9,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import sys; sys.path += [".."]
-from __common__.general import flatten
+from __common__.general import flatten, round_sf
 from __common__.io import csv_to_dict
 from __common__.plotter import save_plot
 from __common__.analyse import get_geodesics, get_stress
@@ -18,14 +18,10 @@ from __common__.analyse import get_geodesics, get_stress
 EXP_PATH = "data/617_s3_exp.csv"
 SIMS_PATH = "/mnt/c/Users/janzen/OneDrive - UNSW/PhD/results/moose_sim"
 SIM_PATHS = [f"{SIMS_PATH}/{sim_dir}/summary.csv" for sim_dir in [
-    "2024-11-05 (617_s3_40um_lh2_opt)", # 0
-    "2024-11-06 (617_s3_40um_lh2_opt)", # 0
-    "2024-11-07 (617_s3_40um_lh2_opt)", # 1
-    "2024-11-08 (617_s3_40um_lh2_opt)", # 2
-    "2024-11-08 (617_s3_40um_lh2_opt_b)", # 2
-    "2024-11-09 (617_s3_40um_lh2_opt)",
+    "2024-11-05 (617_s3_40um_lh2_opt)",
+    "2024-11-28 (617_s3_40um_lh2_i1)",
+    "2024-11-30 (617_s3_40um_lh2_i2)",
 ]]
-EVAL_STRAINS = [0, 0.05, 0.10, 0.15, 0.20, 0.25]
 CAL_GRAIN_IDS = [207, 79, 164, 167, 309]
 
 # Main function
@@ -33,6 +29,7 @@ def main():
 
     # Initialise
     exp_dict = csv_to_dict(EXP_PATH)
+    eval_strains = np.linspace(0, exp_dict["strain_intervals"][-1], 32)
     ori_error_list = []
     stress_error_list   = []
 
@@ -46,7 +43,7 @@ def main():
             stress_list_2 = res_dict["average_stress"],
             strain_list_1 = exp_dict["strain"],
             strain_list_2 = res_dict["average_strain"],
-            eval_strains  = EVAL_STRAINS
+            eval_strains  = eval_strains
         )
 
         # Calculate orientation error
@@ -56,14 +53,14 @@ def main():
             data_dict_2   = exp_dict,
             strain_list_1 = res_dict["average_strain"],
             strain_list_2 = exp_dict["strain_intervals"],
-            eval_strains  = EVAL_STRAINS
+            eval_strains  = eval_strains
         )
         average_geodesic = np.average(flatten(geodesic_grid))
 
         # Add errors
         ori_error_list.append(average_geodesic)
         stress_error_list.append(stress_error)
-        print(average_geodesic, stress_error)
+        print(f"{round_sf(average_geodesic, 5)}\t{round_sf(stress_error, 5)}\t{round_sf(average_geodesic+stress_error*np.pi, 5)}")
 
     # # Plot geodesic errors
     # plt.figure(figsize=(5, 5))
