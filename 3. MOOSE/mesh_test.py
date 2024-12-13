@@ -6,15 +6,13 @@
 """
 
 # Libraries
-import sys; sys.path += ["/home/janzen/code/moose_sim"]
+import sys; sys.path += [".."]
 import os, math, numpy as np
 import matplotlib.pyplot as plt
-from neml.math import rotations
-from neml.cp import crystallography
+from __common__.plotter import save_plot
+from __common__.analyse import get_geodesics, get_stress
 from scipy.interpolate import splev, splrep, splder
 from scipy.spatial.transform import Rotation
-from moose_sim.helper.general import transpose
-from moose_sim.analyse.pole_figure import IPF, get_lattice
 
 # Constants
 RESOLUTIONS = [
@@ -29,11 +27,12 @@ RESOLUTIONS = [
     {"resolution": 45, "ebsd_id": "ebsd_3", "colour": "cyan"},
     {"resolution": 50, "ebsd_id": "ebsd_4", "colour": "green"},
 ]
-PARAM_KW_LIST = ["p0", "p1", "p2", "p3", "p4", "p5", "p6", "p7"]
-GRAIN_MAP     = "data/res_grain_map.csv"
-SIM_PATH      = "/mnt/c/Users/janzen/OneDrive - UNSW/PhD/results/moose_sim/2024-09-26 (617_s3_converge_5pct_8p)"
-STRAIN_KEY    = "average_grain_strain"
-STRAIN_LIST   = [0.01, 0.02, 0.03, 0.04, 0.05]
+PARAM_KW_LIST  = ["p0", "p1", "p2", "p3", "p4", "p5", "p6", "p7"]
+GRAIN_MAP      = "data/res_grain_map.csv"
+SIM_PATH       = "/mnt/c/Users/janzen/OneDrive - UNSW/PhD/results/moose_sim/2024-09-26 (617_s3_converge_5pct_8p)"
+STRAIN_FIELD   = "average_strain"
+STRESS_FIELD   = "average_stress"
+EVAL_STRAINS   = np.linspace(0, 0.05, 50)
 
 def main():
     """
@@ -55,18 +54,6 @@ def main():
             sum_dict = convert_grain_ids(sum_dict, resolution["ebsd_id"])
             results_dict[res_kw][param_kw] = sum_dict
     
-    # Plot raw stress-strain data
-    initialise_plot("Strain (mm/mm)", "Stress (MPa)", 0.05, 600)
-    for i, resolution in enumerate(RESOLUTIONS):
-        colour = resolution["colour"]
-        res_kw = resolution["resolution"]
-        settings = {"linewidth": 3} if i == 0 else {"linestyle": "dashed"}
-        for param_kw in PARAM_KW_LIST:
-            sum_dict = results_dict[res_kw][param_kw]
-            plt.plot(sum_dict["average_strain"], sum_dict["average_stress"], colour, **settings)
-        plt.plot([], [], label=f"{res_kw}µm", color=colour, **settings)
-    format_and_save_plot("results/plot_ss.png")
-    
     # Identify common grains across all meshes
     grain_ids_list = []
     for resolution in RESOLUTIONS:
@@ -79,36 +66,17 @@ def main():
     for grain_ids in grain_ids_list[1:]:
         common_grain_ids = list(filter(lambda g_id: g_id in grain_ids, common_grain_ids))
     
-    # Plot certain common trajectories
-    grain_ids = common_grain_ids#[:5]
-    get_trajectories = lambda dict : [transpose([dict[f"g{grain_id}_{phi}"][1:] for phi in ["phi_1", "Phi", "phi_2"]]) for grain_id in grain_ids]
-    ipf = IPF(get_lattice("fcc"))
-    direction = [1,0,0]
-    for i, resolution in enumerate(RESOLUTIONS):
-        res_kw = resolution["resolution"]
-        colour = resolution["colour"]
-        for param_kw in PARAM_KW_LIST:
-            sum_dict = results_dict[res_kw][param_kw]
-            trajectories = get_trajectories(sum_dict)
-            if i == 0:
-                ipf.plot_ipf_trajectory(trajectories, direction, "plot", {"color": colour, "linewidth": 2})
-                ipf.plot_ipf_trajectory([[t[0]] for t in trajectories], direction, "scatter", {"color": colour, "s": 4**2})
-                for exp_trajectory, grain_id in zip(trajectories, common_grain_ids):
-                    ipf.plot_ipf_trajectory([[exp_trajectory[0]]], direction, "text", {"color": "black", "fontsize": 8, "s": grain_id})
-            else:
-                ipf.plot_ipf_trajectory(trajectories, direction, "plot", {"color": colour, "linewidth": 1, "zorder": 3})
-                ipf.plot_ipf_trajectory([[t[0]] for t in trajectories], direction, "scatter", {"color": colour, "s": 3**2, "zorder": 3})
-        settings = {"linewidth": 3} if i == 0 else {}
-        plt.plot([], [], label=f"{res_kw}µm", color=colour, **settings)
-    format_and_save_plot("results/plot_rt.png")
-    
     # Calculate the errors based on the first resolution
     errors_dict = {}
     base_results = results_dict[RESOLUTIONS[0]["resolution"]]
     for resolution in RESOLUTIONS[1:]:
+
+        # Initialise error information
         res_kw = resolution["resolution"]
         comp_results = results_dict[res_kw]
         errors_dict[res_kw] = {"stress": [], "orientation": []}
+        
+        # Iterate through parameters
         for param_kw in PARAM_KW_LIST:
             
             # Get results with different resolutions but same parameters
@@ -116,83 +84,95 @@ def main():
             comp_result = comp_results[param_kw]
             
             # Calculate stress error
-            base_stress_list = intervaluate(base_result, "average_grain_stress")
-            comp_stress_list = intervaluate(comp_result, "average_grain_stress")
-            stress_error = [abs((base_stress-comp_stress)) 
-                            for base_stress, comp_stress in zip(base_stress_list, comp_stress_list)]
-            stress_error = np.average(stress_error)*100/np.average(base_stress_list)
+            stress_error = get_stress(
+                stress_list_1 = base_result[STRESS_FIELD],
+                stress_list_2 = comp_result[STRESS_FIELD],
+                strain_list_1 = base_result[STRAIN_FIELD],
+                strain_list_2 = comp_result[STRAIN_FIELD],
+                eval_strains  = EVAL_STRAINS,
+            )
 
             # # Get common grains
             # base_grain_ids = [int(key.replace("g","").replace("_phi_1","")) for key in base_result.keys() if "_phi_1" in key]
             # comp_grain_ids = [int(key.replace("g","").replace("_phi_1","")) for key in comp_result.keys() if "_phi_1" in key]
             # common_grain_ids = list(filter(lambda g_id: g_id in base_grain_ids, comp_grain_ids))
 
-            # Calculate orientation error for each common grain
-            orientation_error = []
-            for grain_id in common_grain_ids:
-                base_phi_1_list = intervaluate(base_result, f"g{grain_id}_phi_1")
-                base_Phi_list   = intervaluate(base_result, f"g{grain_id}_Phi")
-                base_phi_2_list = intervaluate(base_result, f"g{grain_id}_phi_2")
-                comp_phi_1_list = intervaluate(comp_result, f"g{grain_id}_phi_1")
-                comp_Phi_list   = intervaluate(comp_result, f"g{grain_id}_Phi")
-                comp_phi_2_list = intervaluate(comp_result, f"g{grain_id}_phi_2")
-                for i in range(len(STRAIN_LIST)):
-                    base_euler = [base_phi_1_list[i], base_Phi_list[i], base_phi_2_list[i]]
-                    comp_euler = [comp_phi_1_list[i], comp_Phi_list[i], comp_phi_2_list[i]]
-                    # orientation_error.append(get_cubic_misorientation(base_euler, comp_euler))
-                    orientation_error.append(get_geodesic(euler_to_quat(base_euler), euler_to_quat(comp_euler)))
-            orientation_error = np.average(orientation_error)
-        
+            # Calculate orientation error
+            geodesic_grid = get_geodesics(
+                grain_ids     = common_grain_ids,
+                data_dict_1   = base_result,
+                data_dict_2   = comp_result,
+                strain_list_1 = base_result[STRAIN_FIELD],
+                strain_list_2 = comp_result[STRAIN_FIELD],
+                eval_strains  = EVAL_STRAINS
+            )
+            average_geodesics = [np.sqrt(np.average([g**2 for g in gg])) for gg in geodesic_grid]
+            average_geodesic = np.average(average_geodesics)
+
             # Compile errors
             errors_dict[res_kw]["stress"].append(stress_error)
-            errors_dict[res_kw]["orientation"].append(orientation_error)
-    
+            errors_dict[res_kw]["orientation"].append(average_geodesic)
+            
     # Prepare error plotting
+    stress_error_grid = [errors_dict[res_kw]["stress"] for res_kw in errors_dict.keys()]
+    orientation_error_grid = [errors_dict[res_kw]["orientation"] for res_kw in errors_dict.keys()]
     resolution_list = [res["resolution"] for res in RESOLUTIONS[1:]]
     
-    # Plot stress-strain errors
-    initialise_plot("Resolution (µm)", "Relative Error (%)")
-    for res in resolution_list:
-        plt.scatter([res]*len(errors_dict[res]["stress"]), errors_dict[res]["stress"], marker="o", s=6**2, alpha=0.50)
-    average_errors = [np.average(errors_dict[res]["stress"]) for res in resolution_list]
-    plt.plot(resolution_list, average_errors, color="black", linestyle="dashed", label="Average")
-    plt.xlim(min(resolution_list)-2.5, max(resolution_list)+2.5)
-    plt.ylim(0, 1.6)
-    plt.gca().set_xticks(resolution_list)
-    plt.gca().set_xticklabels(resolution_list)
-    format_and_save_plot("results/err_ss.png", settings={"loc": "upper left"})
+    # Plot stress errors
+    plot_boxplots(resolution_list, stress_error_grid, (0.6, 0.8, 1.0))
+    plt.xlabel("Resolution (µm)", fontsize=24, labelpad=16)
+    plt.ylabel(r"$E_{\sigma}$", fontsize=24, labelpad=16)
+    plt.xlim(max(resolution_list)+2.5, min(resolution_list)-2.5)
+    plt.ylim(0, 0.018)
+    plt.gca().ticklabel_format(axis="y", style="sci", scilimits=(-3,-3))
+    plt.gca().yaxis.major.formatter._useMathText = True
+    plt.gca().yaxis.get_offset_text().set_fontsize(18)
+    save_plot("results/plot_mt_se.png")
 
-    # Plot orientation errors
-    initialise_plot("Resolution (µm)", "Geodesic Distance (rads)")
-    # initialise_plot("Resolution (µm)", "Misorientation (rads)")
-    for res in resolution_list:
-        plt.scatter([res]*len(errors_dict[res]["orientation"]), errors_dict[res]["orientation"], marker="o", s=6**2, alpha=0.50)
-    average_errors = [np.average(errors_dict[res]["orientation"]) for res in resolution_list]
-    plt.plot(resolution_list, average_errors, color="black", linestyle="dashed", label="Average")
-    plt.xlim(min(resolution_list)-2.5, max(resolution_list)+2.5)
-    # plt.ylim(0.002, 0.008)
-    plt.ylim(0.0, 0.005)
-    plt.gca().set_xticks(resolution_list)
-    plt.gca().set_xticklabels(resolution_list)
-    format_and_save_plot("results/err_rt.png", settings={"loc": "upper left"})
+    # Plot geodesic errors
+    plot_boxplots(resolution_list, orientation_error_grid, (1.0, 0.6, 0.0))
+    plt.xlabel("Resolution (µm)", fontsize=24, labelpad=16)
+    plt.ylabel(r"$\Sigma E_{\Phi}$", fontsize=24, labelpad=16)
+    plt.xlim(max(resolution_list)+2.5, min(resolution_list)-2.5)
+    plt.ylim(0, 0.008)
+    plt.gca().ticklabel_format(axis="y", style="sci", scilimits=(-3,-3))
+    plt.gca().yaxis.major.formatter._useMathText = True
+    plt.gca().yaxis.get_offset_text().set_fontsize(18)
+    save_plot("results/plot_mt_ge.png")
 
-def get_cubic_misorientation(euler_1:list, euler_2:list):
+def plot_boxplots(x_list:list, y_list_list:list, colour:str) -> None:
     """
-    Determines the misorientation of two sets of euler angles (rads);
-    assumes cubic structure
+    Plots several boxplots together
 
     Parameters:
-    * `euler_1`: The first euler angle
-    * `euler_2`: The second euler angle
-    
-    Returns the misorientation angle
+    * `x_list`:      List of x labels
+    * `y_list_list`: List of data lists
+    * `colour`:      Boxplot colour
     """
-    euler_1 = rotations.CrystalOrientation(*euler_1, angle_type="radians", convention="bunge")
-    euler_2 = rotations.CrystalOrientation(*euler_2, angle_type="radians", convention="bunge")
-    sym_group = crystallography.SymmetryGroup("432")
-    mori = sym_group.misorientation(euler_1, euler_2)
-    _, mori_angle = mori.to_axis_angle()
-    return mori_angle
+
+    # Format plot
+    plt.figure(figsize=(8, 8))
+    plt.gca().set_position([0.17, 0.12, 0.75, 0.75])
+    plt.gca().grid(which="major", axis="both", color="SlateGray", linewidth=2, linestyle=":")
+    plt.xticks(fontsize=18)
+    plt.yticks(fontsize=18)
+    plt.gca().xaxis.set_tick_params(width=2)
+    plt.gca().yaxis.set_tick_params(width=2)
+    for spine in plt.gca().spines.values():
+        spine.set_linewidth(2)
+
+    # Plot boxplots
+    boxplots = plt.boxplot(y_list_list, positions=x_list, showfliers=False, patch_artist=True,
+                           vert=True, widths=4, whiskerprops=dict(linewidth=2), capprops=dict(linewidth=2))
+    
+    # Apply additional formatting to the boxplots
+    for i in range(len(y_list_list)):
+        patch = boxplots["boxes"][i]
+        patch.set_facecolor(colour)
+        patch.set_edgecolor("black")
+        patch.set_linewidth(2)
+        median = boxplots["medians"][i]
+        median.set(color="black", linewidth=2)
 
 def convert_grain_ids(data_dict:dict, ebsd_id:str) -> dict:
     """
@@ -283,25 +263,6 @@ def euler_to_quat(euler:list) -> list:
     quat = rotation.as_quat()
     return list(quat)
 
-def get_geodesic(quat_1:list, quat_2:list) -> float:
-    """
-    Gets the geodesic distance between two quaternions angles
-    
-    Parameters:
-    * `quat_1`: The first quaternion
-    * `quat_2`: The second quaternion
-    
-    Returns the geodesic distance
-    """
-    quat_1 = np.array(quat_1)
-    quat_2 = np.array(quat_2)
-    quat_1 = quat_1 / np.linalg.norm(quat_1)
-    quat_2 = quat_2 / np.linalg.norm(quat_2)
-    dot_product = np.dot(quat_1, quat_2)
-    dot_product = np.clip(dot_product, -1.0, 1.0)
-    distance = np.arccos(np.abs(dot_product))
-    return distance
-
 def intervaluate(data_dict:dict, key:str) -> list:
     """
     Interpolates a list of values based on the strain and evaluates
@@ -313,7 +274,7 @@ def intervaluate(data_dict:dict, key:str) -> list:
     
     Returns the evaluation from the interpolator as a list
     """
-    interpolator = Interpolator(data_dict[STRAIN_KEY], data_dict[key])
+    interpolator = Interpolator(data_dict[STRAIN_FIELD], data_dict[key])
     evaluation = interpolator.evaluate(STRAIN_LIST)
     return evaluation
 

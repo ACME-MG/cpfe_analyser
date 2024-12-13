@@ -27,6 +27,7 @@ SM_PATHS = [f"{MMS_PATH}/{sm_path}" for sm_path in [
     "2024-11-13 (617_s3_40um_lh2_s24)",
     "2024-11-10 (617_s3_40um_lh2_s32)",
     "2024-11-17 (617_s3_40um_lh2_s40)",
+    "2024-12-08 (617_s3_40um_lh2_s48)",
 ]]
 OPT_PATHS = [f"{OPT_PATH}/{opt_path}" for opt_path in [
     "2024-11-18 (617_s3_40um_lh2_opts)/241117131336_0_01",

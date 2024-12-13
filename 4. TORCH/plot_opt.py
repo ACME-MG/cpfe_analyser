@@ -15,11 +15,14 @@ from __common__.plotter import define_legend, save_plot, Plotter
 # Constants
 EXP_PATH = "data/617_s3_exp.csv"
 # SIM_FILE = "2024-11-05 (617_s3_40um_lh2_opt)"
-# SIM_FILE = "2024-11-30 (617_s3_40um_lh2_i2)"
-SIM_FILE = "2024-12-01 (617_s3_40um_lh2_i3)"
+SIM_FILE = "2024-12-09 (617_s3_40um_lh2_ungripped)"
 SIM_PATH = f"/mnt/c/Users/janzen/OneDrive - UNSW/PhD/results/moose_sim/{SIM_FILE}/summary.csv"
 CAL_GRAIN_IDS = [207, 79, 164, 167, 309]
 VAL_GRAIN_IDS = []
+# STRAIN_FIELD = "average_grain_strain"
+# STRESS_FIELD = "average_grain_stress"
+STRAIN_FIELD = "average_strain"
+STRESS_FIELD = "average_stress"
 
 # Main function
 def main():
@@ -58,8 +61,8 @@ def main():
     save_plot("results/plot_opt_rt.png")
 
     # Plot stress-strain curve
-    res_dict["strain"] = res_dict["average_grain_strain"]
-    res_dict["stress"] = res_dict["average_grain_stress"]
+    res_dict["strain"] = res_dict[STRAIN_FIELD]
+    res_dict["stress"] = res_dict[STRESS_FIELD]
     plotter = Plotter("strain", "stress", "mm/mm", "MPa")
     plotter.prep_plot()
     plotter.scat_plot(exp_dict, "silver", "Experimental")
