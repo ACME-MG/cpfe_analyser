@@ -15,13 +15,14 @@ from __common__.surrogate import Model
 
 # Paths
 EXP_PATH = "data/617_s3_exp.csv"
-DIRECTORY = "/mnt/c/Users/janzen/OneDrive - UNSW/PhD/results/mms/2024-11-28 (617_s3_40um_lh2_s32_i1)"
+# DIRECTORY = "/mnt/c/Users/janzen/OneDrive - UNSW/PhD/results/asmbo/2024-12-12 test_run/241213172919_i1_s1_sm"
+DIRECTORY = "/mnt/c/Users/janzen/OneDrive - UNSW/PhD/results/mms/2024-12-13 (617_s3_40um_lh2_s32)"
 SUR_PATH = f"{DIRECTORY}/sm.pt"
 MAP_PATH = f"{DIRECTORY}/map.csv"
 
 # Constants
 MAX_STRAIN = 0.1
-PARAM_LIST = [390.45, 33.537, 79.105, 3.7274]
+PARAM_LIST = [10.607, 120.94, 396.76, 1.0305, 7.26E-05]
 CAL_GRAIN_IDS = [207, 79, 164, 167, 309]
 VAL_GRAIN_IDS = []
 

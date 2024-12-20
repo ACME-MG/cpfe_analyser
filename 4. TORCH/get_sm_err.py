@@ -13,12 +13,10 @@ from __common__.io import csv_to_dict, dict_to_csv
 from __common__.general import transpose, sort_dict, round_sf
 
 # Paths
-NUM_LH    = 2
-DIRECTORY = f"data/617_s3_40um_lh{NUM_LH}"
+DIRECTORY = "/mnt/c/Users/janzen/OneDrive - UNSW/PhD/results/mms/2024-12-13 (617_s3_40um_lh2_s32_all)"
 SUR_PATH  = f"{DIRECTORY}/sm.pt"
 MAP_PATH  = f"{DIRECTORY}/map.csv"
-SUM_PATH  = f"data/617_s3_40um_lh{NUM_LH}_sampled.csv"
-ERR_PATH  = "error.csv"
+SUM_PATH  = f"{DIRECTORY}/617_s3_40um_lh2_sampled.csv"
 
 # Main function
 def main() -> None:
@@ -30,7 +28,7 @@ def main() -> None:
     
     # Define inputs / outputs
     # input_fields  = ["cp_tau_s", "cp_b", "cp_tau_0", "cp_n", "average_strain"]
-    input_fields  = [f"cp_lh_{i}" for i in range(NUM_LH)] + ["cp_tau_0", "cp_n", "average_strain"]
+    input_fields  = [f"cp_lh_{i}" for i in range(2)] + ["cp_tau_0", "cp_n", "cp_gamma_0", "average_strain"]
     inputs_list   = transpose([sum_dict[field] for field in input_fields])
     output_fields = mapper.output_map_dict["param_name"]
     outputs_list  = transpose([sum_dict[field] for field in output_fields])
@@ -57,7 +55,7 @@ def main() -> None:
     sorted_errors = [round_sf(err_red_dict[grain_id], 3) for grain_id in sorted_grain_ids]
     for grain_id, error in zip(sorted_grain_ids, sorted_errors):
         print(f"Grain {grain_id}:\t{round_sf(error, 3)}%")
-    dict_to_csv({"grain_id": sorted_grain_ids, "error": sorted_errors}, ERR_PATH)
+    dict_to_csv({"grain_id": sorted_grain_ids, "error": sorted_errors}, "results/error.csv")
 
     # Plot errors
     plt.figure(figsize=(5,5))
@@ -68,7 +66,7 @@ def main() -> None:
     plt.xscale("log")
     plt.yscale("log")
     plt.hist(list(err_red_dict.values()), bins=100, color="blue", alpha=0.7, edgecolor="black")
-    plt.savefig("plot_err.png")
+    plt.savefig("results/plot_err.png")
     
 # Class for the surrogate
 class Surrogate(torch.nn.Module):

@@ -15,10 +15,11 @@ from __common__.plotter import define_legend, save_plot, Plotter
 # Constants
 EXP_PATH = "data/617_s3_exp.csv"
 # SIM_FILE = "2024-11-05 (617_s3_40um_lh2_opt)"
-SIM_FILE = "2024-12-09 (617_s3_40um_lh2_ungripped)"
+SIM_FILE = "2024-12-12 (617_s3_40um_lh2_sm32_new)/241209230526_1_01"
 SIM_PATH = f"/mnt/c/Users/janzen/OneDrive - UNSW/PhD/results/moose_sim/{SIM_FILE}/summary.csv"
-CAL_GRAIN_IDS = [207, 79, 164, 167, 309]
-VAL_GRAIN_IDS = []
+CAL_GRAIN_IDS = [59, 63, 237, 303]
+VAL_GRAIN_IDS = [256, 86, 54, 82, 78]
+
 # STRAIN_FIELD = "average_grain_strain"
 # STRESS_FIELD = "average_grain_stress"
 STRAIN_FIELD = "average_strain"

@@ -25,7 +25,7 @@ RESOLUTIONS = [
     {"resolution": 35, "ebsd_id": "ebsd_2", "colour": "purple"},
     {"resolution": 40, "ebsd_id": "ebsd_4", "colour": "blue"},
     {"resolution": 45, "ebsd_id": "ebsd_3", "colour": "cyan"},
-    {"resolution": 50, "ebsd_id": "ebsd_4", "colour": "green"},
+    # {"resolution": 50, "ebsd_id": "ebsd_4", "colour": "green"},
 ]
 PARAM_KW_LIST  = ["p0", "p1", "p2", "p3", "p4", "p5", "p6", "p7"]
 GRAIN_MAP      = "data/res_grain_map.csv"
@@ -55,16 +55,18 @@ def main():
             results_dict[res_kw][param_kw] = sum_dict
     
     # Identify common grains across all meshes
-    grain_ids_list = []
-    for resolution in RESOLUTIONS:
-        res_kw = resolution["resolution"]
-        for param_kw in PARAM_KW_LIST:
-            sum_dict = results_dict[res_kw][param_kw]
-            grain_ids = [int(key.replace("g","").replace("_phi_1","")) for key in sum_dict.keys() if "_phi_1" in key]
-            grain_ids_list.append(grain_ids)
-    common_grain_ids = grain_ids_list[0]
-    for grain_ids in grain_ids_list[1:]:
-        common_grain_ids = list(filter(lambda g_id: g_id in grain_ids, common_grain_ids))
+    # grain_ids_list = []
+    # for resolution in RESOLUTIONS:
+    #     res_kw = resolution["resolution"]
+    #     for param_kw in PARAM_KW_LIST:
+    #         sum_dict = results_dict[res_kw][param_kw]
+    #         grain_ids = [int(key.replace("g","").replace("_phi_1","")) for key in sum_dict.keys() if "_phi_1" in key]
+    #         grain_ids_list.append(grain_ids)
+    # common_grain_ids = grain_ids_list[0]
+    # for grain_ids in grain_ids_list[1:]:
+    #     common_grain_ids = list(filter(lambda g_id: g_id in grain_ids, common_grain_ids))
+    # common_grain_ids = [59, 63, 86, 237, 303]
+    common_grain_ids = [29, 72, 77, 81, 87, 97, 101, 114, 132, 154, 167, 189, 203, 237, 264, 265, 279, 284, 288, 289, 302, 314, 317, 326, 328, 352, 365, 376, 380, 381, 392, 422, 427, 432, 438, 447, 453, 455, 460, 486, 490, 493, 509, 522, 525, 530, 535, 546, 550, 564, 565, 592, 594, 600, 615, 618, 654, 655, 666, 668, 676, 678, 679, 687, 723, 724, 736]
     
     # Calculate the errors based on the first resolution
     errors_dict = {}
@@ -92,7 +94,7 @@ def main():
                 eval_strains  = EVAL_STRAINS,
             )
 
-            # # Get common grains
+            # Get common grains
             # base_grain_ids = [int(key.replace("g","").replace("_phi_1","")) for key in base_result.keys() if "_phi_1" in key]
             # comp_grain_ids = [int(key.replace("g","").replace("_phi_1","")) for key in comp_result.keys() if "_phi_1" in key]
             # common_grain_ids = list(filter(lambda g_id: g_id in base_grain_ids, comp_grain_ids))
@@ -123,7 +125,7 @@ def main():
     plt.xlabel("Resolution (µm)", fontsize=24, labelpad=16)
     plt.ylabel(r"$E_{\sigma}$", fontsize=24, labelpad=16)
     plt.xlim(max(resolution_list)+2.5, min(resolution_list)-2.5)
-    plt.ylim(0, 0.018)
+    plt.ylim(0, 0.016)
     plt.gca().ticklabel_format(axis="y", style="sci", scilimits=(-3,-3))
     plt.gca().yaxis.major.formatter._useMathText = True
     plt.gca().yaxis.get_offset_text().set_fontsize(18)
@@ -132,7 +134,7 @@ def main():
     # Plot geodesic errors
     plot_boxplots(resolution_list, orientation_error_grid, (1.0, 0.6, 0.0))
     plt.xlabel("Resolution (µm)", fontsize=24, labelpad=16)
-    plt.ylabel(r"$\Sigma E_{\Phi}$", fontsize=24, labelpad=16)
+    plt.ylabel(r"Average $E_{\Phi}$", fontsize=24, labelpad=16)
     plt.xlim(max(resolution_list)+2.5, min(resolution_list)-2.5)
     plt.ylim(0, 0.008)
     plt.gca().ticklabel_format(axis="y", style="sci", scilimits=(-3,-3))

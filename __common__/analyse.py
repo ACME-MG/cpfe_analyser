@@ -13,7 +13,7 @@ from __common__.interpolator import intervaluate
 from __common__.orientation import euler_to_quat, get_geodesic
 
 def get_stress(stress_list_1:list, stress_list_2:list, strain_list_1:list,
-               strain_list_2:list, eval_strains:list, max_stress:float=None) -> list:
+               strain_list_2:list, eval_strains:list) -> list:
     """
     Gets the stress error from two lists of stresses;
     normalisation conducted on first list of stresses
@@ -24,11 +24,11 @@ def get_stress(stress_list_1:list, stress_list_2:list, strain_list_1:list,
     * `strain_list_1`: First list of strain values
     * `strain_list_2`: Second list of strain values
     * `eval_strains`:  List of strains to evaluate
-    * `max_stress`:    The maximum stress for the normalisation
     
     Returns the normalised root mean square error for the stresses
     """
-    stress_list = [stress for stress in stress_list_1 if stress <= max_stress] if max_stress != None else stress_list_1
+    max_strain = max(eval_strains)
+    stress_list = [stress for stress, strain in zip(stress_list_1, strain_list_1) if strain <= max_strain]
     eval_stress_list_1 = intervaluate(strain_list_1, stress_list_1, eval_strains)
     eval_stress_list_2 = intervaluate(strain_list_2, stress_list_2, eval_strains)
     mse = np.average([math.pow(es_1-es_2, 2) for es_1, es_2 in zip(eval_stress_list_1, eval_stress_list_2)])
