@@ -9,7 +9,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import sys; sys.path += [".."]
-from __common__.general import flatten, round_sf
+from __common__.general import round_sf
 from __common__.io import csv_to_dict
 from __common__.plotter import save_plot
 from __common__.analyse import get_geodesics, get_stress
@@ -31,7 +31,7 @@ def main():
     exp_dict = csv_to_dict(EXP_PATH)
     eval_strains = np.linspace(0, exp_dict["strain_intervals"][-1], 32)
     ori_error_list = []
-    stress_error_list   = []
+    stress_error_list = []
 
     # Iterate through simulations
     for sim_path in SIM_PATHS:
@@ -55,7 +55,7 @@ def main():
             strain_list_2 = exp_dict["strain_intervals"],
             eval_strains  = eval_strains
         )
-        average_geodesic = np.average(flatten(geodesic_grid))
+        average_geodesic = np.average([np.sqrt(np.average([g**2 for g in gg])) for gg in geodesic_grid])
 
         # Add errors
         ori_error_list.append(average_geodesic)

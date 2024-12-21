@@ -16,8 +16,10 @@ from __common__.analyse import get_geodesics, get_stress
 # Constants
 GRAIN_IDS   = [59, 63, 86, 237, 303]
 EXP_PATH    = "data/617_s3_40um_exp.csv"
-SIM_DIR     = "/mnt/c/Users/janzen/OneDrive - UNSW/PhD/results/moose_sim"
-SIM_PATH    = f"{SIM_DIR}/2024-11-05 (617_s3_40um_lh2_opt)/summary.csv"
+# SIM_DIR     = "/mnt/c/Users/janzen/OneDrive - UNSW/PhD/results/moose_sim"
+# SIM_PATH    = f"{SIM_DIR}/2024-11-05 (617_s3_40um_lh2_opt)/summary.csv"
+SIM_DIR     = "/mnt/c/Users/janzen/OneDrive - UNSW/PhD/results/asmbo"
+SIM_PATH    = f"{SIM_DIR}/2024-12-21 (max_0p3_i4)/241221024631_i1_simulate/summary.csv"
 NUM_POINTS  = 50
 MAX_STRAIN  = 0.1
 EVAL_X_LIST = list(np.linspace(0, MAX_STRAIN, NUM_POINTS))

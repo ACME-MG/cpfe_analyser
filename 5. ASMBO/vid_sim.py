@@ -16,7 +16,7 @@ from __common__.pole_figure import get_lattice, IPF
 from __common__.plotter import define_legend
 
 # Constants
-ASMBO_DIR     = "2024-12-20 (max_0p3_i23)"
+ASMBO_DIR     = "2024-12-20 (max_0p3_i32)"
 SIM_DATA_PATH = f"/mnt/c/Users/janzen/OneDrive - UNSW/PhD/results/asmbo/{ASMBO_DIR}"
 EXP_DATA_PATH = "data/617_s3_40um_exp.csv"
 RESULTS_PATH  = "results"
