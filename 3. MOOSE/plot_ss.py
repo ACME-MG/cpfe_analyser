@@ -15,8 +15,8 @@ EXP_PATH = "data/617_s3_exp.csv"
 # SIM_FILE = "2024-12-08 (617_s3_40um_lh2_sm48)/241202030421_3_02"
 SIM_FILE = "2024-11-05 (617_s3_40um_lh2_opt)"
 SIM_PATH = f"/mnt/c/Users/janzen/OneDrive - UNSW/PhD/results/moose_sim/{SIM_FILE}/summary.csv"
-CAL_GRAIN_IDS = [207, 79, 164, 167, 309]
-VAL_GRAIN_IDS = []
+CAL_GRAIN_IDS = [59, 63, 86, 237, 303]
+VAL_GRAIN_IDS = [44, 53, 60, 78, 190]
 
 # Main function
 def main():

@@ -76,7 +76,7 @@ def main():
         # Initialise error information
         res_kw = resolution["resolution"]
         comp_results = results_dict[res_kw]
-        errors_dict[res_kw] = {"stress": [], "orientation": []}
+        errors_dict[res_kw] = {"stress": [], "orientation": [], "reduced": []}
         
         # Iterate through parameters
         for param_kw in PARAM_KW_LIST:
@@ -108,16 +108,17 @@ def main():
                 strain_list_2 = comp_result[STRAIN_FIELD],
                 eval_strains  = EVAL_STRAINS
             )
-            average_geodesics = [np.sqrt(np.average([g**2 for g in gg])) for gg in geodesic_grid]
-            average_geodesic = np.average(average_geodesics)
+            geodesic_error = np.average([np.sqrt(np.average([g**2 for g in gg])) for gg in geodesic_grid])
 
             # Compile errors
             errors_dict[res_kw]["stress"].append(stress_error)
-            errors_dict[res_kw]["orientation"].append(average_geodesic)
+            errors_dict[res_kw]["orientation"].append(geodesic_error)
+            errors_dict[res_kw]["reduced"].append(geodesic_error/np.pi + stress_error)
             
     # Prepare error plotting
     stress_error_grid = [errors_dict[res_kw]["stress"] for res_kw in errors_dict.keys()]
     orientation_error_grid = [errors_dict[res_kw]["orientation"] for res_kw in errors_dict.keys()]
+    reduced_error_grid = [errors_dict[res_kw]["reduced"] for res_kw in errors_dict.keys()]
     resolution_list = [res["resolution"] for res in RESOLUTIONS[1:]]
     
     # Plot stress errors
@@ -141,6 +142,17 @@ def main():
     plt.gca().yaxis.major.formatter._useMathText = True
     plt.gca().yaxis.get_offset_text().set_fontsize(18)
     save_plot("results/plot_mt_ge.png")
+
+    # Plot reduced errors
+    plot_boxplots(resolution_list, reduced_error_grid, (0.6, 0.8, 1.0))
+    plt.xlabel("Resolution (µm)", fontsize=24, labelpad=16)
+    plt.ylabel(r"$E_{\Sigma}$", fontsize=24, labelpad=16)
+    plt.xlim(max(resolution_list)+2.5, min(resolution_list)-2.5)
+    plt.ylim(0, 0.018)
+    plt.gca().ticklabel_format(axis="y", style="sci", scilimits=(-3,-3))
+    plt.gca().yaxis.major.formatter._useMathText = True
+    plt.gca().yaxis.get_offset_text().set_fontsize(18)
+    save_plot("results/plot_mt_re.png")
 
 def plot_boxplots(x_list:list, y_list_list:list, colour:str) -> None:
     """

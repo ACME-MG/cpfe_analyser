@@ -15,14 +15,14 @@ from __common__.analyse import get_geodesics, get_stress
 from __common__.plotter import define_legend, save_plot
 
 # Constants
-ASMBO_DIR     = "2024-12-21 (max_0p3_i4)"
+ASMBO_DIR     = "2024-12-22 (max_0p3_i12)"
 SIM_DATA_PATH = f"/mnt/c/Users/janzen/OneDrive - UNSW/PhD/results/asmbo/{ASMBO_DIR}"
 EXP_DATA_PATH = "data/617_s3_40um_exp.csv"
 RESULTS_PATH  = "results"
 STRAIN_FIELD  = "average_strain"
 STRESS_FIELD  = "average_stress"
 CAL_GRAIN_IDS = [59, 63, 86, 237, 303]
-VAL_GRAIN_IDS = [60, 78, 82, 86, 190]
+VAL_GRAIN_IDS = [44, 53, 60, 78, 190]
 
 def main():
     """
@@ -55,23 +55,23 @@ def main():
     # plt.plot(label_list, val_se, marker="o", color="red")
     plt.plot(label_list, cal_se, marker="o", color="green")
     plt.ylabel(r"$E_{\sigma}$", fontsize=15)
-    plt.ylim(0, None)
+    plt.ylim(0, 0.50)
     save_plot("results/comp_opt_se.png")
 
-    # Plot stress errors
+    # Plot geodesic errors
     initialise_error_plot(label_list)
     plt.plot(label_list, val_ge, marker="o", color="red")
     plt.plot(label_list, cal_ge, marker="o", color="green")
     plt.ylabel(r"Average $E_{\Phi}$", fontsize=15)
-    plt.ylim(0, None)
+    plt.ylim(0, 0.10)
     save_plot("results/comp_opt_ge.png")
 
-    # Plot stress errors
-    initialise_error_plot(label_list)
-    plt.plot(label_list, val_re, marker="o", color="red")
+    # Plot reduced errors
+    initialise_error_plot(label_list, False)
+    # plt.plot(label_list, val_re, marker="o", color="red")
     plt.plot(label_list, cal_re, marker="o", color="green")
     plt.ylabel(r"$E_{\Sigma}$", fontsize=15)
-    plt.ylim(0, None)
+    plt.ylim(0, 0.60)
     save_plot("results/comp_opt_re.png")
 
 def initialise_error_plot(label_list:list, add_validation:bool=True):
@@ -93,7 +93,7 @@ def initialise_error_plot(label_list:list, add_validation:bool=True):
     if add_validation:
         define_legend(["green", "red"], ["Calibration", "Validation"], ["line", "line"], fontsize=12)
     else:
-        define_legend(["green"], ["Validation"], ["line"], fontsize=12)
+        define_legend(["green"], ["Calibration"], ["line"], fontsize=12)
 
 def get_errors(sim_dict_list:list, exp_dict:dict, eval_strains:list, grain_ids:list) -> tuple:
     """

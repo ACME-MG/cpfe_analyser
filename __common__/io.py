@@ -45,6 +45,23 @@ def get_file_path_exists(file_path:str, extension:str):
         index += 1
     return new_file_path
 
+def read_excel(excel_path:str, sheet:str, column:int) -> list:
+    """
+    Reads an excel file
+
+    Parameters:
+    * `excel_path`: The path to the excel file
+    * `sheet`:      The name of the sheet to read from
+    * `column`:     The column index
+
+    Returns a list of values corresponding to that column
+    """
+    data_frame = pd.read_excel(excel_path, sheet_name=sheet)
+    data_list = list(data_frame.iloc[:,column])
+    # data_list = list(filter(lambda x: not math.isnan(x), data_list))
+    # data_list = [round_sf(data, 8) for data in data_list]
+    return data_list
+
 def csv_to_dict(csv_path:str, delimeter:str=",") -> dict:
     """
     Converts a CSV file into a dictionary

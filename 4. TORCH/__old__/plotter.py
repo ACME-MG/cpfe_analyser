@@ -23,8 +23,8 @@ EXP_PATH = "data/617_s3_exp.csv"
 # Other parameters
 PARAM_LIST    = [741.2, 0.68945, 146.68, 15.709]
 # PARAM_LIST    = [799.61, 0.63363, 149.7, 14.604]
-CAL_GRAIN_IDS = [125, 159, 189, 101, 249]
-VAL_GRAIN_IDS = [207, 57, 231, 155, 271]
+CAL_GRAIN_IDS = [59, 63, 86, 237, 303]
+VAL_GRAIN_IDS = [44, 53, 60, 78, 190]
 
 # Main function
 def main() -> None:
