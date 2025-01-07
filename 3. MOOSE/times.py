@@ -8,6 +8,7 @@
 # Libraries
 import os, numpy as np
 import matplotlib.pyplot as plt
+from matplotlib.colors import to_rgba
 import sys; sys.path += [".."]
 from __common__.plotter import save_plot
 
@@ -16,6 +17,7 @@ LOG_DIR_LIST = [
     "/mnt/c/Users/janzen/OneDrive - UNSW/PhD/results/moose_sim/2025-01-03 (617_s3_40um_vh_sm32)",
     "/mnt/c/Users/janzen/OneDrive - UNSW/PhD/results/moose_sim/2025-01-07 (617_s3_40um_lh_sm32)",
 ]
+COLOUR_LIST = [(0.8, 0.6, 1.0), (1.0, 0.7, 0.4)]
 SUFFIX  = ".log"
 KEYWORD = "  Finished on "
 
@@ -52,13 +54,14 @@ def main():
 
     # Plot times
     x_list = list(range(1,len(LOG_DIR_LIST)+1))
-    plot_boxplots(x_list, time_grid, [(0.6, 0.8, 1.0), (1.0, 0.6, 0.0)])
-    plt.xlabel("Resolution (µm)", fontsize=24, labelpad=16)
+    plot_boxplots(x_list, time_grid, COLOUR_LIST)
+    plt.xlabel("Resolution (µm)", fontsize=24, labelpad=8)
     plt.ylabel("Simulation Time (h)", fontsize=24, labelpad=16)
     plt.xlim(0.5, len(x_list)+0.5)
     plt.ylim(0, 12)
     plt.xticks(x_list, ["VH", "LH"], fontsize=24)
     plt.yticks(fontsize=20)
+    plt.gca().xaxis.set_tick_params(pad=10)
     save_plot("results/times.png")
 
 def plot_boxplots(x_list:list, y_list_list:list, colours:list) -> None:

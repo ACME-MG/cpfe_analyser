@@ -32,6 +32,10 @@ EXP_EBSD_ID = "ebsd_4"
 # SIM_EBSD_ID = "ebsd_2"
 SIM_EBSD_ID = "ebsd_4"
 
+# Colours
+CAL_COLOUR = "tab:green"
+VAL_COLOUR = "tab:red"
+
 # Main function
 def main():
 
@@ -40,8 +44,8 @@ def main():
     exp_dict = csv_to_dict(EXP_PATH)
 
     # Plot reorientation trajectories
-    plot_trajectories(exp_dict, res_dict, CAL_GRAIN_IDS, "green", "Calibration", "results/plot_opt_cal_rt.png")
-    plot_trajectories(exp_dict, res_dict, VAL_GRAIN_IDS, "red",   "Validation",  "results/plot_opt_val_rt.png")
+    plot_trajectories(exp_dict, res_dict, CAL_GRAIN_IDS, CAL_COLOUR, "Calibration", "results/plot_opt_cal_rt.png")
+    plot_trajectories(exp_dict, res_dict, VAL_GRAIN_IDS, VAL_COLOUR, "Validation",  "results/plot_opt_val_rt.png")
 
     # Plot stress-strain curve
     res_dict["strain"] = res_dict[STRAIN_FIELD]
@@ -49,11 +53,11 @@ def main():
     plotter = Plotter("strain", "stress", "mm/mm", "MPa")
     plotter.prep_plot(size=16)
     plotter.scat_plot(exp_dict, "silver", "Experimental")
-    plotter.line_plot(res_dict, "green", "Calibration")
+    plotter.line_plot(res_dict, CAL_COLOUR, "Calibration")
     plotter.set_limits((0,0.5), (0,1400))
     handles = [
         plt.scatter([], [], color="silver", label="Experimental"),
-        plt.scatter([], [], color="green",  label="Calibration"),
+        plt.scatter([], [], color=CAL_COLOUR,  label="Calibration"),
     ]
     legend = plt.legend(handles=handles, framealpha=1, edgecolor="black", fancybox=True, facecolor="white", fontsize=12, loc="upper left")
     plt.gca().add_artist(legend)

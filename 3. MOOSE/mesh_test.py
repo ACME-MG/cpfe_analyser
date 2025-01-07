@@ -32,6 +32,7 @@ SIM_PATH       = "/mnt/c/Users/janzen/OneDrive - UNSW/PhD/results/moose_sim/2024
 STRAIN_FIELD   = "average_strain"
 STRESS_FIELD   = "average_stress"
 EVAL_STRAINS   = np.linspace(0, 0.05, 50)
+COLOUR         = "tab:purple"
 
 def main():
     """
@@ -64,8 +65,12 @@ def main():
     # common_grain_ids = grain_ids_list[0]
     # for grain_ids in grain_ids_list[1:]:
     #     common_grain_ids = list(filter(lambda g_id: g_id in grain_ids, common_grain_ids))
-    # common_grain_ids = [59, 63, 86, 237, 303]
-    common_grain_ids = [29, 72, 77, 81, 87, 97, 101, 114, 132, 154, 167, 189, 203, 237, 264, 265, 279, 284, 288, 289, 302, 314, 317, 326, 328, 352, 365, 376, 380, 381, 392, 422, 427, 432, 438, 447, 453, 455, 460, 486, 490, 493, 509, 522, 525, 530, 535, 546, 550, 564, 565, 592, 594, 600, 615, 618, 654, 655, 666, 668, 676, 678, 679, 687, 723, 724, 736]
+    common_grain_ids = [59, 63, 86, 237, 303]
+    # common_grain_ids = [
+    #     29, 72, 77, 81, 87, 97, 101, 114, 132, 154, 167, 189, 203, 237, 264, 265, 279, 284, 288, 289, 302, 314, 317,
+    #     326, 328, 352, 365, 376, 380, 381, 392, 422, 427, 432, 438, 447, 453, 455, 460, 486, 490, 493, 509, 522, 525,
+    #     530, 535, 546, 550, 564, 565, 592, 594, 600, 615, 618, 654, 655, 666, 668, 676, 678, 679, 687, 723, 724, 736
+    # ]
     
     # Calculate the errors based on the first resolution
     errors_dict = {}
@@ -121,7 +126,7 @@ def main():
     resolution_list = [res["resolution"] for res in RESOLUTIONS[1:]]
     
     # Plot stress errors
-    plot_boxplots(resolution_list, stress_error_grid, (0.6, 0.8, 1.0))
+    plot_boxplots(resolution_list, stress_error_grid, (0.8, 0.6, 1.0))
     plt.xlabel("Resolution (µm)", fontsize=24, labelpad=16)
     plt.ylabel(r"$E_{\sigma}$", fontsize=24, labelpad=16)
     plt.xlim(max(resolution_list)+2.5, min(resolution_list)-2.5)
@@ -132,7 +137,7 @@ def main():
     save_plot("results/plot_mt_se.png")
 
     # Plot geodesic errors
-    plot_boxplots(resolution_list, orientation_error_grid, (1.0, 0.6, 0.0))
+    plot_boxplots(resolution_list, orientation_error_grid, (0.8, 0.6, 1.0))
     plt.xlabel("Resolution (µm)", fontsize=24, labelpad=16)
     plt.ylabel(r"Average $E_{\Phi}$", fontsize=24, labelpad=16)
     plt.xlim(max(resolution_list)+2.5, min(resolution_list)-2.5)
@@ -143,7 +148,7 @@ def main():
     save_plot("results/plot_mt_ge.png")
 
     # Plot reduced errors
-    plot_boxplots(resolution_list, reduced_error_grid, (0.6, 0.8, 1.0))
+    plot_boxplots(resolution_list, reduced_error_grid, (0.8, 0.6, 1.0))
     plt.xlabel("Resolution (µm)", fontsize=24, labelpad=16)
     plt.ylabel(r"$E_{\Sigma}$", fontsize=24, labelpad=16)
     plt.xlim(max(resolution_list)+2.5, min(resolution_list)-2.5)

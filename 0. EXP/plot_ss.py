@@ -62,7 +62,6 @@ def main():
 
     # Plot stress-strain curve
     plotter = Plotter("Strain", "Stress", "mm/mm", "MPa")
-    plt.figure(figsize=(6, 4), dpi=300)
     plotter.prep_plot(size=16)
     plotter.set_limits((0,0.7), (0,1400))
     plt.scatter(strain_list,             stress_list,             color=ENG_COLOUR)

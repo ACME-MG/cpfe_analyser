@@ -16,12 +16,12 @@ from __common__.plotter import save_plot, Plotter
 # Constants
 EXP_PATH     = "data/617_s3_exp.csv"
 RESULTS_DIR  = "/mnt/c/Users/janzen/OneDrive - UNSW/PhD/results/moose_sim"
-SAMPLED_PATH = f"{RESULTS_DIR}/2025-01-07 (617_s3_40um_lh_sm32)"
-# STRAIN_FIELD = "average_grain_strain"
-# STRESS_FIELD = "average_grain_stress"
+SAMPLED_PATH = f"{RESULTS_DIR}/2025-01-03 (617_s3_40um_vh_sm32)"
+# SAMPLED_PATH = f"{RESULTS_DIR}/2025-01-07 (617_s3_40um_lh_sm32)"
+GRAIN_IDS    = [59, 63, 86, 237, 303]
 STRAIN_FIELD = "average_strain"
 STRESS_FIELD = "average_stress"
-RT_COLOUR    = "green"
+COLOUR       = "tab:purple"
 
 # Main function
 def main():
@@ -40,7 +40,7 @@ def main():
 
     # Plot reorientation trajectory coverage
     all_grain_ids = sorted([int(key.replace("_phi_1","").replace("g","")) for key in sim_dict_list[0].keys() if "_phi_1" in key])
-    all_grain_ids = [59, 63, 86, 237, 303]
+    all_grain_ids = GRAIN_IDS if GRAIN_IDS != [] else all_grain_ids
     num_splits = 5
 
     grain_ids_list = [all_grain_ids[i:i + num_splits] for i in range(0, len(all_grain_ids), num_splits)]
@@ -62,7 +62,7 @@ def plot_ss(exp_dict:dict, sim_dict_list:list, path:str=""):
     for sim_dict in sim_dict_list:
         sim_dict["strain"] = sim_dict[STRAIN_FIELD]
         sim_dict["stress"] = sim_dict[STRESS_FIELD]
-        plotter.line_plot(sim_dict, "green", "Calibration")
+        plotter.line_plot(sim_dict, COLOUR)
     save_plot(path)
 
 def plot_rt(exp_dict:dict, sim_dict_list:list, grain_ids:list, path:str=""):
@@ -90,13 +90,13 @@ def plot_rt(exp_dict:dict, sim_dict_list:list, grain_ids:list, path:str=""):
     # Plot simulated reorientation trajectories
     for sim_dict in sim_dict_list:
         cal_trajectories = get_trajectories(sim_dict)
-        ipf.plot_ipf_trajectory(cal_trajectories, direction, "plot", {"color": RT_COLOUR, "linewidth": 1, "zorder": 3})
-        ipf.plot_ipf_trajectory(cal_trajectories, direction, "arrow", {"color": RT_COLOUR, "head_width": 0.0075, "head_length": 0.0075*1.5, "zorder": 3})
-        ipf.plot_ipf_trajectory([[ct[0]] for ct in cal_trajectories], direction, "scatter", {"color": RT_COLOUR, "s": 6**2, "zorder": 3})
+        ipf.plot_ipf_trajectory(cal_trajectories, direction, "plot", {"color": COLOUR, "linewidth": 1, "zorder": 3})
+        ipf.plot_ipf_trajectory(cal_trajectories, direction, "arrow", {"color": COLOUR, "head_width": 0.0075, "head_length": 0.0075*1.5, "zorder": 3})
+        ipf.plot_ipf_trajectory([[ct[0]] for ct in cal_trajectories], direction, "scatter", {"color": COLOUR, "s": 6**2, "zorder": 3})
     
-    # Plot grain ID
-    for exp_trajectory, grain_id in zip(exp_trajectories, grain_ids):
-        ipf.plot_ipf_trajectory([[exp_trajectory[0]]], direction, "text", {"color": "blue", "fontsize": 8, "s": grain_id, "zorder": 3})
+    # # Plot grain ID
+    # for exp_trajectory, grain_id in zip(exp_trajectories, grain_ids):
+    #     ipf.plot_ipf_trajectory([[exp_trajectory[0]]], direction, "text", {"color": "blue", "fontsize": 8, "s": grain_id, "zorder": 3})
 
     # Save IPF
     save_plot(path)

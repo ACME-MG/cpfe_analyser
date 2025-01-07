@@ -218,3 +218,22 @@ def get_geodesic(quat_1:list, quat_2:list) -> float:
     dot_product = np.clip(dot_product, -1.0, 1.0)
     distance = 2*np.arccos(np.abs(dot_product))
     return distance
+
+def fix_angle(angle:float, l_bound:float=0.0, u_bound:float=2*math.pi) -> float:
+    """
+    Fixes an angle between two bounds
+    
+    Parameters:
+    * `angle`: The angle (rads)
+
+    Returns the fixed angle
+    """
+    if abs(angle-l_bound) < 1e-4 or abs(angle-u_bound) < 1e-4:
+        return angle
+    range = u_bound - l_bound
+    if l_bound < angle and angle < u_bound:
+        return angle
+    elif angle < l_bound:
+        return fix_angle(angle+range, l_bound, u_bound)
+    else:
+        return fix_angle(angle-range, l_bound, u_bound)

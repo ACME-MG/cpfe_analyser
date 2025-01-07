@@ -24,6 +24,8 @@ STRAIN_FIELD  = "average_strain"
 STRESS_FIELD  = "average_stress"
 CAL_GRAIN_IDS = [59, 63, 86, 237, 303]
 VAL_GRAIN_IDS = [44, 53, 60, 78, 190]
+MAX_ITERS     = 16
+ERROR_COLOUR  = "sienna"
 
 def main():
     """
@@ -37,40 +39,17 @@ def main():
     dir_path_list = [f"{SIM_DATA_PATH}/{dir_path}" for dir_path in os.listdir(SIM_DATA_PATH) if "simulate" in dir_path]
     sum_path_list = [f"{dir_path}/summary.csv" for dir_path in dir_path_list if os.path.exists(f"{dir_path}/summary.csv")]
     sim_dict_list = [csv_to_dict(summary_path) for summary_path in sum_path_list]
+    sim_dict_list = sim_dict_list[:MAX_ITERS] if len(sim_dict_list) > MAX_ITERS else sim_dict_list
 
     # Calculate calibration error
     # eval_strains = np.linspace(0, 0.1, 32)
     eval_strains = np.linspace(0, exp_dict["strain_intervals"][-1], 32)
-    cal_se, cal_ge, cal_re = get_errors(sim_dict_list, exp_dict, eval_strains, CAL_GRAIN_IDS)
-
-    # Calculate validation error
-    # eval_strains = np.linspace(0, 0.1, 32)
-    eval_strains = np.linspace(0, exp_dict["strain_intervals"][-1], 32)
-    val_se, val_ge, val_re = get_errors(sim_dict_list, exp_dict, eval_strains, VAL_GRAIN_IDS)
-
-    # Initialise plotting
-    label_list = list([i+1 for i in range(len(sim_dict_list))])
-
-    # Plot stress errors
-    initialise_error_plot(label_list, False)
-    # plt.plot(label_list, val_se, marker="o", color="red")
-    plt.plot(label_list, cal_se, marker="o", color="green")
-    plt.ylabel(r"$E_{\sigma}$", fontsize=15)
-    plt.ylim(0, 0.8)
-    save_plot("results/comp_opt_se.png")
-
-    # Plot geodesic errors
-    initialise_error_plot(label_list)
-    plt.plot(label_list, val_ge, marker="o", color="red")
-    plt.plot(label_list, cal_ge, marker="o", color="green")
-    plt.ylabel(r"Average $E_{\Phi}$", fontsize=15)
-    plt.ylim(0, 0.10)
-    save_plot("results/comp_opt_ge.png")
+    _, _, cal_re = get_errors(sim_dict_list, exp_dict, eval_strains, CAL_GRAIN_IDS)
 
     # Plot reduced errors
-    initialise_error_plot(label_list, False)
-    # plt.plot(label_list, val_re, marker="o", color="red")
-    plt.plot(label_list, cal_re, marker="o", color="green")
+    label_list = list([i+1 for i in range(len(sim_dict_list))])
+    initialise_error_plot(label_list)
+    plt.plot(label_list, cal_re, marker="o", color=ERROR_COLOUR)
     plt.ylabel(r"$E_{\Sigma}$", fontsize=15)
     plt.ylim(0, 0.8)
     save_plot("results/comp_opt_re.png")
@@ -97,10 +76,7 @@ def initialise_error_plot(label_list:list, add_validation:bool=True):
     plt.xlabel("Iterations", fontsize=12)
     plt.xlim(min(label_list)-0.5, max(label_list)+0.5)
     plt.xticks(ticks=label_list, labels=label_list)
-    if add_validation:
-        define_legend(["green", "red"], ["Calibration", "Validation"], ["line", "line"], fontsize=12)
-    else:
-        define_legend(["green"], ["Calibration"], ["line"], fontsize=12)
+    define_legend([ERROR_COLOUR], ["Calibration"], ["line"], fontsize=12)
 
 def get_errors(sim_dict_list:list, exp_dict:dict, eval_strains:list, grain_ids:list) -> tuple:
     """

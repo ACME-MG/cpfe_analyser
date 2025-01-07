@@ -23,6 +23,8 @@ RESULTS_PATH  = "results"
 STRAIN_FIELD  = "average_strain"
 STRESS_FIELD  = "average_stress"
 GRAIN_IDS     = [59, 63, 86, 237, 303]
+EXP_COLOUR    = "silver"
+SIM_COLOUR    = "sienna"
 
 def main():
     """
@@ -47,8 +49,8 @@ def main():
         plt.ylabel("Stress (MPa)")
         plt.xlim(0,0.5)
         plt.ylim(0,1400)
-        plt.scatter(exp_dict["strain"], exp_dict["stress"], color="silver", label="Experimental")
-        plt.plot(sim_dict[STRAIN_FIELD], sim_dict[STRESS_FIELD], color="green", label="Calibration")
+        plt.scatter(exp_dict["strain"], exp_dict["stress"], color=EXP_COLOUR, label="Experimental")
+        plt.plot(sim_dict[STRAIN_FIELD], sim_dict[STRESS_FIELD], color=SIM_COLOUR, label="Calibration")
         plt.legend(framealpha=1, edgecolor="black", fancybox=True, facecolor="white", fontsize=12, loc="lower right")
         write_to_video(vw_ss)
     vw_ss.release()
@@ -60,16 +62,16 @@ def main():
         ipf = IPF(get_lattice("fcc"))
         direction = [1,0,0]
         exp_trajectories = get_trajectories(exp_dict, GRAIN_IDS)
-        ipf.plot_ipf_trajectory(exp_trajectories, direction, "plot", {"color": "silver", "linewidth": 2})
-        ipf.plot_ipf_trajectory(exp_trajectories, direction, "arrow", {"color": "silver", "head_width": 0.01, "head_length": 0.015})
-        ipf.plot_ipf_trajectory([[et[0]] for et in exp_trajectories], direction, "scatter", {"color": "silver", "s": 8**2})
+        ipf.plot_ipf_trajectory(exp_trajectories, direction, "plot", {"color": EXP_COLOUR, "linewidth": 2})
+        ipf.plot_ipf_trajectory(exp_trajectories, direction, "arrow", {"color": EXP_COLOUR, "head_width": 0.01, "head_length": 0.015})
+        ipf.plot_ipf_trajectory([[et[0]] for et in exp_trajectories], direction, "scatter", {"color": EXP_COLOUR, "s": 8**2})
         for exp_trajectory, grain_id in zip(exp_trajectories, GRAIN_IDS):
             ipf.plot_ipf_trajectory([[exp_trajectory[0]]], direction, "text", {"color": "black", "fontsize": 8, "s": grain_id})
         cal_trajectories = get_trajectories(sim_dict, GRAIN_IDS)
-        ipf.plot_ipf_trajectory(cal_trajectories, direction, "plot", {"color": "green", "linewidth": 1, "zorder": 3})
-        ipf.plot_ipf_trajectory(cal_trajectories, direction, "arrow", {"color": "green", "head_width": 0.0075, "head_length": 0.0075*1.5, "zorder": 3})
-        ipf.plot_ipf_trajectory([[ct[0]] for ct in cal_trajectories], direction, "scatter", {"color": "green", "s": 6**2, "zorder": 3})
-        define_legend(["silver", "green"], ["Experimental", "Calibration"], ["scatter", "line"])
+        ipf.plot_ipf_trajectory(cal_trajectories, direction, "plot", {"color": SIM_COLOUR, "linewidth": 1, "zorder": 3})
+        ipf.plot_ipf_trajectory(cal_trajectories, direction, "arrow", {"color": SIM_COLOUR, "head_width": 0.0075, "head_length": 0.0075*1.5, "zorder": 3})
+        ipf.plot_ipf_trajectory([[ct[0]] for ct in cal_trajectories], direction, "scatter", {"color": SIM_COLOUR, "s": 6**2, "zorder": 3})
+        define_legend([EXP_COLOUR, SIM_COLOUR], ["Experimental", "Calibration"], ["scatter", "line"])
         write_to_video(vw_rt)
     vw_rt.release()
 
