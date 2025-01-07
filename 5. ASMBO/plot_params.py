@@ -104,43 +104,6 @@ def plot_prm_dist(smp_prms:list, adp_prms:list) -> None:
         median = boxplots["medians"][i]
         median.set(color="black", linewidth=2)
 
-def plot_boxplots(x_list:list, y_list_list:list, colours:list) -> None:
-    """
-    Plots several boxplots together
-
-    Parameters:
-    * `x_list`:      List of x labels
-    * `y_list_list`: List of data lists
-    * `colours`:     List of boxplot colours
-    """
-
-    # Format plot
-    plt.figure(figsize=(8, 8))
-    plt.gca().set_position([0.17, 0.12, 0.75, 0.75])
-    plt.gca().grid(which="major", axis="both", color="SlateGray", linewidth=2, linestyle=":")
-    plt.gca().xaxis.set_tick_params(width=2)
-    plt.gca().yaxis.set_tick_params(width=2)
-    for spine in plt.gca().spines.values():
-        spine.set_linewidth(2)
-
-    # Plot boxplots
-    boxplots = plt.boxplot(y_list_list, positions=x_list, showfliers=False, patch_artist=True,
-                           vert=True, widths=0.5, whiskerprops=dict(linewidth=2), capprops=dict(linewidth=2))
-    
-    # Apply additional formatting to the boxplots
-    for i in range(len(y_list_list)):
-        patch = boxplots["boxes"][i]
-        patch.set_facecolor(to_rgba(colours[i], alpha=0.7))
-        patch.set_edgecolor("black")
-        patch.set_linewidth(2)
-        median = boxplots["medians"][i]
-        median.set(color="black", linewidth=2)
-
-    # Add scattered data
-    for x, y_list, colour in zip(x_list, y_list_list, colours):
-        x_list = np.random.normal(x, 0.04, size=len(y_list))
-        plt.scatter(x_list, y_list, s=4**2, color=colour, edgecolors="black", zorder=3)
-
 def read_params(params_path:str) -> dict:
     """
     Reads parameters from a file
