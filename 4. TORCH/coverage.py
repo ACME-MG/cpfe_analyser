@@ -16,12 +16,12 @@ from __common__.plotter import save_plot, Plotter
 # Constants
 EXP_PATH     = "data/617_s3_exp.csv"
 RESULTS_DIR  = "/mnt/c/Users/janzen/OneDrive - UNSW/PhD/results/moose_sim"
-SAMPLED_PATH = f"{RESULTS_DIR}/2024-12-12 (617_s3_40um_lh2_sm32_new)"
+SAMPLED_PATH = f"{RESULTS_DIR}/2025-01-07 (617_s3_40um_lh_sm32)"
 # STRAIN_FIELD = "average_grain_strain"
 # STRESS_FIELD = "average_grain_stress"
 STRAIN_FIELD = "average_strain"
 STRESS_FIELD = "average_stress"
-RT_COLOUR    = "red"
+RT_COLOUR    = "green"
 
 # Main function
 def main():
@@ -40,10 +40,8 @@ def main():
 
     # Plot reorientation trajectory coverage
     all_grain_ids = sorted([int(key.replace("_phi_1","").replace("g","")) for key in sim_dict_list[0].keys() if "_phi_1" in key])
-    # all_grain_ids = [59, 63, 72, 237, 303]
-    all_grain_ids = [86, 44, 82, 60, 78, 190, 53, 82]
-    sim_dict_list = []
-    num_splits = 10
+    all_grain_ids = [59, 63, 86, 237, 303]
+    num_splits = 5
 
     grain_ids_list = [all_grain_ids[i:i + num_splits] for i in range(0, len(all_grain_ids), num_splits)]
     for i, grain_ids in enumerate(grain_ids_list):

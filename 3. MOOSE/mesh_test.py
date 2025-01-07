@@ -7,12 +7,11 @@
 
 # Libraries
 import sys; sys.path += [".."]
-import os, math, numpy as np
+import os, numpy as np
 import matplotlib.pyplot as plt
+from __common__.io import csv_to_dict
 from __common__.plotter import save_plot
 from __common__.analyse import get_geodesics, get_stress
-from scipy.interpolate import splev, splrep, splder
-from scipy.spatial.transform import Rotation
 
 # Constants
 RESOLUTIONS = [
@@ -263,134 +262,6 @@ def format_and_save_plot(plot_path:str, add_legend:bool=True, settings:dict={}) 
     plt.clf()
     plt.close()
 
-def euler_to_quat(euler:list) -> list:
-    """
-    Converts a set of euler-bunge angles (rads) into a quaternion
-
-    Parameters:
-    `euler`: The euler angle (rads)
-
-    Returns the quaternion as a list (x,y,z,w)
-    """
-    euler_array = np.array(euler)
-    rotation = Rotation.from_euler("zxz", euler_array, degrees=False)
-    quat = rotation.as_quat()
-    return list(quat)
-
-def intervaluate(data_dict:dict, key:str) -> list:
-    """
-    Interpolates a list of values based on the strain and evaluates
-    the interpolator using the defined strain list
-    
-    Parameters:
-    * `data_dict`: Dictionary of values
-    * `key`:       Key in dictionary to intervaluate
-    
-    Returns the evaluation from the interpolator as a list
-    """
-    interpolator = Interpolator(data_dict[STRAIN_FIELD], data_dict[key])
-    evaluation = interpolator.evaluate(STRAIN_LIST)
-    return evaluation
-
-# The Interpolator Class
-class Interpolator:
-
-    def __init__(self, x_list:list, y_list:list, resolution:int=50, smooth:bool=False):
-        """
-        Class for interpolating two lists of values
-
-        Parameters:
-        * `x_list`:     List of x values
-        * `y_list`:     List of y values
-        * `resolution`: The resolution used for the interpolation
-        * `smooth`:     Whether to smooth the interpolation
-        """
-        x_list, indices = np.unique(np.array(x_list), return_index=True)
-        y_list = np.array(y_list)[indices]
-        if len(x_list) > resolution:
-            x_list = get_thinned_list(list(x_list), resolution)
-            y_list = get_thinned_list(list(y_list), resolution)
-        smooth_amount = resolution if smooth else 0
-        self.spl = splrep(x_list, y_list, s=smooth_amount)
-    
-    def differentiate(self) -> None:
-        """
-        Differentiate the interpolator
-        """
-        self.spl = splder(self.spl)
-
-    def evaluate(self, x_list:list) -> list:
-        """
-        Run the interpolator for specific values
-
-        Parameters
-        * `x_list`: The list of x values
-
-        Returns the evaluated values
-        """
-        return list(splev(x_list, self.spl))
-
-def get_thinned_list(unthinned_list:list, density:int) -> list:
-    """
-    Gets a thinned list
-
-    Parameters:
-    * `unthinned_list`: The list before thinning
-    * `density`:        The goal density of the thinned list
-
-    Returns the thinned list
-    """
-    src_data_size = len(unthinned_list)
-    step_size = src_data_size / density
-    thin_indexes = [math.floor(step_size*i) for i in range(1, density - 1)]
-    thin_indexes = [0] + thin_indexes + [src_data_size - 1]
-    thinned_list = [unthinned_list[i] for i in thin_indexes]
-    return thinned_list
-
-def csv_to_dict(csv_path:str, delimeter:str=",") -> dict:
-    """
-    Converts a CSV file into a dictionary
-    
-    Parameters:
-    * `csv_path`:  The path to the CSV file
-    * `delimeter`: The separating character
-    
-    Returns the dictionary
-    """
-
-    # Read all data from CSV (assume that file is not too big)
-    csv_fh = open(csv_path, "r", encoding="utf-8-sig")
-    csv_lines = csv_fh.readlines()
-    csv_fh.close()
-
-    # Initialisation for conversion
-    csv_dict = {}
-    headers = csv_lines[0].replace("\n", "").split(delimeter)
-    csv_lines = csv_lines[1:]
-    for header in headers:
-        csv_dict[header] = []
-
-    # Start conversion to dict
-    for csv_line in csv_lines:
-        csv_line_list = csv_line.replace("\n", "").split(delimeter)
-        for i in range(len(headers)):
-            value = csv_line_list[i]
-            if value == "":
-                continue
-            try:
-                value = float(value)
-            except:
-                pass
-            csv_dict[headers[i]].append(value)
-    
-    # Convert single item lists to items and things multi-item lists
-    for header in headers:
-        if len(csv_dict[header]) == 1:
-            csv_dict[header] = csv_dict[header][0]
-    
-    # Return
-    return csv_dict
-    
 # Main function
 if __name__ == "__main__":
     main()

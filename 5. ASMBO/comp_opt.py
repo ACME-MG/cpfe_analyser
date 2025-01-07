@@ -11,11 +11,12 @@ import matplotlib.pyplot as plt
 import numpy as np
 import sys; sys.path += [".."]
 from __common__.io import csv_to_dict
+from __common__.general import round_sf
 from __common__.analyse import get_geodesics, get_stress
 from __common__.plotter import define_legend, save_plot
 
 # Constants
-ASMBO_DIR     = "2024-12-22 (max_0p3_i12)"
+ASMBO_DIR     = "2025-01-05 (vh_0p3_i26)"
 SIM_DATA_PATH = f"/mnt/c/Users/janzen/OneDrive - UNSW/PhD/results/asmbo/{ASMBO_DIR}"
 EXP_DATA_PATH = "data/617_s3_40um_exp.csv"
 RESULTS_PATH  = "results"
@@ -55,7 +56,7 @@ def main():
     # plt.plot(label_list, val_se, marker="o", color="red")
     plt.plot(label_list, cal_se, marker="o", color="green")
     plt.ylabel(r"$E_{\sigma}$", fontsize=15)
-    plt.ylim(0, 0.50)
+    plt.ylim(0, 0.8)
     save_plot("results/comp_opt_se.png")
 
     # Plot geodesic errors
@@ -71,8 +72,14 @@ def main():
     # plt.plot(label_list, val_re, marker="o", color="red")
     plt.plot(label_list, cal_re, marker="o", color="green")
     plt.ylabel(r"$E_{\Sigma}$", fontsize=15)
-    plt.ylim(0, 0.60)
+    plt.ylim(0, 0.8)
     save_plot("results/comp_opt_re.png")
+
+    # Print out errors
+    min_index = cal_re.index(min(cal_re))
+    for i, re in enumerate(round_sf(cal_re, 5)):
+        print(f"i{i+1}:\t{re}")
+    print(f"====================\nBest simulation: i{min_index+1}")
 
 def initialise_error_plot(label_list:list, add_validation:bool=True):
     """

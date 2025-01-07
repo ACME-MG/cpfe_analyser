@@ -265,7 +265,7 @@ class IPF:
         all_points = self.get_outline()
         x_list = [point[0] for point in all_points]
         y_list = [point[1] for point in all_points]
-        plt.plot(x_list, y_list, color="black")
+        # plt.plot(x_list, y_list, color="black")
 
     def initialise_ipf(self) -> tuple:
         """

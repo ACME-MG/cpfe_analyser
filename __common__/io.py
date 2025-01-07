@@ -148,8 +148,8 @@ def read_excel(excel_path:str, sheet:str, column:int) -> list:
     """
     data_frame = pd.read_excel(excel_path, sheet_name=sheet)
     data_list = list(data_frame.iloc[:,column])
-    data_list = list(filter(lambda x: not math.isnan(x), data_list))
-    data_list = [round_sf(data, 8) for data in data_list]
+    data_list = list(filter(lambda x: not math.isnan(x) if isinstance(x, float) else True, data_list))
+    data_list = [round_sf(data, 8) if isinstance(data, float) else data for data in data_list]
     return data_list
 
 def safe_mkdir(dir_path:str) -> None:

@@ -6,7 +6,8 @@
 """
 
 # Libraries
-from exodus import get_equiv_radii, get_circularity
+import sys; sys.path += [".."]
+from __common__.exodus import get_equiv_radii, get_circularity
 import matplotlib.pyplot as plt
 import numpy as np
 from scipy.stats import lognorm

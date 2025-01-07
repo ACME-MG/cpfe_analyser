@@ -16,7 +16,7 @@ from __common__.plotter import define_legend, save_plot
 from __common__.surrogate import Model
 
 # Constants
-ASMBO_DIR     = "2024-12-22 (max_0p3_i12)"
+ASMBO_DIR     = "2025-01-05 (vh_0p3_i26)"
 SIM_DATA_PATH = f"/mnt/c/Users/janzen/OneDrive - UNSW/PhD/results/asmbo/{ASMBO_DIR}"
 EXP_DATA_PATH = "data/617_s3_40um_exp.csv"
 RESULTS_PATH  = "results"
@@ -24,7 +24,8 @@ STRAIN_FIELD  = "average_strain"
 STRESS_FIELD  = "average_stress"
 CAL_GRAIN_IDS = [59, 63, 86, 237, 303]
 VAL_GRAIN_IDS = [44, 53, 60, 78, 190]
-PARAM_NAMES   = ["cp_lh_0", "cp_lh_1", "cp_tau_0", "cp_n", "cp_gamma_0"]
+# PARAM_NAMES   = ["cp_lh_0", "cp_lh_1", "cp_tau_0", "cp_n", "cp_gamma_0"]
+PARAM_NAMES   = ["cp_tau_s", "cp_b", "cp_tau_0", "cp_n", "cp_gamma_0"]
 
 def main():
     """
