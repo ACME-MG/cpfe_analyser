@@ -15,9 +15,9 @@ from __common__.plotter import Plotter, save_plot
 from __common__.familiser import get_grain_family
 
 # Constants
-OPT_PATH = f"/mnt/c/Users/janzen/OneDrive - UNSW/PhD/results/moose_sim/2024/2024-09-02 (617_s3_ie)/summary.csv"
-# ADP_PATH = "/mnt/c/Users/janzen/OneDrive - UNSW/PhD/results/asmbo/2025-01-05 (vh_0p3_i26)"
-# OPT_PATH = f"{ADP_PATH}/250105045258_i16_simulate/summary.csv"
+# OPT_PATH = f"/mnt/c/Users/janzen/OneDrive - UNSW/PhD/results/moose_sim/2024/2024-09-02 (617_s3_ie)/summary.csv"
+ADP_PATH = "/mnt/c/Users/janzen/OneDrive - UNSW/PhD/results/asmbo/2025-01-05 (vh_0p3_i26)"
+OPT_PATH = f"{ADP_PATH}/250105045258_i16_simulate/summary.csv"
 STRAIN_FIELD = "average_strain"
 STRESS_FIELD = "average_stress"
 
@@ -43,7 +43,7 @@ def main():
     crystal_directions = [[1,1,1], [2,0,0], [2,2,0], [3,1,1]]
     colour_list = ["black", "tab:red", "tab:green", "tab:blue"]
     plotter = Plotter("Elastic Strain", "Applied Stress", "μmm/mm", "MPa")
-    plotter.prep_plot(size=16)
+    plotter.prep_plot(size=14)
 
     # Plot elastic strains and stresses
     for crystal_direction, colour in zip(crystal_directions, colour_list):
@@ -65,8 +65,10 @@ def main():
     plt.yticks(fontsize=12)
     plt.xlim(0,6000)
     plt.ylim(0,1000)
-    # plt.xlim(0,1000)
-    # plt.ylim(0,150)
+    # plt.xlim(0,600)
+    # plt.ylim(0,100)
+    for spine in plt.gca().spines.values():
+        spine.set_linewidth(1)
     save_plot("results/plot_es.png")
 
 # Main function

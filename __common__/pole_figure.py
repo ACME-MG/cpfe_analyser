@@ -196,6 +196,7 @@ class IPF:
         self.y_direction = [int(y) for y in y_direction]
         self.colour_limits = colour_limits
         self.size_limits = size_limits
+        plt.figure(figsize=(6, 5), dpi=200)
 
     def project_ipf(self, quaternion:np.array, direction:list) -> None:
         """
@@ -277,9 +278,9 @@ class IPF:
         # Create the plot
         axis = plt.subplot(111)
         axis.axis("off")
-        plt.text(0.10, 0.09, "[1 0 0]", transform=plt.gcf().transFigure)
-        plt.text(0.86, 0.09, "[1 1 0]", transform=plt.gcf().transFigure)
-        plt.text(0.74, 0.88, "[1 1 1]", transform=plt.gcf().transFigure)
+        plt.text(0.10, 0.09, "[100]", transform=plt.gcf().transFigure, fontname="sans-serif", fontsize=12)
+        plt.text(0.86, 0.09, "[110]", transform=plt.gcf().transFigure, fontname="sans-serif", fontsize=12)
+        plt.text(0.74, 0.88, "[111]", transform=plt.gcf().transFigure, fontname="sans-serif", fontsize=12)
 
         # Plot the outline and set clip
         all_points = self.get_outline()

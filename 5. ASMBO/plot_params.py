@@ -82,7 +82,7 @@ def plot_prm_dist(smp_prms:list, adp_prms:list) -> None:
     # Format plot
     plt.figure(figsize=(4, 7))
     plt.gca().set_position([0.17, 0.12, 0.75, 0.75])
-    plt.gca().grid(which="major", axis="both", color="SlateGray", linewidth=2, linestyle=":")
+    plt.gca().grid(which="major", axis="both", color="SlateGray", linewidth=2, linestyle=":", alpha=0.5)
     plt.gca().xaxis.set_tick_params(width=2)
     plt.gca().yaxis.set_tick_params(width=2)
     plt.xlim(0.5, 2.5)

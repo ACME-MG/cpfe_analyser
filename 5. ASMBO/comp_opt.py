@@ -16,7 +16,7 @@ from __common__.analyse import get_geodesics, get_stress
 from __common__.plotter import define_legend, save_plot
 
 # Constants
-ASMBO_DIR     = "2025-01-05 (vh_0p3_i26)"
+ASMBO_DIR     = "2025-01-09 (lh_0p3_i16)"
 SIM_DATA_PATH = f"/mnt/c/Users/janzen/OneDrive - UNSW/PhD/results/asmbo/{ASMBO_DIR}"
 EXP_DATA_PATH = "data/617_s3_40um_exp.csv"
 RESULTS_PATH  = "results"
@@ -49,8 +49,8 @@ def main():
     # Plot reduced errors
     label_list = list([i+1 for i in range(len(sim_dict_list))])
     initialise_error_plot(label_list)
-    plt.plot(label_list, cal_re, marker="o", color=ERROR_COLOUR)
-    plt.ylabel(r"$E_{\Sigma}$", fontsize=15)
+    plt.plot(label_list, cal_re, marker="o", linewidth=3, color=ERROR_COLOUR)
+    plt.ylabel(r"$E_{\Sigma}$", fontsize=14)
     plt.ylim(0, 0.8)
     save_plot("results/comp_opt_re.png")
 
@@ -70,12 +70,14 @@ def initialise_error_plot(label_list:list, add_validation:bool=True):
     """
     plt.figure(figsize=(5,5))
     plt.gca().set_position([0.17, 0.12, 0.75, 0.75])
-    plt.gca().grid(which="major", axis="both", color="SlateGray", linewidth=1, linestyle=":")
+    plt.gca().grid(which="major", axis="both", color="SlateGray", linewidth=1, linestyle=":", alpha=0.5)
     plt.xticks(fontsize=12)
     plt.yticks(fontsize=12)
-    plt.xlabel("Iterations", fontsize=12)
+    plt.xlabel("Iterations", fontsize=14)
     plt.xlim(min(label_list)-0.5, max(label_list)+0.5)
     plt.xticks(ticks=label_list, labels=label_list)
+    for spine in plt.gca().spines.values():
+        spine.set_linewidth(1)
     define_legend([ERROR_COLOUR], ["Calibration"], ["line"], fontsize=12)
 
 def get_errors(sim_dict_list:list, exp_dict:dict, eval_strains:list, grain_ids:list) -> tuple:

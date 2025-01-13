@@ -12,6 +12,10 @@ import matplotlib.pyplot as plt
 import numpy as np
 from scipy.stats import lognorm
 
+# Constants
+TICK_SIZE  = 12
+LABEL_SIZE = 14
+
 def round_sf(value:float, sf:int) -> float:
     """
     Rounds a float to a number of significant figures
@@ -40,11 +44,15 @@ def initialise_plot(x_label:str="", y_label:str="", x_max:float=None, y_max:floa
     """
     plt.figure(figsize=(5,5))
     plt.gca().set_position([0.17, 0.12, 0.75, 0.75])
-    plt.gca().grid(which="major", axis="both", color="SlateGray", linewidth=1, linestyle=":")
-    plt.xlabel(x_label, fontsize=11) if x_label != "" else None
-    plt.ylabel(y_label, fontsize=11) if y_label != "" else None
+    plt.gca().grid(which="major", axis="both", color="SlateGray", linewidth=1, linestyle=":", alpha=0.5)
+    plt.xlabel(x_label, fontsize=LABEL_SIZE) if x_label != "" else None
+    plt.ylabel(y_label, fontsize=LABEL_SIZE) if y_label != "" else None
+    plt.xticks(fontsize=TICK_SIZE)
+    plt.yticks(fontsize=TICK_SIZE)
     plt.xlim(0,x_max) if x_max != None else None
     plt.ylim(0,y_max) if y_max != None else None
+    for spine in plt.gca().spines.values():
+        spine.set_linewidth(1)
     
 def format_and_save_plot(plot_path:str) -> None:
     """
@@ -53,7 +61,7 @@ def format_and_save_plot(plot_path:str) -> None:
     Parameters:
     * `plot_path`: Path to save the plot
     """
-    plt.legend(framealpha=1, edgecolor="black", fancybox=True, facecolor="white")
+    plt.legend(framealpha=1, edgecolor="black", fancybox=True, facecolor="white", fontsize=TICK_SIZE, loc="upper right")
     plt.savefig(plot_path)
     plt.cla()
     plt.clf()
@@ -83,17 +91,16 @@ def plot_distribution(value_list:list, colour:str, label:str, min_value:float=No
 
 # Define mesh information
 mesh_info_list = [
-    # {"path": "data/617_s3_z1/5um/mesh.e",  "colour": "silver",  "label": "5µm  "},
-    # {"path": "data/617_s3_z1/10um/mesh.e", "colour": "orange",  "label": "10µm"},
-    # {"path": "data/617_s3_z1/15um/mesh.e", "colour": "gold",    "label": "15µm"},
-    # {"path": "data/617_s3_z1/20um/mesh.e", "colour": "brown",   "label": "20µm"},
-    # {"path": "data/617_s3_z1/25um/mesh.e", "colour": "red",     "label": "25µm"},
-    # {"path": "data/617_s3_z1/30um/mesh.e", "colour": "magenta", "label": "30µm"},
-    # {"path": "data/617_s3_z1/35um/mesh.e", "colour": "purple",  "label": "35µm"},
-    {"path": "data/617_s3_z1/40um/mesh.e", "colour": "blue",    "label": "40µm"},
-    # {"path": "data/617_s3_z1/45um/mesh.e", "colour": "cyan",    "label": "45µm"},
+    {"path": "data/617_s3_z1/5um/mesh.e",  "colour": "silver",     "label": "5µm  "},
+    {"path": "data/617_s3_z1/10um/mesh.e", "colour": "tab:orange", "label": "10µm"},
+    {"path": "data/617_s3_z1/15um/mesh.e", "colour": "gold",       "label": "15µm"},
+    {"path": "data/617_s3_z1/20um/mesh.e", "colour": "sienna",     "label": "20µm"},
+    {"path": "data/617_s3_z1/25um/mesh.e", "colour": "tab:red",    "label": "25µm"},
+    {"path": "data/617_s3_z1/30um/mesh.e", "colour": "magenta",    "label": "30µm"},
+    {"path": "data/617_s3_z1/35um/mesh.e", "colour": "tab:purple", "label": "35µm"},
+    {"path": "data/617_s3_z1/40um/mesh.e", "colour": "tab:blue",   "label": "40µm"},
+    {"path": "data/617_s3_z1/45um/mesh.e", "colour": "tab:green",  "label": "45µm"},
     # {"path": "data/617_s3_z1/50um/mesh.e", "colour": "green",   "label": "50µm"},
-    {"path": "data/617_s3/40um/mesh.e", "colour": "green",   "label": "TEST"},
 ]
 
 # Plot equivalent radius distribution
@@ -103,7 +110,7 @@ for i, mesh_info in enumerate(mesh_info_list):
     radius_list = get_equiv_radii(mesh_info["path"])
     radius_list = sorted(radius_list, reverse=True)[2:] # exclude grips
     plot_distribution(radius_list, mesh_info["colour"], mesh_info["label"], 0, 250, settings)
-format_and_save_plot("eq_rad.png")
+format_and_save_plot("results/eq_rad.png")
 
 # Plot circularity distribution
 initialise_plot("Circularity", "Probability Density", 3.0, 7.0)
@@ -112,4 +119,4 @@ for i, mesh_info in enumerate(mesh_info_list):
     circularity_list = get_circularity(mesh_info["path"])
     circularity_list = sorted(circularity_list, reverse=True)[2:] # exclude grips
     plot_distribution(circularity_list, mesh_info["colour"], mesh_info["label"], 0.0, 3.0, settings)
-format_and_save_plot("circularity.png")
+format_and_save_plot("results/circularity.png")

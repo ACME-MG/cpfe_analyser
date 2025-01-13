@@ -51,10 +51,10 @@ class Plotter:
         """
 
         # Set figure size and title
-        plt.figure(figsize=(5,5))
+        plt.figure(figsize=(5,5), dpi=200)
         plt.title(title, fontsize=size+3, fontweight="bold", y=1.05)
         plt.gca().set_position([0.17, 0.12, 0.75, 0.75])
-        plt.gca().grid(which="major", axis="both", color="SlateGray", linewidth=1, linestyle=":")
+        plt.gca().grid(which="major", axis="both", color="SlateGray", linewidth=1, linestyle=":", alpha=0.5)
 
         # Set x and y labels
         x_unit_str = f" ({self.x_units})" if self.x_units != "" else ""

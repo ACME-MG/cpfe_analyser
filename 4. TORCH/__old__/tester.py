@@ -278,15 +278,15 @@ ipf.plot_ipf_trajectory(res_trajectories, direction, "arrow", {"color": "red", "
 ipf.plot_ipf_trajectory([[rt[0]] for rt in res_trajectories], direction, "scatter", {"color": "red", "s": 6**2, "zorder": 3})
 
 # Save IPF
-# define_legend(["silver", "blue", "red"], ["Experimental", "CPFE", "Surrogate"], ["scatter", "line", "line"])
-define_legend(["silver", "red"], ["Experimental", "Surrogate"], ["scatter", "line"])
+# define_legend(["silver", "blue", "red"], ["Experiment", "CPFE", "Surrogate"], ["scatter", "line", "line"])
+define_legend(["silver", "red"], ["Experiment", "Surrogate"], ["scatter", "line"])
 save_plot("plot_rt.png")
 
 # Plot stress-strain curve
 if "stress" in res_dict.keys():
     plotter = Plotter("strain", "stress", "mm/mm", "MPa")
     plotter.prep_plot()
-    plotter.scat_plot(exp_dict, "silver", "Experimental")
+    plotter.scat_plot(exp_dict, "silver", "Experiment")
     plotter.line_plot({"strain": sim_dict["average_strain"], "stress": sim_dict["average_stress"]}, "blue", "CPFE")
     plotter.line_plot(res_dict, "red", "Surrogate")
     plotter.set_legend()

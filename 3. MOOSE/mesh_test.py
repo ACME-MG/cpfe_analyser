@@ -33,6 +33,8 @@ STRAIN_FIELD   = "average_strain"
 STRESS_FIELD   = "average_stress"
 EVAL_STRAINS   = np.linspace(0, 0.05, 50)
 COLOUR         = "tab:purple"
+TICK_SIZE      = 12
+LABEL_SIZE     = 14
 
 def main():
     """
@@ -65,12 +67,12 @@ def main():
     # common_grain_ids = grain_ids_list[0]
     # for grain_ids in grain_ids_list[1:]:
     #     common_grain_ids = list(filter(lambda g_id: g_id in grain_ids, common_grain_ids))
-    common_grain_ids = [59, 63, 86, 237, 303]
-    # common_grain_ids = [
-    #     29, 72, 77, 81, 87, 97, 101, 114, 132, 154, 167, 189, 203, 237, 264, 265, 279, 284, 288, 289, 302, 314, 317,
-    #     326, 328, 352, 365, 376, 380, 381, 392, 422, 427, 432, 438, 447, 453, 455, 460, 486, 490, 493, 509, 522, 525,
-    #     530, 535, 546, 550, 564, 565, 592, 594, 600, 615, 618, 654, 655, 666, 668, 676, 678, 679, 687, 723, 724, 736
-    # ]
+    # common_grain_ids = [59, 63, 86, 237, 303]
+    common_grain_ids = [
+        29, 72, 77, 81, 87, 97, 101, 114, 132, 154, 167, 189, 203, 237, 264, 265, 279, 284, 288, 289, 302, 314, 317,
+        326, 328, 352, 365, 376, 380, 381, 392, 422, 427, 432, 438, 447, 453, 455, 460, 486, 490, 493, 509, 522, 525,
+        530, 535, 546, 550, 564, 565, 592, 594, 600, 615, 618, 654, 655, 666, 668, 676, 678, 679, 687, 723, 724, 736
+    ]
     
     # Calculate the errors based on the first resolution
     errors_dict = {}
@@ -127,35 +129,35 @@ def main():
     
     # Plot stress errors
     plot_boxplots(resolution_list, stress_error_grid, (0.8, 0.6, 1.0))
-    plt.xlabel("Resolution (µm)", fontsize=24, labelpad=16)
-    plt.ylabel(r"$E_{\sigma}$", fontsize=24, labelpad=16)
+    plt.xlabel("Resolution (µm)", fontsize=LABEL_SIZE)
+    plt.ylabel(r"$E_{\sigma}$", fontsize=LABEL_SIZE)
     plt.xlim(max(resolution_list)+2.5, min(resolution_list)-2.5)
     plt.ylim(0, 0.016)
     plt.gca().ticklabel_format(axis="y", style="sci", scilimits=(-3,-3))
     plt.gca().yaxis.major.formatter._useMathText = True
-    plt.gca().yaxis.get_offset_text().set_fontsize(18)
+    plt.gca().yaxis.get_offset_text().set_fontsize(TICK_SIZE)
     save_plot("results/plot_mt_se.png")
 
     # Plot geodesic errors
     plot_boxplots(resolution_list, orientation_error_grid, (0.8, 0.6, 1.0))
-    plt.xlabel("Resolution (µm)", fontsize=24, labelpad=16)
-    plt.ylabel(r"Average $E_{\Phi}$", fontsize=24, labelpad=16)
+    plt.xlabel("Resolution (µm)", fontsize=LABEL_SIZE)
+    plt.ylabel(r"Average $E_{\Phi}$", fontsize=LABEL_SIZE)
     plt.xlim(max(resolution_list)+2.5, min(resolution_list)-2.5)
     plt.ylim(0, 0.008)
     plt.gca().ticklabel_format(axis="y", style="sci", scilimits=(-3,-3))
     plt.gca().yaxis.major.formatter._useMathText = True
-    plt.gca().yaxis.get_offset_text().set_fontsize(18)
+    plt.gca().yaxis.get_offset_text().set_fontsize(TICK_SIZE)
     save_plot("results/plot_mt_ge.png")
 
     # Plot reduced errors
     plot_boxplots(resolution_list, reduced_error_grid, (0.8, 0.6, 1.0))
-    plt.xlabel("Resolution (µm)", fontsize=24, labelpad=16)
-    plt.ylabel(r"$E_{\Sigma}$", fontsize=24, labelpad=16)
+    plt.xlabel("Resolution (µm)", fontsize=LABEL_SIZE)
+    plt.ylabel(r"$E_{\Sigma}$", fontsize=LABEL_SIZE)
     plt.xlim(max(resolution_list)+2.5, min(resolution_list)-2.5)
     plt.ylim(0, 0.018)
     plt.gca().ticklabel_format(axis="y", style="sci", scilimits=(-3,-3))
     plt.gca().yaxis.major.formatter._useMathText = True
-    plt.gca().yaxis.get_offset_text().set_fontsize(18)
+    plt.gca().yaxis.get_offset_text().set_fontsize(TICK_SIZE)
     save_plot("results/plot_mt_re.png")
 
 def plot_boxplots(x_list:list, y_list_list:list, colour:str) -> None:
@@ -169,28 +171,26 @@ def plot_boxplots(x_list:list, y_list_list:list, colour:str) -> None:
     """
 
     # Format plot
-    plt.figure(figsize=(8, 8))
+    plt.figure(figsize=(5,5))
     plt.gca().set_position([0.17, 0.12, 0.75, 0.75])
-    plt.gca().grid(which="major", axis="both", color="SlateGray", linewidth=2, linestyle=":")
-    plt.xticks(fontsize=18)
-    plt.yticks(fontsize=18)
-    plt.gca().xaxis.set_tick_params(width=2)
-    plt.gca().yaxis.set_tick_params(width=2)
+    plt.gca().grid(which="major", axis="both", color="SlateGray", linewidth=1, linestyle=":", alpha=0.5)
+    plt.xticks(fontsize=TICK_SIZE)
+    plt.yticks(fontsize=TICK_SIZE)
     for spine in plt.gca().spines.values():
-        spine.set_linewidth(2)
+        spine.set_linewidth(1)
 
     # Plot boxplots
     boxplots = plt.boxplot(y_list_list, positions=x_list, showfliers=False, patch_artist=True,
-                           vert=True, widths=4, whiskerprops=dict(linewidth=2), capprops=dict(linewidth=2))
+                           vert=True, widths=4, whiskerprops=dict(linewidth=1), capprops=dict(linewidth=1))
     
     # Apply additional formatting to the boxplots
     for i in range(len(y_list_list)):
         patch = boxplots["boxes"][i]
         patch.set_facecolor(colour)
         patch.set_edgecolor("black")
-        patch.set_linewidth(2)
+        patch.set_linewidth(1)
         median = boxplots["medians"][i]
-        median.set(color="black", linewidth=2)
+        median.set(color="black", linewidth=1)
 
 def convert_grain_ids(data_dict:dict, ebsd_id:str) -> dict:
     """
@@ -232,40 +232,6 @@ def convert_grain_ids(data_dict:dict, ebsd_id:str) -> dict:
 
     # Return new dictionary
     return new_data_dict
-
-def initialise_plot(x_label:str="", y_label:str="", x_max:float=None, y_max:float=None) -> None:
-    """
-    Initialises a plot
-    
-    Parameters:
-    * `x_max`:   Upper limit for the x-axis
-    * `y_max`:   Upper limit for the y-axis
-    * `x_label`: Label for the x-axis
-    * `y_label`: Label for the y-axis
-    """
-    plt.figure(figsize=(5,5))
-    plt.gca().set_position([0.17, 0.12, 0.75, 0.75])
-    plt.gca().grid(which="major", axis="both", color="SlateGray", linewidth=1, linestyle=":")
-    plt.xlabel(x_label, fontsize=11) if x_label != "" else None
-    plt.ylabel(y_label, fontsize=11) if y_label != "" else None
-    plt.xlim(0,x_max) if x_max != None else None
-    plt.ylim(0,y_max) if y_max != None else None
-    
-def format_and_save_plot(plot_path:str, add_legend:bool=True, settings:dict={}) -> None:
-    """
-    Formats and saves a plot
-    
-    Parameters:
-    * `plot_path`:  Path to save the plot
-    * `add_legend`: Whether to add a legend
-    * `settings`:   Settings for the legend
-    """
-    if add_legend:
-        plt.legend(framealpha=1, edgecolor="black", fancybox=True, facecolor="white", **settings)
-    plt.savefig(plot_path)
-    plt.cla()
-    plt.clf()
-    plt.close()
 
 # Main function
 if __name__ == "__main__":

@@ -10,15 +10,16 @@ import numpy as np
 import matplotlib.pyplot as plt
 import sys; sys.path += ["..", "/home/janzen/code/mms"]
 from __common__.io import csv_to_dict
-from __common__.general import flatten
 from __common__.plotter import save_plot
 from __common__.analyse import get_geodesics, get_stress
 from __common__.surrogate import Model
 
 # Constant Paths
-EXP_PATH = "data/617_s3_exp.csv"
-OPT_PATH = "/mnt/c/Users/janzen/OneDrive - UNSW/PhD/results/moose_sim"
-MMS_PATH = "/mnt/c/Users/janzen/OneDrive - UNSW/PhD/results/mms"
+EXP_PATH   = "data/617_s3_exp.csv"
+OPT_PATH   = "/mnt/c/Users/janzen/OneDrive - UNSW/PhD/results/moose_sim"
+MMS_PATH   = "/mnt/c/Users/janzen/OneDrive - UNSW/PhD/results/mms"
+TICK_SIZE  = 12
+LABEL_SIZE = 14
 
 # Variable Paths
 SM_PATHS = [f"{MMS_PATH}/{sm_path}" for sm_path in [
@@ -55,7 +56,7 @@ MAX_STRAIN    = 0.1
 CAL_GRAIN_IDS = [207, 79, 164, 167, 309]
 
 # Plotting Parameters
-X_LABEL       = "Training Size"
+X_LABEL       = "Initial Training Dataset Size"
 # LABEL_LIST    = [int(sm_path.split("/")[-1].split("s")[-1].replace(")","")) for sm_path in SM_PATHS]
 LABEL_LIST    = [8, 16, 24, 32, 40, 48]
 
@@ -129,16 +130,16 @@ def main():
 
     # Plot stress errors
     plot_boxplots(LABEL_LIST, stress_error_grid, (0.6, 0.8, 1.0))
-    plt.xlabel(X_LABEL, fontsize=24, labelpad=16)
-    plt.ylabel(r"$E_{\sigma}$", fontsize=24, labelpad=16)
+    plt.xlabel(X_LABEL, fontsize=LABEL_SIZE)
+    plt.ylabel(r"$E_{\sigma}$", fontsize=LABEL_SIZE)
     plt.xlim(4, 52)
     plt.ylim(0, 0.18)
     save_plot("results/plot_comp_se.png")
 
     # Plot geodesic errors
     plot_boxplots(LABEL_LIST, ori_error_grid, (1.0, 0.6, 0.0))
-    plt.xlabel(X_LABEL, fontsize=24, labelpad=16)
-    plt.ylabel(r"$\Sigma E_{\Phi}$", fontsize=24, labelpad=16)
+    plt.xlabel(X_LABEL, fontsize=LABEL_SIZE)
+    plt.ylabel(r"$\Sigma E_{\Phi}$", fontsize=LABEL_SIZE)
     plt.xlim(4, 52)
     plt.ylim(0, 0.018)
     plt.gca().ticklabel_format(axis="y", style="sci", scilimits=(-3,-3))
@@ -147,11 +148,12 @@ def main():
     save_plot("results/plot_comp_ge.png")
 
     # Plot total errors
-    plot_boxplots(LABEL_LIST, total_error_grid, (0.8, 0.6, 0.8))
-    plt.xlabel(X_LABEL, fontsize=24, labelpad=16)
-    plt.ylabel(r"$E_{\Sigma}$", fontsize=24, labelpad=16)
+    plot_boxplots(LABEL_LIST, total_error_grid, (0.8, 0.6, 1.0))
+    plt.xlabel(X_LABEL, fontsize=LABEL_SIZE)
+    plt.ylabel(r"$E_{\Sigma}$", fontsize=LABEL_SIZE)
     plt.xlim(4, 52)
-    plt.ylim(0, 0.18)
+    plt.ylim(0, 0.2)
+    plt.yticks([0, 0.05, 0.10, 0.15, 0.20], fontsize=TICK_SIZE)
     save_plot("results/plot_comp_te.png")
 
 def plot_boxplots(x_list:list, y_list_list:list, colour:str) -> None:
@@ -165,33 +167,26 @@ def plot_boxplots(x_list:list, y_list_list:list, colour:str) -> None:
     """
 
     # Format plot
-    plt.figure(figsize=(8, 8))
+    plt.figure(figsize=(5,5))
     plt.gca().set_position([0.17, 0.12, 0.75, 0.75])
-    plt.gca().grid(which="major", axis="both", color="SlateGray", linewidth=2, linestyle=":")
-    plt.xticks(fontsize=18)
-    plt.yticks(fontsize=18)
-    plt.gca().xaxis.set_tick_params(width=2)
-    plt.gca().yaxis.set_tick_params(width=2)
+    plt.gca().grid(which="major", axis="both", color="SlateGray", linewidth=1, linestyle=":", alpha=0.5)
+    plt.xticks(fontsize=TICK_SIZE)
+    plt.yticks(fontsize=TICK_SIZE)
     for spine in plt.gca().spines.values():
-        spine.set_linewidth(2)
+        spine.set_linewidth(1)
 
     # Plot boxplots
     boxplots = plt.boxplot(y_list_list, positions=x_list, showfliers=False, patch_artist=True,
-                           vert=True, widths=4, whiskerprops=dict(linewidth=2), capprops=dict(linewidth=2))
+                           vert=True, widths=4, whiskerprops=dict(linewidth=1), capprops=dict(linewidth=1))
     
     # Apply additional formatting to the boxplots
     for i in range(len(y_list_list)):
         patch = boxplots["boxes"][i]
         patch.set_facecolor(colour)
         patch.set_edgecolor("black")
-        patch.set_linewidth(2)
+        patch.set_linewidth(1)
         median = boxplots["medians"][i]
-        median.set(color="black", linewidth=2)
-
-    # # Add scattered data
-    # for x, y_list in zip(x_list, y_list_list):
-    #     x_list = np.random.normal(x, 0.04, size=len(y_list))
-    #     plt.scatter(x_list, y_list, s=4**2, color=colour, edgecolors="black", zorder=3)
+        median.set(color="black", linewidth=1)
 
 def read_params(params_path:str) -> dict:
     """

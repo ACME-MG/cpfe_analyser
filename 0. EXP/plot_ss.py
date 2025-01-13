@@ -24,8 +24,8 @@ RAW_RT_PATH  = "data/617_s3_20um_raw_rt.csv"
 PRC_RT_PATH  = "data/617_s3_20um_prc_rt.csv"
 
 # Colours
-ENG_COLOUR    = "gray"
-TRU_COLOUR    = "silver"
+ENG_COLOUR    = "silver"
+TRU_COLOUR    = "gray"
 UNLOAD_COLOUR = "tab:blue"
 
 def main():
@@ -62,21 +62,24 @@ def main():
 
     # Plot stress-strain curve
     plotter = Plotter("Strain", "Stress", "mm/mm", "MPa")
-    plotter.prep_plot(size=16)
-    plotter.set_limits((0,0.7), (0,1400))
-    plt.scatter(strain_list,             stress_list,             color=ENG_COLOUR)
-    plt.scatter(true_strain_list,        true_stress_list,        color=TRU_COLOUR)
-    plt.scatter(unloaded_strain_list,    unloaded_stress_list,    color=UNLOAD_COLOUR, marker="s", s=4**2)
-    plt.scatter(true_unload_strain_list, true_unload_stress_list, color=UNLOAD_COLOUR, marker="s", s=4**2)
+    plotter.prep_plot(size=14)
+    plotter.set_limits((0,0.7), (0,1600))
+    plt.scatter(strain_list,             stress_list,             color=ENG_COLOUR, s=8**2)
+    plt.plot   (true_strain_list,        true_stress_list,        color=TRU_COLOUR, linewidth=3)
+    plt.scatter(unloaded_strain_list,    unloaded_stress_list,    color=UNLOAD_COLOUR, s=4**2, zorder=3, marker="s")
+    plt.scatter(true_unload_strain_list, true_unload_stress_list, color="None", s=8**2, linewidths=2, zorder=3, marker="o", edgecolor=UNLOAD_COLOUR)
     handles = [
-        plt.scatter([], [], color=ENG_COLOUR,    label="Eng. SS"),
-        plt.scatter([], [], color=TRU_COLOUR,    label="True SS"),
-        plt.scatter([], [], color=UNLOAD_COLOUR, label="EBSD", marker="s"),
+        plt.scatter([], [], color=ENG_COLOUR,    label="Eng. SS", s=8**2),
+        plt.plot   ([], [], color=TRU_COLOUR,    label="True SS", linewidth=3)[0],
+        plt.scatter([], [], color=UNLOAD_COLOUR, label="Eng. EBSD", marker="s", s=4**2),
+        plt.scatter([], [], color="None",        label="True EBSD", s=8**2, linewidths=2, marker="o", edgecolor=UNLOAD_COLOUR)
     ]
     legend = plt.legend(handles=handles, framealpha=1, edgecolor="black", fancybox=True, facecolor="white", fontsize=12, loc="upper left")
     plt.gca().add_artist(legend)
     plt.xticks(fontsize=12)
     plt.yticks(fontsize=12)
+    for spine in plt.gca().spines.values():
+        spine.set_linewidth(1)
     save_plot("results/exp_ss.png")
 
 def truify(strain_list:list, stress_list:list) -> tuple:

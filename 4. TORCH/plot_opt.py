@@ -15,14 +15,17 @@ from __common__.plotter import define_legend, save_plot, Plotter
 
 # Paths
 EXP_PATH = "data/617_s3_exp.csv"
-SIM_FILE = "2025-01-05 (vh_0p3_i26)/250105045258_i16_simulate"
+SIM_FILE = "2025-01-09 (lh_0p3_i16)/250108224554_i9_simulate"
 SIM_PATH = f"/mnt/c/Users/janzen/OneDrive - UNSW/PhD/results/asmbo/{SIM_FILE}/summary.csv"
 # SIM_FILE = "2025-01-01 (617_s3_10um_vh)"
 # SIM_PATH = f"/mnt/c/Users/janzen/OneDrive - UNSW/PhD/results/moose_sim/{SIM_FILE}/summary.csv"
 
 # Simulation information
 CAL_GRAIN_IDS = [59, 63, 86, 237, 303]
-VAL_GRAIN_IDS = [44, 53, 60, 78, 190]
+VAL_GRAIN_IDS = [
+    [56, 72, 126, 223, 262],
+    [44, 78, 190, 207, 244],
+]
 STRAIN_FIELD = "average_strain"
 STRESS_FIELD = "average_stress"
 RES_DATA_MAP = "data/res_grain_map.csv"
@@ -33,6 +36,7 @@ EXP_EBSD_ID = "ebsd_4"
 SIM_EBSD_ID = "ebsd_4"
 
 # Colours
+EXP_COLOUR = "silver"
 CAL_COLOUR = "tab:green"
 VAL_COLOUR = "tab:red"
 
@@ -45,24 +49,27 @@ def main():
 
     # Plot reorientation trajectories
     plot_trajectories(exp_dict, res_dict, CAL_GRAIN_IDS, CAL_COLOUR, "Calibration", "results/plot_opt_cal_rt.png")
-    plot_trajectories(exp_dict, res_dict, VAL_GRAIN_IDS, VAL_COLOUR, "Validation",  "results/plot_opt_val_rt.png")
+    for i, val_grain_ids in enumerate(VAL_GRAIN_IDS):
+        plot_trajectories(exp_dict, res_dict, val_grain_ids, VAL_COLOUR, "Validation", f"results/plot_opt_val_rt_{i+1}.png")
 
     # Plot stress-strain curve
     res_dict["strain"] = res_dict[STRAIN_FIELD]
     res_dict["stress"] = res_dict[STRESS_FIELD]
     plotter = Plotter("strain", "stress", "mm/mm", "MPa")
-    plotter.prep_plot(size=16)
-    plotter.scat_plot(exp_dict, "silver", "Experimental")
-    plotter.line_plot(res_dict, CAL_COLOUR, "Calibration")
+    plotter.prep_plot(size=14)
     plotter.set_limits((0,0.5), (0,1400))
+    plt.scatter(exp_dict["strain"], exp_dict["stress"], color=EXP_COLOUR, s=8**2)
+    plt.plot(res_dict["strain"], res_dict["stress"], color=CAL_COLOUR, linewidth=3)
     handles = [
-        plt.scatter([], [], color="silver", label="Experimental"),
-        plt.scatter([], [], color=CAL_COLOUR,  label="Calibration"),
+        plt.scatter([], [], color=EXP_COLOUR, label="Experiment", s=8**2),
+        plt.plot([], [],    color=CAL_COLOUR, label="Calibration", linewidth=3)[0],
     ]
     legend = plt.legend(handles=handles, framealpha=1, edgecolor="black", fancybox=True, facecolor="white", fontsize=12, loc="upper left")
     plt.gca().add_artist(legend)
     plt.xticks(fontsize=12)
     plt.yticks(fontsize=12)
+    for spine in plt.gca().spines.values():
+        spine.set_linewidth(1)
     save_plot("results/plot_opt_ss.png")
 
 def plot_trajectories(exp_dict:dict, sim_dict:dict, grain_ids:list, sim_colour:str,
@@ -83,25 +90,33 @@ def plot_trajectories(exp_dict:dict, sim_dict:dict, grain_ids:list, sim_colour:s
     ipf = IPF(get_lattice("fcc"))
     direction = [1,0,0]
     get_trajectories = lambda dict, g_ids : [transpose([dict[f"g{g_id}_{phi}"] for phi in ["phi_1", "Phi", "phi_2"]]) for g_id in g_ids]
-    plt.figure(figsize=(5, 4), dpi=300)
 
     # Plot experimental reorientation trajectories
     exp_trajectories = get_trajectories(exp_dict, grain_ids)
-    ipf.plot_ipf_trajectory(exp_trajectories, direction, "plot", {"color": "silver", "linewidth": 2})
-    ipf.plot_ipf_trajectory(exp_trajectories, direction, "arrow", {"color": "silver", "head_width": 0.01, "head_length": 0.015})
-    ipf.plot_ipf_trajectory([[et[0]] for et in exp_trajectories], direction, "scatter", {"color": "silver", "s": 8**2})
-    # for exp_trajectory, grain_id in zip(exp_trajectories, grain_ids):
-    #     ipf.plot_ipf_trajectory([[exp_trajectory[0]]], direction, "text", {"color": "black", "fontsize": 8, "s": grain_id})
+    ipf.plot_ipf_trajectory(exp_trajectories, direction, "plot", {"color": EXP_COLOUR, "linewidth": 3})
+    ipf.plot_ipf_trajectory(exp_trajectories, direction, "arrow", {"color": EXP_COLOUR, "head_width": 0.01, "head_length": 0.015})
+    ipf.plot_ipf_trajectory([[et[0]] for et in exp_trajectories], direction, "scatter", {"color": EXP_COLOUR, "s": 8**2})
 
-    # Plot calibration reorientation trajectories
+    # Plot simulated reorientation trajectories
     sim_grain_ids = [get_sim_grain_id(grain_id) for grain_id in grain_ids]
     sim_trajectories = get_trajectories(sim_dict, sim_grain_ids)
-    ipf.plot_ipf_trajectory(sim_trajectories, direction, "plot", {"color": sim_colour, "linewidth": 1, "zorder": 3})
+    if 44 in sim_grain_ids:
+        sim_trajectories[sim_grain_ids.index(44)] = sim_trajectories[sim_grain_ids.index(44)][:-9] 
+    ipf.plot_ipf_trajectory(sim_trajectories, direction, "plot", {"color": sim_colour, "linewidth": 2, "zorder": 3})
     ipf.plot_ipf_trajectory(sim_trajectories, direction, "arrow", {"color": sim_colour, "head_width": 0.0075, "head_length": 0.0075*1.5, "zorder": 3})
     ipf.plot_ipf_trajectory([[st[0]] for st in sim_trajectories], direction, "scatter", {"color": sim_colour, "s": 6**2, "zorder": 3})
 
-    # Save IPF
-    define_legend(["silver", sim_colour], ["Experimental", sim_label], ["scatter", "line"])
+    # # Plot grain IDs
+    # for exp_trajectory, grain_id in zip(exp_trajectories, grain_ids):
+    #     ipf.plot_ipf_trajectory([[exp_trajectory[0]]], direction, "text", {"color": "blue", "fontsize": 8, "s": grain_id, "zorder": 3})
+    
+    # Format and save IPF plot
+    handles = [
+        plt.plot([], [], color=EXP_COLOUR, label="Experiment", linewidth=3)[0],
+        plt.plot([], [], color=sim_colour, label=sim_label,      linewidth=2)[0]
+    ]
+    legend = plt.legend(handles=handles, framealpha=1, edgecolor="black", fancybox=True, facecolor="white", fontsize=12, loc="upper left")
+    plt.gca().add_artist(legend)
     save_plot(path)
 
 def get_sim_grain_id(exp_grain_id:int) -> int:

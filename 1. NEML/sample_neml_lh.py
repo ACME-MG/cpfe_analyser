@@ -258,7 +258,7 @@ weights        = [gs[3] for gs in grain_stats]
 # Initialise stress-strain plot
 plt.figure(1, figsize=(5,5))
 plt.gca().set_position([0.17, 0.12, 0.75, 0.75])
-plt.gca().grid(which="major", axis="both", color="SlateGray", linewidth=1, linestyle=":")
+plt.gca().grid(which="major", axis="both", color="SlateGray", linewidth=1, linestyle=":", alpha=0.5)
 plt.xlabel("Strain (mm/mm)")
 plt.ylabel("Stress (MPa)")
 plt.scatter(exp_data["strain"], exp_data["stress"], color="silver", s=8**2)

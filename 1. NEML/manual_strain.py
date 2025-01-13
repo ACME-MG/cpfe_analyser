@@ -111,7 +111,7 @@ if __name__ == "__main__":
     # Format plot
     plt.figure(figsize=(5,5))
     plt.gca().set_position([0.17, 0.12, 0.75, 0.75])
-    plt.gca().grid(which="major", axis="both", color="SlateGray", linewidth=1, linestyle=":")
+    plt.gca().grid(which="major", axis="both", color="SlateGray", linewidth=1, linestyle=":", alpha=0.5)
     plt.xlabel("Elastic Strain (μmm/mm)")
     plt.ylabel("Applied Stress (MPa)")
 

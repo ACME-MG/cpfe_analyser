@@ -138,7 +138,7 @@ for sm_0 in [1000]:
         # Plot stress-strain
         plt.figure(figsize=(5,5))
         plt.gca().set_position([0.17, 0.12, 0.75, 0.75])
-        plt.gca().grid(which="major", axis="both", color="SlateGray", linewidth=1, linestyle=":")
+        plt.gca().grid(which="major", axis="both", color="SlateGray", linewidth=1, linestyle=":", alpha=0.5)
         plt.xlabel("Strain (mm/mm)")
         plt.ylabel("Stress (MPa)")
         plt.plot(strain_list, stress_list)

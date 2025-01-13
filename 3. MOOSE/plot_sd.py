@@ -38,7 +38,6 @@ def main():
         
     # Plot stress distribution
     ipf = IPF(get_lattice("fcc"))
-    plt.figure(figsize=(5, 4), dpi=300)
     final_stresses = [summary_dict[key][-1] for key in summary_dict.keys() if key.startswith("g") and "_stress" in key]
     ipf.plot_ipf(final_orientations, sample_direction, final_stresses)
     save_plot("results/plot_ipf_stress.png")

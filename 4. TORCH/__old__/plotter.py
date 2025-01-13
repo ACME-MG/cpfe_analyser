@@ -65,13 +65,13 @@ def main() -> None:
     ipf.plot_ipf_trajectory([[vt[0] for vt in val_trajectories]], direction, "scatter", {"color": "red", "s": 6**2, "zorder": 3})
     
     # Format and save IPF
-    define_legend(["silver", "green", "red"], ["Experimental", "Calibration", "Validation"], ["scatter", "scatter", "scatter"])
+    define_legend(["silver", "green", "red"], ["Experiment", "Calibration", "Validation"], ["scatter", "scatter", "scatter"])
     save_plot("plot_rt.png")
     
     # Plot stress-strain response
     plotter = Plotter("strain", "stress", "mm/mm", "MPa")
     plotter.prep_plot()
-    plotter.scat_plot(exp_dict, "silver", "Experimental")
+    plotter.scat_plot(exp_dict, "silver", "Experiment")
     plotter.line_plot(sur_dict, "green", "Calibration")
     plotter.set_legend()
     save_plot("plot_ss.png")
