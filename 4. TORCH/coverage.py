@@ -17,14 +17,14 @@ from __common__.plotter import save_plot, Plotter
 # Constants
 EXP_PATH     = "data/617_s3_exp.csv"
 RESULTS_DIR  = "/mnt/c/Users/janzen/OneDrive - UNSW/PhD/results/moose_sim"
-SAMPLED_PATH = f"{RESULTS_DIR}/2025-01-03 (617_s3_40um_vh_sm32)"
+SAMPLED_PATH = f"{RESULTS_DIR}/2025-01-15 (617_s3_40um_lh6_sm72)"
 # SAMPLED_PATH = f"{RESULTS_DIR}/2025-01-07 (617_s3_40um_lh_sm32)"
 # GRAIN_IDS    = [255, 242, 295, 286, 141, 273, 207, 299, 149, 101, 278, 80, 280, 276, 159, 277, 244, 193, 77, 264, 281, 117, 120, 178, 223, 157, 72]
 GRAIN_IDS    = [59, 63, 86, 237, 303]
 STRAIN_FIELD = "average_strain"
 STRESS_FIELD = "average_stress"
 EXP_COLOUR   = "silver"
-SIM_COLOUR   = "black"
+SIM_COLOUR   = "tab:cyan"
 
 # Main function
 def main():

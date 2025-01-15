@@ -68,7 +68,7 @@ def initialise_error_plot(label_list:list, add_validation:bool=True):
     * `label_list`:     List of labels
     * `add_validation`: Whether to add a legend label for the validation data or not
     """
-    plt.figure(figsize=(5,5))
+    plt.figure(figsize=(5,5), dpi=200)
     plt.gca().set_position([0.17, 0.12, 0.75, 0.75])
     plt.gca().grid(which="major", axis="both", color="SlateGray", linewidth=1, linestyle=":", alpha=0.5)
     plt.xticks(fontsize=12)

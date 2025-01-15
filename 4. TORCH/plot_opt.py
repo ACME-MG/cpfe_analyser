@@ -113,7 +113,7 @@ def plot_trajectories(exp_dict:dict, sim_dict:dict, grain_ids:list, sim_colour:s
     # Format and save IPF plot
     handles = [
         plt.plot([], [], color=EXP_COLOUR, label="Experiment", linewidth=3)[0],
-        plt.plot([], [], color=sim_colour, label=sim_label,      linewidth=2)[0]
+        plt.plot([], [], color=sim_colour, label=sim_label,    linewidth=2)[0]
     ]
     legend = plt.legend(handles=handles, framealpha=1, edgecolor="black", fancybox=True, facecolor="white", fontsize=12, loc="upper left")
     plt.gca().add_artist(legend)

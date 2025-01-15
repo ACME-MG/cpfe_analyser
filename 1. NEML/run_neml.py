@@ -187,7 +187,7 @@ stress_list = np.array(results["stress"])[:,0]
 history     = np.array(results["history"])
 
 # Plot stress-strain
-plt.figure(figsize=(5,5))
+plt.figure(figsize=(5,5), dpi=200)
 plt.gca().set_position([0.17, 0.12, 0.75, 0.75])
 plt.gca().grid(which="major", axis="both", color="SlateGray", linewidth=1, linestyle=":", alpha=0.5)
 plt.xlabel("Strain (mm/mm)")
@@ -241,7 +241,7 @@ for i, state in enumerate(history):
         crystal_strain_list[j].append(strain_tensor[0]*1e6)
 
 # Format plot
-plt.figure(figsize=(5,5))
+plt.figure(figsize=(5,5), dpi=200)
 plt.gca().set_position([0.17, 0.12, 0.75, 0.75])
 plt.gca().grid(which="major", axis="both", color="SlateGray", linewidth=1, linestyle=":", alpha=0.5)
 plt.xlabel("Elastic Strain (μmm/mm)")

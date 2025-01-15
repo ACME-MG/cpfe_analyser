@@ -167,7 +167,7 @@ def plot_boxplots(x_list:list, y_list_list:list, colour:str) -> None:
     """
 
     # Format plot
-    plt.figure(figsize=(5,5))
+    plt.figure(figsize=(5,5), dpi=200)
     plt.gca().set_position([0.17, 0.12, 0.75, 0.75])
     plt.gca().grid(which="major", axis="both", color="SlateGray", linewidth=1, linestyle=":", alpha=0.5)
     plt.xticks(fontsize=TICK_SIZE)
