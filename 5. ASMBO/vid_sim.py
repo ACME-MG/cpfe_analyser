@@ -16,7 +16,7 @@ from __common__.pole_figure import get_lattice, IPF
 from __common__.plotter import define_legend
 
 # Constants
-ASMBO_DIR     = "2025-01-09 (lh_0p3_i16)"
+ASMBO_DIR     = "2025-01-18 (lh6_0p3_i20)"
 SIM_DATA_PATH = f"/mnt/c/Users/janzen/OneDrive - UNSW/PhD/results/asmbo/{ASMBO_DIR}"
 EXP_DATA_PATH = "data/617_s3_40um_exp.csv"
 RESULTS_PATH  = "results"
@@ -25,7 +25,7 @@ STRESS_FIELD  = "average_stress"
 # GRAIN_IDS     = [59, 63, 86, 237, 303]
 GRAIN_IDS     = [44, 56, 60, 141, 207]
 EXP_COLOUR    = "silver"
-SIM_COLOUR    = "tab:red"
+SIM_COLOUR    = "tab:green"
 SIM_LABEL     = "Calibration"
 
 def main():

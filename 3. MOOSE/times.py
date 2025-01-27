@@ -56,7 +56,7 @@ def main():
     # Plot times
     x_list = list(range(1,len(LOG_DIR_LIST)+1))
     plot_boxplots(x_list, time_grid, COLOUR_LIST)
-    plt.xlabel("Resolution (µm)", fontsize=LABEL_SIZE)
+    plt.xlabel("CPFEM Model", fontsize=LABEL_SIZE)
     plt.ylabel("Simulation Time (h)", fontsize=LABEL_SIZE)
     plt.xlim(0.5, len(x_list)+0.5)
     plt.ylim(0, 12)

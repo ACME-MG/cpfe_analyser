@@ -12,15 +12,34 @@ import numpy as np
 import sys; sys.path += [".."]
 from __common__.plotter import save_plot
 
-# Constants
-EVAL_LIST   = [
-    {"init": 8,  "adpt": [24, 18, 38]},
-    {"init": 16, "adpt": [23, 22, 22]},
-    {"init": 24, "adpt": [7, 6, 7]},
-    {"init": 32, "adpt": [8, 9, 10]},
-    {"init": 40, "adpt": [8, 6, 7]},
-    {"init": 48, "adpt": [8, 6, 6]},
+# Number of evaluations for accuracy
+EVAL_LIST = [
+    {"init": 2,  "adpt": [33]},
+    # {"init": 4,  "adpt": [17, 11, 11, 12]},
+    {"init": 4,  "adpt": [17, 11, 20, 20, 18]},
+    {"init": 6,  "adpt": [14, 10]},
+    {"init": 8,  "adpt": [8, 9, 7]},
+    {"init": 10, "adpt": [8]},
+    {"init": 12, "adpt": [7]},
+    {"init": 14, "adpt": [6, 7]},
+    {"init": 16, "adpt": [6]},
 ]
+
+# Number of evaluations for convergence
+# EVAL_LIST = [
+#     {"init": 2,  "adpt": [30]},
+#     {"init": 4,  "adpt": [14, 20, 17]},
+#     {"init": 6,  "adpt": [20]},
+#     {"init": 8,  "adpt": [19, 16, 12]},
+#     {"init": 10, "adpt": [18]},
+#     {"init": 12, "adpt": []},
+#     {"init": 14, "adpt": [15, 18]},
+#     {"init": 16, "adpt": [15]},
+# ]
+
+# Other constants
+WIDTH       = 1.5
+PADDING     = 1.25
 INIT_COLOUR = (0.6, 0.8, 1.0)
 ADPT_COLOUR = (0.9, 0.8, 0.7)
 
@@ -30,8 +49,8 @@ def main():
     """
 
     # Prepare data
-    x_list = [eval["init"] for eval in EVAL_LIST]
-    y_list = [np.average(eval["adpt"]) for eval in EVAL_LIST]
+    x_list = [eval["init"] for eval in EVAL_LIST if eval["adpt"] != []]
+    y_list = [np.average(eval["adpt"]) for eval in EVAL_LIST if eval["adpt"] != []]
 
     # Initialise plot
     plt.figure(figsize=(5,5), dpi=200)
@@ -43,14 +62,14 @@ def main():
         spine.set_linewidth(1)
     
     # Draw bars
-    plt.bar(x_list, x_list, color=INIT_COLOUR, label="Initial Evaluations",  width=4, edgecolor="black")
-    plt.bar(x_list, y_list, color=ADPT_COLOUR, label="Adaptive Evaluations", width=4, edgecolor="black", bottom=x_list)
+    plt.bar(x_list, x_list, color=INIT_COLOUR, label="Initial Evaluations",  width=WIDTH, edgecolor="black")
+    plt.bar(x_list, y_list, color=ADPT_COLOUR, label="Adaptive Evaluations", width=WIDTH, edgecolor="black", bottom=x_list)
     
     # Format specific values
     plt.xlabel("Initial Evaluations", fontsize=14)
     plt.ylabel("Total Evaluations", fontsize=14)
     plt.xticks(ticks=x_list, labels=x_list)
-    plt.xlim(min(x_list)-4, max(x_list)+4)
+    plt.xlim(min(x_list)-PADDING, max(x_list)+PADDING)
     plt.ylim(0, 60)
 
     # Save

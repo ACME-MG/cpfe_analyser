@@ -27,11 +27,11 @@ def get_stress(stress_list_1:list, stress_list_2:list, strain_list_1:list,
     
     Returns the normalised root mean square error for the stresses
     """
-    max_strain = max(eval_strains)
-    stress_list = [stress for stress, strain in zip(stress_list_1, strain_list_1) if strain <= max_strain]
     eval_stress_list_1 = intervaluate(strain_list_1, stress_list_1, eval_strains)
     eval_stress_list_2 = intervaluate(strain_list_2, stress_list_2, eval_strains)
     mse = np.average([math.pow(es_1-es_2, 2) for es_1, es_2 in zip(eval_stress_list_1, eval_stress_list_2)])
+    max_strain = max(eval_strains)
+    stress_list = [stress for stress, strain in zip(stress_list_1, strain_list_1) if strain <= max_strain]
     nrmse = math.sqrt(mse)/np.average(stress_list)
     return nrmse
 

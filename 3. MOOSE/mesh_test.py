@@ -131,7 +131,7 @@ def main():
     plot_boxplots(resolution_list, stress_error_grid, (0.8, 0.6, 1.0))
     plt.xlabel("Resolution (µm)", fontsize=LABEL_SIZE)
     plt.ylabel(r"$E_{\sigma}$", fontsize=LABEL_SIZE)
-    plt.xlim(max(resolution_list)+2.5, min(resolution_list)-2.5)
+    plt.xlim(min(resolution_list)-2.5, max(resolution_list)+2.5)
     plt.ylim(0, 0.016)
     plt.gca().ticklabel_format(axis="y", style="sci", scilimits=(-3,-3))
     plt.gca().yaxis.major.formatter._useMathText = True
@@ -142,7 +142,7 @@ def main():
     plot_boxplots(resolution_list, orientation_error_grid, (0.8, 0.6, 1.0))
     plt.xlabel("Resolution (µm)", fontsize=LABEL_SIZE)
     plt.ylabel(r"Average $E_{\Phi}$", fontsize=LABEL_SIZE)
-    plt.xlim(max(resolution_list)+2.5, min(resolution_list)-2.5)
+    plt.xlim(min(resolution_list)-2.5, max(resolution_list)+2.5)
     plt.ylim(0, 0.008)
     plt.gca().ticklabel_format(axis="y", style="sci", scilimits=(-3,-3))
     plt.gca().yaxis.major.formatter._useMathText = True
@@ -153,7 +153,7 @@ def main():
     plot_boxplots(resolution_list, reduced_error_grid, (0.8, 0.6, 1.0))
     plt.xlabel("Resolution (µm)", fontsize=LABEL_SIZE)
     plt.ylabel(r"$E_{\Sigma}$", fontsize=LABEL_SIZE)
-    plt.xlim(max(resolution_list)+2.5, min(resolution_list)-2.5)
+    plt.xlim(min(resolution_list)-2.5, max(resolution_list)+2.5)
     plt.ylim(0, 0.018)
     plt.gca().ticklabel_format(axis="y", style="sci", scilimits=(-3,-3))
     plt.gca().yaxis.major.formatter._useMathText = True

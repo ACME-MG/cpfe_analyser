@@ -1,5 +1,5 @@
 """
- Title:         Plot Optimised
+ Title:         Plot Optimised Simulation
  Description:   Plots the response of the optimised simulation
  Author:        Janzen Choi
 
@@ -11,11 +11,11 @@ import matplotlib.pyplot as plt
 from __common__.io import csv_to_dict
 from __common__.general import transpose
 from __common__.pole_figure import get_lattice, IPF
-from __common__.plotter import define_legend, save_plot, Plotter
+from __common__.plotter import save_plot, Plotter
 
 # Paths
 EXP_PATH = "data/617_s3_exp.csv"
-SIM_FILE = "2025-01-09 (lh_0p3_i16)/250108224554_i9_simulate"
+SIM_FILE = "2025-01-18 (lh6_0p3_i20)/250117013234_i11_simulate"
 SIM_PATH = f"/mnt/c/Users/janzen/OneDrive - UNSW/PhD/results/asmbo/{SIM_FILE}/summary.csv"
 # SIM_FILE = "2025-01-01 (617_s3_10um_vh)"
 # SIM_PATH = f"/mnt/c/Users/janzen/OneDrive - UNSW/PhD/results/moose_sim/{SIM_FILE}/summary.csv"

@@ -167,6 +167,23 @@ def get_sorted(value_list:list, reverse:bool=True) -> tuple:
                 break
     return sorted_value_list, sorted_index_list
 
+def pad_to_length(value_str:str, length:int) -> str:
+    """
+    Pads a stringified number with zeroes to match the desired length
+    
+    Parameters:
+    * `value_str`: The stringified number
+    * `length`:    The desired length
+
+    Returns the padded stringified number
+    """
+    value_str = str(value_str) # force string
+    curr_length = len(value_str)
+    if curr_length < length:
+        difference = length - curr_length
+        return value_str + "0"*difference
+    return value_str # no changes
+
 def round_sf(value:float, sf:int) -> float:
     """
     Rounds a float to a number of significant figures
