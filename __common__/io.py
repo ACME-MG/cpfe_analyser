@@ -135,6 +135,54 @@ def dict_to_csv(data_dict:dict, csv_path:str, add_header:bool=True) -> None:
         csv_fh.write(row_str + "\n")
     csv_fh.close()
 
+def dict_to_stdout(data_dict:dict, padding:int=1) -> None:
+    """
+    Displays the contents of a dictionary
+
+    Parameters:
+    * `data_dict`: The dictionary to be displayed
+    * `padding`:   Padding to apply between columns
+    """
+    
+    # Extract headers and turn all values into lists
+    headers = data_dict.keys()
+    for header in headers:
+        if not isinstance(data_dict[header], list):
+            data_dict[header] = [data_dict[header]]
+    
+    # Identify the lengths of each column
+    max_lengths = []
+    for header in data_dict.keys():
+        length_list = [len(str(header))] + [len(str(d)) for d in data_dict[header]]
+        max_length = max(length_list)
+        max_lengths.append(max_length + padding)
+
+    # Print out the headers
+    header_text = ""
+    for i, (max_length, header) in enumerate(zip(max_lengths, data_dict.keys())):
+        spaces = " " * (max_length - len(str(header)))
+        if i == 0:
+            header_text += f"| {header}{spaces}|"
+        else:
+            header_text += f" {header}{spaces}|"
+    print("-"*len(header_text))
+    print(header_text)
+    print("-"*len(header_text))
+
+    # Print out the values
+    max_values = max([len(data_dict[header]) for header in data_dict.keys()])
+    for i in range(max_values):
+        value_text = ""
+        for j, (max_length, header) in enumerate(zip(max_lengths, data_dict.keys())):
+            value = data_dict[header][i]
+            spaces = " " * (max_length - len(str(value)))
+            if j == 0:
+                value_text += f"| {value}{spaces}|"
+            else:
+                value_text += f" {value}{spaces}|"
+        print(value_text)
+    print("-"*len(header_text))
+
 def read_excel(excel_path:str, sheet:str, column:int) -> list:
     """
     Reads an excel file

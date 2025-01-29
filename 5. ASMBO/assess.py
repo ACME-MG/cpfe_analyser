@@ -1,6 +1,6 @@
 """
- Title:         Pareto comparison of optimisation errors
- Description:   Plots the errors for a set of simulations with Pareto efficiency and dominance
+ Title:         Assesses the Pareto efficiency and tolerance
+ Description:   Plots the errors for a set of simulations with Pareto efficiency and tolerance
  Author:        Janzen Choi
 
 """
@@ -10,13 +10,13 @@ import os
 import matplotlib.pyplot as plt
 import math, numpy as np
 import sys; sys.path += [".."]
-from __common__.io import csv_to_dict
+from __common__.io import csv_to_dict, dict_to_stdout
 from __common__.general import round_sf
 from __common__.analyse import get_geodesics, get_stress
 from __common__.plotter import save_plot
 
 # Paths
-ASMBO_DIR     = "2025-01-25 (vh_sm8_i16)"
+ASMBO_DIR     = "2025-01-29 (vh_sm4_i10)"
 SIM_DATA_PATH = f"/mnt/c/Users/janzen/OneDrive - UNSW/PhD/results/asmbo/{ASMBO_DIR}"
 EXP_DATA_PATH = "data/617_s3_40um_exp.csv"
 RESULTS_PATH  = "results"
@@ -30,7 +30,7 @@ CAL_GRAIN_IDS = [59, 63, 86, 237, 303]
 VAL_GRAIN_IDS = [44, 53, 60, 78, 190]
 
 # Iteration information
-END_ITER = 100
+END_ITER = 10
 CUSTOM_LABEL_LIST = list(range(1,END_ITER+2,2)) # None
 
 # Error information
@@ -38,10 +38,123 @@ ERROR_COLOUR = "black"
 PD_COLOUR    = "tab:red"
 PE_COLOUR    = "tab:green"
 KP_COLOUR    = "tab:blue"
+ACP_COLOUR   = "tab:green"
+TOL_COLOUR   = "tab:blue"
+SE_TOLERANCE = 0.02
+GE_TOLERANCE = 0.08
+
+def main():
+    """
+    Main function
+    """
+    tolerance()
+    print()
+    pareto()
+
+def tolerance(sim_path:str=""):
+    """
+    Assesses a simulation based on its tolerance
+    
+    Parameters:
+    * `sim_path`: Path to the simulation results
+    """
+
+    # Check if the path to the simulation data is defined
+    sim_data_path = SIM_DATA_PATH if sim_path == "" else sim_path
+
+    # Gets experimental data
+    exp_dict = csv_to_dict(EXP_DATA_PATH)
+
+    # Get summary of simulations
+    dir_path_list = [f"{sim_data_path}/{dir_path}" for dir_path in os.listdir(sim_data_path) if "simulate" in dir_path]
+    sum_path_list = [f"{dir_path}/summary.csv" for dir_path in dir_path_list if os.path.exists(f"{dir_path}/summary.csv")]
+    sim_dict_list = [csv_to_dict(summary_path) for summary_path in sum_path_list]
+
+    # Perge simulations
+    if len(sim_dict_list) > END_ITER:
+        sim_dict_list = sim_dict_list[:END_ITER]
+
+    # Calculate errors
+    eval_strains = np.linspace(0, exp_dict["strain_intervals"][-1], 32)
+    se_list, ge_list = get_errors(sim_dict_list, exp_dict, eval_strains, CAL_GRAIN_IDS)
+
+    # Identify acceptable solutions
+    acceptable = []
+    for i, (se, ge) in enumerate(zip(se_list, ge_list)):
+        if se < SE_TOLERANCE and ge < GE_TOLERANCE:
+            acceptable.append(i)
+
+    # If the initial simulation path was undefined, summarise results
+    if sim_path == "":
+
+        # Plot stress errors
+        plot_tolerance_error(se_list, SE_TOLERANCE)
+        plt.ylabel(r"$E_{\sigma}$", fontsize=14)
+        plt.yscale("log")
+        # plt.ylim(10**-3, 10**9)
+        save_plot("results/assess_tol_se.png")
+
+        # Plot geodesic errors
+        plot_tolerance_error(ge_list, GE_TOLERANCE)
+        plt.ylabel(r"$E_{\phi}$", fontsize=14)
+        plt.yscale("log")
+        # plt.ylim(10**-3, 10**9)
+        save_plot("results/assess_tol_ge.png")
+
+        # Print out errors
+        acceptability = [i in acceptable for i in range(len(se_list))]
+        error_dict = {
+            "iteration": list(range(1,len(se_list)+1)),
+            "stress":    round_sf(se_list,5),
+            "geodesic":  round_sf(ge_list,5),
+            "accept":    acceptability,
+        }
+        print("Tolerance")
+        dict_to_stdout(error_dict)
+
+    # Otherwise, return the termination iteration
+    else:
+        if acceptable == []:
+            return None
+        return acceptable[0]+1
+
+def plot_tolerance_error(error_list:list, tolerance:float) -> None:
+    """
+    Plots the errors with tolerance
+
+    Parameters:
+    * `error_list`: The list of solution errors
+    * `tolerance`:  The tolerance to accept solutions
+    """
+
+    # Plot the error
+    label_list = list([i+1 for i in range(len(error_list))])
+    initialise_error_plot(label_list)
+    plt.plot(label_list, error_list, marker="o", linewidth=3, color=ERROR_COLOUR)
+
+    # Plot tolerance line
+    plt.plot([-100,100], [tolerance]*2, color=TOL_COLOUR, linewidth=2, linestyle="--")
+
+    # Plot tolerable errors
+    tolerable = [error_list.index(error) for error in error_list if error < tolerance]
+    tol_label_list = [label_list[i] for i in tolerable]
+    tol_error_list = [error_list[i] for i in tolerable]
+    plt.scatter(tol_label_list, tol_error_list, marker="o", s=8**2, edgecolor=TOL_COLOUR, linewidth=2, color=ERROR_COLOUR, zorder=3)
+
+    # Add legend to plot
+    handles = [
+        plt.scatter([], [], marker="o", s=6**2, color=ERROR_COLOUR, label="Error"),
+        plt.scatter([], [], marker="o", s=8**2, color="white",      label="Under Tolerance",  edgecolor=TOL_COLOUR, linewidth=2),
+    ]
+    legend = plt.legend(handles=handles, framealpha=1, edgecolor="black", fancybox=True, facecolor="white", fontsize=12, loc="upper right")
+    plt.gca().add_artist(legend)
 
 def pareto(sim_path:str=""):
     """
-    Main function
+    Assesses a simulation based on its Pareto efficiency
+
+    Parameters:
+    * `sim_path`: Path to the simulation results
     """
 
     # Check if the path to the simulation data is defined
@@ -83,23 +196,30 @@ def pareto(sim_path:str=""):
     if sim_path == "":
 
         # Plot stress-strain error
-        plot_error(se_list, pe_list, pd_list, kp_index)
+        plot_pareto_error(se_list, pe_list, pd_list, kp_index)
         plt.ylabel(r"$E_{\sigma}$", fontsize=14)
         plt.yscale("log")
-        plt.ylim(10**-3, 10**9)
-        save_plot("results/pareto_se.png")
+        # plt.ylim(10**-3, 10**9)
+        save_plot("results/assess_par_se.png")
 
         # Plot geodesic error
-        plot_error(ge_list, pe_list, pd_list, kp_index)
+        plot_pareto_error(ge_list, pe_list, pd_list, kp_index)
         plt.ylabel(r"$E_{\phi}$", fontsize=14)
-        plt.ylim(0, 0.7)
-        save_plot("results/pareto_ge.png")
+        # plt.ylim(0, 0.7)
+        save_plot("results/assess_par_ge.png")
 
         # Print out errors
-        print("========================================")
-        for i, (se, ge, pe, pd) in enumerate(zip(se_list, ge_list, pe_list, pd_list)):
-            print(f"i{i+1}:\t{round_sf(se,5)}\t{round_sf(ge,5)}\t{pe}\t{pd}")
-        print("========================================")
+        knee_point = [i==kp_index for i in range(len(se_list))]
+        error_dict = {
+            "iteration":  list(range(1,len(se_list)+1)),
+            "stress":     round_sf(se_list,5),
+            "geodesic":   round_sf(ge_list,5),
+            "efficient":  pe_list,
+            "dominated":  pd_list,
+            "knee_point": knee_point,
+        }
+        print("Pareto Efficiency")
+        dict_to_stdout(error_dict)
 
     # Otherwise, return the termination iteration
     else:
@@ -165,7 +285,7 @@ def find_knee_point(error_grid:list) -> int:
     min_index = [i for i in range(len(pe_list)) if pe_list[i]][pe_min_index]
     return min_index
 
-def plot_error(error_list:list, pe_list:list, pd_list:list, kp_index:int) -> None:
+def plot_pareto_error(error_list:list, pe_list:list, pd_list:list, kp_index:int) -> None:
     """
     Plots the errors with Pareto-dominance
 
@@ -273,4 +393,4 @@ def get_errors(sim_dict_list:list, exp_dict:dict, eval_strains:list, grain_ids:l
 
 # Calls the main function
 if __name__ == "__main__":
-    pareto()
+    main()
