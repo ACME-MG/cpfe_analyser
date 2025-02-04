@@ -20,13 +20,13 @@ PRC_RT_PATH  = "data/617_s3_20um_prc_rt.csv"
 
 # Other variables
 GRAIN_IDS     = [
-    [59, 63, 86, 237, 303],  # Calibration 1
-    [56, 72, 126, 223, 262], # Validation 1
-    [44, 78, 190, 207, 244], # Validation 2
+    [51, 56, 72, 80, 126, 223, 237, 262],  # Calibration 1
+    [44, 60, 78, 86, 178, 190, 207, 244], # Validation 1
 ]
 RAW_COLOUR    = "silver"
 PRC_COLOUR    = "gray"
 UNLOAD_COLOUR = "tab:blue"
+SHOW_GRAIN_ID = True
 
 def main():
     """
@@ -58,6 +58,11 @@ def main():
         ipf.plot_ipf_trajectory(prc_trajectories, direction, "plot", {"color": PRC_COLOUR, "linewidth": 2, "zorder": 3})
         ipf.plot_ipf_trajectory(prc_trajectories, direction, "arrow", {"color": PRC_COLOUR, "head_width": 0.0075, "head_length": 0.0075*1.5, "zorder": 3})
         ipf.plot_ipf_trajectory([[pt[0]] for pt in prc_trajectories], direction, "scatter", {"color": PRC_COLOUR, "s": 6**2, "zorder": 3})
+
+        # Plot grain IDs
+        if SHOW_GRAIN_ID:
+            for exp_trajectory, grain_id in zip(raw_trajectories, grain_ids):
+                ipf.plot_ipf_trajectory([[exp_trajectory[0]]], direction, "text", {"color": "blue", "fontsize": 8, "s": grain_id, "zorder": 3})
 
         # Format and save IPF plot
         handles = [

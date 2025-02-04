@@ -7,10 +7,9 @@
 
 # Libraries
 import matplotlib.pyplot as plt
-import numpy as np
 import sys; sys.path += [".."]
-from __common__.io import csv_to_dict
-from __common__.plotter import Plotter, save_plot
+from __common__.plotter import save_plot
+import matplotlib.colors as mcolors
 
 # Mesh information
 MESH_INFO_LIST = [
@@ -28,7 +27,8 @@ MESH_INFO_LIST = [
 # Other constants
 TICK_SIZE  = 12
 LABEL_SIZE = 14
-COLOUR     = "black"
+INCREMENT  = 5
+WIDTH      = 4
 
 def main():
     """
@@ -52,15 +52,30 @@ def main():
     plt.gca().grid(which="major", axis="both", color="SlateGray", linewidth=1, linestyle=":", alpha=0.5)
     plt.xlabel("Resolution (µm)", fontsize=LABEL_SIZE)
     plt.ylabel("Number of grains", fontsize=LABEL_SIZE)
-    plt.xlim(min(resolution_list)-2.5, max(resolution_list)+2.5)
+    for resolution, num_grains, colour in zip(resolution_list, num_grains_list, [mi["colour"] for mi in MESH_INFO_LIST]):
+        colour = lighten_color(colour, 0.5)
+        plt.bar([resolution], [num_grains], color=colour, zorder=3, width=WIDTH, edgecolor="black")
+    padding = INCREMENT-WIDTH/2
+    plt.xlim(min(resolution_list)-padding, max(resolution_list)+padding)
     plt.ylim(0,600)
-    plt.plot(resolution_list, num_grains_list, color=COLOUR, linewidth=3, marker="s")
     print(num_grains_list)
     plt.xticks(resolution_list, fontsize=TICK_SIZE)
     plt.yticks(fontsize=TICK_SIZE)
     for spine in plt.gca().spines.values():
         spine.set_linewidth(1)
     save_plot("results/num_grains.png")
+
+def lighten_color(colour:str, amount=0.5):
+    """
+    Lightens a MatplotLib colour
+
+    Parameters:
+    * `colour`: The name of the colour
+    * `amount`: The amount to lighten
+    """
+    c = mcolors.to_rgba(colour)  # Convert to RGBA
+    white = (1, 1, 1, 1)  # White color
+    return tuple((1 - amount) * c[i] + amount * white[i] for i in range(4))
 
 # Main function
 if __name__ == "__main__":

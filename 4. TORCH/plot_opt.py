@@ -15,17 +15,14 @@ from __common__.plotter import save_plot, Plotter
 
 # Paths
 EXP_PATH = "data/617_s3_exp.csv"
-SIM_FILE = "2025-01-18 (lh6_0p3_i20)/250117013234_i11_simulate"
+SIM_FILE = "2025-01-18 (lh6_sm72_i20)/250117013234_i11_simulate"
 SIM_PATH = f"/mnt/c/Users/janzen/OneDrive - UNSW/PhD/results/asmbo/{SIM_FILE}/summary.csv"
 # SIM_FILE = "2025-01-01 (617_s3_10um_vh)"
 # SIM_PATH = f"/mnt/c/Users/janzen/OneDrive - UNSW/PhD/results/moose_sim/{SIM_FILE}/summary.csv"
 
 # Simulation information
-CAL_GRAIN_IDS = [59, 63, 86, 237, 303]
-VAL_GRAIN_IDS = [
-    [56, 72, 126, 223, 262],
-    [44, 78, 190, 207, 244],
-]
+CAL_GRAIN_IDS = [51, 56, 72, 80, 126, 223, 237, 262]
+VAL_GRAIN_IDS = [44, 60, 78, 86, 178, 190, 207, 244]
 STRAIN_FIELD = "average_strain"
 STRESS_FIELD = "average_stress"
 RES_DATA_MAP = "data/res_grain_map.csv"
@@ -40,6 +37,9 @@ EXP_COLOUR = "silver"
 CAL_COLOUR = "tab:green"
 VAL_COLOUR = "tab:red"
 
+# Toggle parameters
+SHOW_GRAIN_ID = False
+
 # Main function
 def main():
 
@@ -49,8 +49,7 @@ def main():
 
     # Plot reorientation trajectories
     plot_trajectories(exp_dict, res_dict, CAL_GRAIN_IDS, CAL_COLOUR, "Calibration", "results/plot_opt_cal_rt.png")
-    for i, val_grain_ids in enumerate(VAL_GRAIN_IDS):
-        plot_trajectories(exp_dict, res_dict, val_grain_ids, VAL_COLOUR, "Validation", f"results/plot_opt_val_rt_{i+1}.png")
+    plot_trajectories(exp_dict, res_dict, VAL_GRAIN_IDS, VAL_COLOUR, "Validation", f"results/plot_opt_val_rt.png")
 
     # Plot stress-strain curve
     res_dict["strain"] = res_dict[STRAIN_FIELD]
@@ -106,9 +105,10 @@ def plot_trajectories(exp_dict:dict, sim_dict:dict, grain_ids:list, sim_colour:s
     ipf.plot_ipf_trajectory(sim_trajectories, direction, "arrow", {"color": sim_colour, "head_width": 0.0075, "head_length": 0.0075*1.5, "zorder": 3})
     ipf.plot_ipf_trajectory([[st[0]] for st in sim_trajectories], direction, "scatter", {"color": sim_colour, "s": 6**2, "zorder": 3})
 
-    # # Plot grain IDs
-    # for exp_trajectory, grain_id in zip(exp_trajectories, grain_ids):
-    #     ipf.plot_ipf_trajectory([[exp_trajectory[0]]], direction, "text", {"color": "blue", "fontsize": 8, "s": grain_id, "zorder": 3})
+    # Plot grain IDs
+    if SHOW_GRAIN_ID:
+        for exp_trajectory, grain_id in zip(exp_trajectories, grain_ids):
+            ipf.plot_ipf_trajectory([[exp_trajectory[0]]], direction, "text", {"color": "blue", "fontsize": 8, "s": grain_id, "zorder": 3})
     
     # Format and save IPF plot
     handles = [

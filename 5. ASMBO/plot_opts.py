@@ -21,24 +21,28 @@ EXP_COLOUR = "silver"
 EXP_EBSD_ID = "ebsd_4"
 
 # Simulation Information
-RES_PATH = "/mnt/c/Users/janzen/OneDrive - UNSW/PhD/results/asmbo"
+ASMBO_PATH = "/mnt/c/Users/janzen/OneDrive - UNSW/PhD/results/asmbo"
+MOOSE_PATH = "/mnt/c/Users/janzen/OneDrive - UNSW/PhD/results/moose_sim"
 SIM_INFO_LIST = [
-    {"label": "VH",   "ebsd_id": "ebsd_4", "colour": "tab:cyan",   "path": "2025-01-18 (vh_sm8_i24)/250118195346_i8_simulate"},
-    {"label": "LH-2", "ebsd_id": "ebsd_4", "colour": "tab:orange", "path": "2025-01-09 (lh_sm32_i16)/250108194247_i8_simulate"},
-    {"label": "LH-6", "ebsd_id": "ebsd_4", "colour": "tab:purple", "path": "2025-01-18 (lh6_sm72_i20)/250117013234_i11_simulate"},
+    # {"label": "Low-fidelity",  "ebsd_id": "ebsd_4", "colour": "tab:green", "path": f"{ASMBO_PATH}/2025-02-02 (vh_sm8_i72)/250202092030_i59_simulate"},
+    # {"label": "High-fidelity", "ebsd_id": "ebsd_2", "colour": "tab:red",   "path": f"{MOOSE_PATH}/2025-02-04 (617_s3_10um_vh)"},
+    {"label": "VH",  "ebsd_id": "ebsd_4", "colour": "tab:cyan",   "path": f"{MOOSE_PATH}/2025-02-04 (617_s3_10um_vh)"},
+    {"label": "LH2", "ebsd_id": "ebsd_4", "colour": "tab:orange", "path": f"{ASMBO_PATH}/2025-01-09 (lh_sm32_i16)/250108194247_i8_simulate"},
+    {"label": "LH6", "ebsd_id": "ebsd_4", "colour": "tab:purple", "path": f"{ASMBO_PATH}/2025-01-18 (lh6_sm72_i20)/250117013234_i11_simulate"},
 ]
 for si in SIM_INFO_LIST:
-    si["data"] = csv_to_dict(f"{RES_PATH}/{si['path']}/summary.csv")
+    si["data"] = csv_to_dict(f"{si['path']}/summary.csv")
 
 # Other Constants
 GRAIN_IDS = [
-    [59, 63, 86, 237, 303],
-    # [56, 72, 126, 223, 262],
-    # [44, 78, 190, 207, 244],
+    [51, 56, 72, 80, 126, 223, 237, 262],
+    [44, 60, 78, 86, 178, 190, 207, 244],
 ]
 STRAIN_FIELD = "average_strain"
 STRESS_FIELD = "average_stress"
 RES_DATA_MAP = "data/res_grain_map.csv"
+# SPACING      = -2.25
+SPACING      = -6.25
 
 # Main function
 def main():
@@ -77,9 +81,8 @@ def main():
             ipf.plot_ipf_trajectory([[st[0]] for st in sim_trajectories], direction, "scatter", {"color": sim_colour, "s": 6**2, "zorder": 3})
 
         # Add geodesic errors to legend
-        sim_dict_list = [si["data"] for si in SIM_INFO_LIST]
-        ge_list = get_geodesic_errors(sim_dict_list, exp_dict, eval_strains, grain_ids)
-        add_supp_legend(ge_list)
+        ge_list = get_geodesic_errors(SIM_INFO_LIST, exp_dict, eval_strains, grain_ids)
+        add_supp_legend(ge_list, SPACING)
         
         # Save IPF plot
         save_plot(f"results/plot_opts_rt_{i+1}.png")
@@ -97,7 +100,7 @@ def main():
     # Add stress errors to legend
     sim_dict_list = [si["data"] for si in SIM_INFO_LIST]
     se_list = get_stress_errors(sim_dict_list, exp_dict, eval_strains)
-    add_supp_legend(se_list)
+    add_supp_legend(se_list, SPACING)
 
     # Format and save
     plt.xticks(fontsize=12)
@@ -153,30 +156,49 @@ def get_stress_errors(sim_dict_list:list, exp_dict:dict, eval_strains:list) -> l
         stress_error_list.append(stress_error)
     return stress_error_list
 
-def get_geodesic_errors(sim_dict_list:list, exp_dict:dict, eval_strains:list, grain_ids:list) -> tuple:
+def get_geodesic_errors(sim_info_list:list, exp_dict:dict, eval_strains:list, grain_ids:list) -> tuple:
     """
     Calculates the errors of a list of simulations relative to experimental data
 
     Parameters:
-    * `sim_dict_list`: The list of dictionaries of simulation results
+    * `sim_info_list`: The list of dictionaries of simulation results
     * `exp_dict`:      The dictionary of experimental data
     * `eval_strains`:  The strains to conduct the error evaluations
     * `grain_ids`:     The list of grain IDs
     
     Returns the geodesic errors as a list
     """
+
+    # Iterate through simulations
     geodesic_error_list = []
-    for sim_dict in sim_dict_list:
+    for si in sim_info_list:
+
+        # Convert grain IDs
+        eval_grain_ids = []
+        sim_grain_ids = [get_sim_grain_id(grain_id, si["ebsd_id"]) for grain_id in grain_ids]
+        sim_dict = {}
+        for grain_id, sim_grain_id in zip(grain_ids, sim_grain_ids):
+            if sim_grain_id == -1:
+                continue
+            for phi in ["phi_1", "Phi", "phi_2"]:
+                sim_dict[f"g{grain_id}_{phi}"] = si["data"][f"g{sim_grain_id}_{phi}"]
+            eval_grain_ids.append(grain_id)
+
+        # Calculate geodesic errors
         geodesic_grid = get_geodesics(
-            grain_ids     = grain_ids,
+            grain_ids     = eval_grain_ids,
             data_dict_1   = sim_dict,
             data_dict_2   = exp_dict,
-            strain_list_1 = sim_dict["average_strain"],
+            strain_list_1 = si["data"]["average_strain"],
             strain_list_2 = exp_dict["strain_intervals"],
             eval_strains  = eval_strains
         )
+
+        # Compile geodesic errors
         geodesic_error = np.average([np.average(geodesic_list) for geodesic_list in geodesic_grid])
         geodesic_error_list.append(geodesic_error)
+    
+    # Return
     return geodesic_error_list
 
 def get_sim_grain_id(exp_grain_id:int, ebsd_id:str) -> int:

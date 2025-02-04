@@ -22,8 +22,8 @@ EXP_DATA_PATH = "data/617_s3_40um_exp.csv"
 RESULTS_PATH  = "results"
 STRAIN_FIELD  = "average_strain"
 STRESS_FIELD  = "average_stress"
-CAL_GRAIN_IDS = [59, 63, 86, 237, 303]
-VAL_GRAIN_IDS = [44, 53, 60, 78, 190]
+CAL_GRAIN_IDS = [51, 56, 72, 80, 126, 223, 237, 262]
+VAL_GRAIN_IDS = [44, 60, 78, 86, 178, 190, 207, 244]
 PARAM_NAMES   = ["cp_lh_0", "cp_lh_1", "cp_tau_0", "cp_n", "cp_gamma_0"]
 
 def main():

@@ -16,7 +16,7 @@ from __common__.analyse import get_geodesics, get_stress
 from __common__.plotter import save_plot
 
 # Paths
-ASMBO_DIR     = "2025-01-29 (vh_sm4_i10)"
+ASMBO_DIR     = "2025-02-02 (vh_sm8_i72)"
 SIM_DATA_PATH = f"/mnt/c/Users/janzen/OneDrive - UNSW/PhD/results/asmbo/{ASMBO_DIR}"
 EXP_DATA_PATH = "data/617_s3_40um_exp.csv"
 RESULTS_PATH  = "results"
@@ -30,7 +30,7 @@ CAL_GRAIN_IDS = [59, 63, 86, 237, 303]
 VAL_GRAIN_IDS = [44, 53, 60, 78, 190]
 
 # Iteration information
-END_ITER = 10
+END_ITER = 72
 CUSTOM_LABEL_LIST = list(range(1,END_ITER+2,2)) # None
 
 # Error information
@@ -338,7 +338,7 @@ def initialise_error_plot(label_list:list):
     plt.xticks(fontsize=12)
     plt.yticks(fontsize=12)
     plt.xlabel("Iterations", fontsize=14)
-    plt.xlim(min(label_list)-0.5, max(label_list)+0.5)
+    plt.xlim(min(label_list)-1, max(label_list)+1)
     tick_labels = CUSTOM_LABEL_LIST if CUSTOM_LABEL_LIST != None else label_list
     plt.xticks(ticks=tick_labels, labels=tick_labels)
     for spine in plt.gca().spines.values():

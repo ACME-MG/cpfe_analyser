@@ -22,7 +22,8 @@ SIM_PATHS = [f"{SIMS_PATH}/{sim_dir}/summary.csv" for sim_dir in [
     "2024-11-28 (617_s3_40um_lh2_i1)",
     "2024-11-30 (617_s3_40um_lh2_i2)",
 ]]
-CAL_GRAIN_IDS = [207, 79, 164, 167, 309]
+CAL_GRAIN_IDS = [51, 56, 72, 80, 126, 223, 237, 262]
+# VAL_GRAIN_IDS = [44, 60, 78, 86, 178, 190, 207, 244]
 
 # Main function
 def main():

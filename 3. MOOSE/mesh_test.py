@@ -15,15 +15,15 @@ from __common__.analyse import get_geodesics, get_stress
 
 # Constants
 RESOLUTIONS = [
-    {"resolution": 5,  "ebsd_id": "ebsd_1", "colour": "silver"},
-    {"resolution": 10, "ebsd_id": "ebsd_2", "colour": "orange"},
-    {"resolution": 15, "ebsd_id": "ebsd_3", "colour": "gold"},
-    {"resolution": 20, "ebsd_id": "ebsd_4", "colour": "brown"},
-    {"resolution": 25, "ebsd_id": "ebsd_2", "colour": "red"},
-    {"resolution": 30, "ebsd_id": "ebsd_3", "colour": "magenta"},
-    {"resolution": 35, "ebsd_id": "ebsd_2", "colour": "purple"},
-    {"resolution": 40, "ebsd_id": "ebsd_4", "colour": "blue"},
-    {"resolution": 45, "ebsd_id": "ebsd_3", "colour": "cyan"},
+    {"resolution": 5,  "ebsd_id": "ebsd_1", "colour": "silver", "time": 83.6},
+    {"resolution": 10, "ebsd_id": "ebsd_2", "colour": "orange", "time": 10.3},
+    {"resolution": 15, "ebsd_id": "ebsd_3", "colour": "gold",   "time": 3.19},
+    {"resolution": 20, "ebsd_id": "ebsd_4", "colour": "brown",  "time": 1.30},
+    {"resolution": 25, "ebsd_id": "ebsd_2", "colour": "red",    "time": 0.677},
+    {"resolution": 30, "ebsd_id": "ebsd_3", "colour": "magenta","time": 0.424},
+    {"resolution": 35, "ebsd_id": "ebsd_2", "colour": "purple", "time": 0.231},
+    {"resolution": 40, "ebsd_id": "ebsd_4", "colour": "blue",   "time": 0.157},
+    {"resolution": 45, "ebsd_id": "ebsd_3", "colour": "cyan",   "time": 0.113},
     # {"resolution": 50, "ebsd_id": "ebsd_4", "colour": "green"},
 ]
 PARAM_KW_LIST  = ["p0", "p1", "p2", "p3", "p4", "p5", "p6", "p7"]
@@ -32,15 +32,17 @@ SIM_PATH       = "/mnt/c/Users/janzen/OneDrive - UNSW/PhD/results/moose_sim/2024
 STRAIN_FIELD   = "average_strain"
 STRESS_FIELD   = "average_stress"
 EVAL_STRAINS   = np.linspace(0, 0.05, 50)
-COLOUR         = "tab:purple"
+COLOUR         = (0.6, 1.0, 1.0)
 TICK_SIZE      = 12
 LABEL_SIZE     = 14
+INCREMENT      = 5
+WIDTH          = 4
 
 def main():
     """
     Main function
     """
-    
+
     # Get directories of results
     dir_path_list = [dir_path for dir_path in os.listdir(SIM_PATH) if os.path.exists(f"{SIM_PATH}/{dir_path}/summary.csv")]
     
@@ -82,7 +84,7 @@ def main():
         # Initialise error information
         res_kw = resolution["resolution"]
         comp_results = results_dict[res_kw]
-        errors_dict[res_kw] = {"stress": [], "orientation": [], "reduced": []}
+        errors_dict[res_kw] = {"stress": [], "orientation": []}
         
         # Iterate through parameters
         for param_kw in PARAM_KW_LIST:
@@ -119,16 +121,31 @@ def main():
             # Compile errors
             errors_dict[res_kw]["stress"].append(stress_error)
             errors_dict[res_kw]["orientation"].append(geodesic_error)
-            errors_dict[res_kw]["reduced"].append(geodesic_error/np.pi + stress_error)
             
     # Prepare error plotting
-    stress_error_grid = [errors_dict[res_kw]["stress"] for res_kw in errors_dict.keys()]
-    orientation_error_grid = [errors_dict[res_kw]["orientation"] for res_kw in errors_dict.keys()]
-    reduced_error_grid = [errors_dict[res_kw]["reduced"] for res_kw in errors_dict.keys()]
-    resolution_list = [res["resolution"] for res in RESOLUTIONS[1:]]
-    
+    stress_error_grid      = [[0]] + [errors_dict[res_kw]["stress"] for res_kw in errors_dict.keys()]
+    orientation_error_grid = [[0]] + [errors_dict[res_kw]["orientation"] for res_kw in errors_dict.keys()]
+    resolution_list        = [res["resolution"] for res in RESOLUTIONS[1:]]
+
+    # Plot the evaluation times first
+    plt.figure(figsize=(5,5), dpi=200)
+    plt.gca().set_position([0.17, 0.12, 0.75, 0.75])
+    plt.gca().grid(which="major", axis="both", color="SlateGray", linewidth=1, linestyle=":", alpha=0.5)
+    plt.xlabel("Resolution (µm)", fontsize=LABEL_SIZE)
+    plt.ylabel("Evaluation time (h)", fontsize=LABEL_SIZE)
+    plt.bar([r["resolution"] for r in RESOLUTIONS], [r["time"] for r in RESOLUTIONS], color=COLOUR, zorder=3, width=WIDTH, edgecolor="black")
+    padding = INCREMENT-WIDTH/2
+    plt.xlim(min(resolution_list)-padding, max(resolution_list)+padding)
+    plt.yscale("log")
+    plt.ylim(1e-1,1e2)
+    plt.xticks(resolution_list, fontsize=TICK_SIZE)
+    plt.yticks(fontsize=TICK_SIZE)
+    for spine in plt.gca().spines.values():
+        spine.set_linewidth(1)
+    save_plot("results/mt_times.png")
+
     # Plot stress errors
-    plot_boxplots(resolution_list, stress_error_grid, (0.8, 0.6, 1.0))
+    plot_boxplots(resolution_list, stress_error_grid, COLOUR)
     plt.xlabel("Resolution (µm)", fontsize=LABEL_SIZE)
     plt.ylabel(r"$E_{\sigma}$", fontsize=LABEL_SIZE)
     plt.xlim(min(resolution_list)-2.5, max(resolution_list)+2.5)
@@ -136,29 +153,18 @@ def main():
     plt.gca().ticklabel_format(axis="y", style="sci", scilimits=(-3,-3))
     plt.gca().yaxis.major.formatter._useMathText = True
     plt.gca().yaxis.get_offset_text().set_fontsize(TICK_SIZE)
-    save_plot("results/plot_mt_se.png")
+    save_plot("results/mt_se.png")
 
     # Plot geodesic errors
-    plot_boxplots(resolution_list, orientation_error_grid, (0.8, 0.6, 1.0))
+    plot_boxplots(resolution_list, orientation_error_grid, COLOUR)
     plt.xlabel("Resolution (µm)", fontsize=LABEL_SIZE)
-    plt.ylabel(r"Average $E_{\Phi}$", fontsize=LABEL_SIZE)
+    plt.ylabel(r"$E_{\Phi}$", fontsize=LABEL_SIZE)
     plt.xlim(min(resolution_list)-2.5, max(resolution_list)+2.5)
     plt.ylim(0, 0.008)
     plt.gca().ticklabel_format(axis="y", style="sci", scilimits=(-3,-3))
     plt.gca().yaxis.major.formatter._useMathText = True
     plt.gca().yaxis.get_offset_text().set_fontsize(TICK_SIZE)
-    save_plot("results/plot_mt_ge.png")
-
-    # Plot reduced errors
-    plot_boxplots(resolution_list, reduced_error_grid, (0.8, 0.6, 1.0))
-    plt.xlabel("Resolution (µm)", fontsize=LABEL_SIZE)
-    plt.ylabel(r"$E_{\Sigma}$", fontsize=LABEL_SIZE)
-    plt.xlim(min(resolution_list)-2.5, max(resolution_list)+2.5)
-    plt.ylim(0, 0.018)
-    plt.gca().ticklabel_format(axis="y", style="sci", scilimits=(-3,-3))
-    plt.gca().yaxis.major.formatter._useMathText = True
-    plt.gca().yaxis.get_offset_text().set_fontsize(TICK_SIZE)
-    save_plot("results/plot_mt_re.png")
+    save_plot("results/mt_ge.png")
 
 def plot_boxplots(x_list:list, y_list_list:list, colour:str) -> None:
     """
@@ -181,7 +187,7 @@ def plot_boxplots(x_list:list, y_list_list:list, colour:str) -> None:
 
     # Plot boxplots
     boxplots = plt.boxplot(y_list_list, positions=x_list, showfliers=False, patch_artist=True,
-                           vert=True, widths=4, whiskerprops=dict(linewidth=1), capprops=dict(linewidth=1))
+                           vert=True, widths=WIDTH, whiskerprops=dict(linewidth=1), capprops=dict(linewidth=1))
     
     # Apply additional formatting to the boxplots
     for i in range(len(y_list_list)):

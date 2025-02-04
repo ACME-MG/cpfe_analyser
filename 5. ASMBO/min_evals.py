@@ -21,12 +21,14 @@ EVALUATE = [tolerance, "tol"]
 ASMBO_DIR_DICT = {
     2: [
         "2025-01-23 (vh_sm2_i32)",
+        "2025-01-31 (vh_sm2_i47)",
     ],
     4: [
         "2025-01-20 (vh_sm4_i17)",
         "2025-01-20 (vh_sm4_i22)",
         "2025-01-20 (vh_sm4_i25)",
         "2025-01-25 (vh_sm4_i29)",
+        "2025-01-31 (vh_sm4_i44)",
     ],
     6: [
         "2025-01-22 (vh_sm6_i23)",
@@ -37,10 +39,13 @@ ASMBO_DIR_DICT = {
         "2025-01-18 (vh_sm8_i24)",
         "2025-01-19 (vh_sm8_i22)",
         "2025-01-25 (vh_sm8_i16)",
+        "2025-02-02 (vh_sm8_i72)",
+        "2025-02-03 (vh_sm8_i46)",
     ],
     10: [
         "2025-01-24 (vh_sm10_i22)",
         "2025-01-26 (vh_sm10_i10)",
+        "2025-02-01 (vh_sm10_i27)",
     ],
     12: [
         "2025-01-26 (vh_sm12_i15)",
@@ -76,8 +81,8 @@ def main():
         eval_list.append({"init": init_evals, "adpt": num_evals})
 
     # Manual
-    eval_list[0].append(32)
-    eval_list[1].append(32)
+    eval_list[0]["adpt"] += [32, 32]
+    eval_list[1]["adpt"] += [32, 32]
 
     # Plot the evaluations
     plot_min_evals(eval_list)
@@ -112,7 +117,7 @@ def plot_min_evals(eval_list:list) -> None:
     plt.ylabel("Total Evaluations", fontsize=14)
     plt.xticks(ticks=x_list, labels=x_list)
     plt.xlim(min(x_list)-PADDING, max(x_list)+PADDING)
-    plt.ylim(0, 60)
+    plt.ylim(0, 50)
 
     # Save
     plt.legend(framealpha=1, edgecolor="black", fancybox=True, facecolor="white", fontsize=12, loc="upper left")

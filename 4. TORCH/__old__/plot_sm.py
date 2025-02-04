@@ -23,8 +23,8 @@ MAP_PATH = f"{DIRECTORY}/map.csv"
 # Constants
 MAX_STRAIN = 0.1
 PARAM_LIST = [10.607, 120.94, 396.76, 1.0305, 7.26E-05]
-CAL_GRAIN_IDS = [59, 63, 86, 237, 303]
-VAL_GRAIN_IDS = [44, 53, 60, 78, 190]
+CAL_GRAIN_IDS = [51, 56, 72, 80, 126, 223, 237, 262]
+VAL_GRAIN_IDS = [44, 60, 78, 86, 178, 190, 207, 244]
 
 # Main function
 def main():

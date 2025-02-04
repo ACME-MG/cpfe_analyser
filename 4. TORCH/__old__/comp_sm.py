@@ -53,7 +53,8 @@ OPT_PATHS = [f"{OPT_PATH}/{opt_path}" for opt_path in [
 PARAM_NAMES   = [f"cp_lh_{i}" for i in range(2)] + ["cp_tau_0", "cp_n"]
 EVAL_STRAINS  = np.linspace(0, 0.1, 50)
 MAX_STRAIN    = 0.1
-CAL_GRAIN_IDS = [207, 79, 164, 167, 309]
+CAL_GRAIN_IDS = [51, 56, 72, 80, 126, 223, 237, 262]
+# VAL_GRAIN_IDS = [44, 60, 78, 86, 178, 190, 207, 244]
 
 # Plotting Parameters
 X_LABEL       = "Initial Training Dataset Size"
