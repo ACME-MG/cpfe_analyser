@@ -14,8 +14,8 @@ from __common__.plotter import save_plot
 # Model information
 RESULTS_PATH = "/mnt/c/Users/janzen/OneDrive - UNSW/PhD/results/"
 MODEL_INFO = [
-    {"name": "VH",   "init": 8,  "adpt": 12,  "vald": 10.3, "path": f"{RESULTS_PATH}/moose_sim/2025-01-03 (617_s3_40um_vh_sm32)"},
-    {"name": "LH2", "init": 8,  "adpt": 7.5, "vald": 84.2, "path": f"{RESULTS_PATH}/moose_sim/2025-01-07 (617_s3_40um_lh_sm32)"},
+    {"name": "VH",  "init": 8,  "adpt": 12,  "vald": 8.97, "path": f"{RESULTS_PATH}/moose_sim/2025-01-03 (617_s3_40um_vh_sm32)"},
+    {"name": "LH2", "init": 8,  "adpt": 7.5, "vald": 73.7, "path": f"{RESULTS_PATH}/moose_sim/2025-01-07 (617_s3_40um_lh_sm32)"},
     {"name": "LH6", "init": 16, "adpt": 15,  "vald": 84.2, "path": f"{RESULTS_PATH}/moose_sim/2025-01-07 (617_s3_40um_lh_sm32)"},
 ] # "init" and "adpt" initially contain number of simulations; "vald" contains total hours
 

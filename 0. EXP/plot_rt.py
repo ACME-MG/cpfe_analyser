@@ -12,7 +12,7 @@ import matplotlib.pyplot as plt
 from __common__.io import csv_to_dict
 from __common__.general import transpose
 from __common__.pole_figure import IPF, get_lattice
-from __common__.plotter import save_plot, define_legend
+from __common__.plotter import save_plot
 
 # Paths
 RAW_RT_PATH  = "data/617_s3_20um_raw_rt.csv"
@@ -20,8 +20,9 @@ PRC_RT_PATH  = "data/617_s3_20um_prc_rt.csv"
 
 # Other variables
 GRAIN_IDS     = [
-    [51, 56, 72, 80, 126, 223, 237, 262],  # Calibration 1
-    [44, 60, 78, 86, 178, 190, 207, 244], # Validation 1
+    [51, 56, 72, 80, 126, 223, 237, 262],  # Calibration
+    [44, 50, 60, 178, 190, 207, 278, 299], # Validation
+    # [44, 60, 78, 86, 178, 190, 207, 244], # Validation 1
 ]
 RAW_COLOUR    = "silver"
 PRC_COLOUR    = "gray"
@@ -66,7 +67,7 @@ def main():
 
         # Format and save IPF plot
         handles = [
-            plt.plot([], [], color=RAW_COLOUR, label="Measured",   linewidth=3)[0],
+            plt.plot([], [], color=RAW_COLOUR, label="Raw",        linewidth=3)[0],
             plt.plot([], [], color=PRC_COLOUR, label="Smoothened", linewidth=2)[0],
         ]
         legend = plt.legend(handles=handles, framealpha=1, edgecolor="black", fancybox=True, facecolor="white", fontsize=12, loc="upper left")

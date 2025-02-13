@@ -26,23 +26,30 @@ MOOSE_PATH = "/mnt/c/Users/janzen/OneDrive - UNSW/PhD/results/moose_sim"
 SIM_INFO_LIST = [
     # {"label": "Low-fidelity",  "ebsd_id": "ebsd_4", "colour": "tab:green", "path": f"{ASMBO_PATH}/2025-02-02 (vh_sm8_i72)/250202092030_i59_simulate"},
     # {"label": "High-fidelity", "ebsd_id": "ebsd_2", "colour": "tab:red",   "path": f"{MOOSE_PATH}/2025-02-04 (617_s3_10um_vh)"},
-    {"label": "VH",  "ebsd_id": "ebsd_4", "colour": "tab:cyan",   "path": f"{MOOSE_PATH}/2025-02-04 (617_s3_10um_vh)"},
-    {"label": "LH2", "ebsd_id": "ebsd_4", "colour": "tab:orange", "path": f"{ASMBO_PATH}/2025-01-09 (lh_sm32_i16)/250108194247_i8_simulate"},
-    {"label": "LH6", "ebsd_id": "ebsd_4", "colour": "tab:purple", "path": f"{ASMBO_PATH}/2025-01-18 (lh6_sm72_i20)/250117013234_i11_simulate"},
+    {"label": "Low-fidelity",  "ebsd_id": "ebsd_4", "colour": "tab:green", "path": f"{ASMBO_PATH}/2025-02-06 (lh2_sm8_i15)/250206013451_i12_simulate"},
+    {"label": "High-fidelity", "ebsd_id": "ebsd_2", "colour": "tab:red",   "path": f"{MOOSE_PATH}/2025-02-09 (617_s3_10um_lh2)"},
+    # {"label": "VH",  "ebsd_id": "ebsd_2", "colour": "tab:cyan",   "path": f"{MOOSE_PATH}/2025-02-04 (617_s3_10um_vh)"},
+    # {"label": "LH2", "ebsd_id": "ebsd_4", "colour": "tab:orange", "path": f"{ASMBO_PATH}/2025-01-09 (lh_sm32_i16)/250108194247_i8_simulate"},
+    # {"label": "LH6", "ebsd_id": "ebsd_4", "colour": "tab:purple", "path": f"{ASMBO_PATH}/2025-01-18 (lh6_sm72_i20)/250117013234_i11_simulate"},
 ]
 for si in SIM_INFO_LIST:
     si["data"] = csv_to_dict(f"{si['path']}/summary.csv")
 
-# Other Constants
+# Grain IDs
 GRAIN_IDS = [
-    [51, 56, 72, 80, 126, 223, 237, 262],
-    [44, 60, 78, 86, 178, 190, 207, 244],
+    [51, 56, 72, 80, 126, 223, 237, 262], # Calibration
+    [44, 50, 60, 178, 190, 207, 278, 299] # Validation
 ]
+
+# Other Constants
 STRAIN_FIELD = "average_strain"
 STRESS_FIELD = "average_stress"
 RES_DATA_MAP = "data/res_grain_map.csv"
-# SPACING      = -2.25
-SPACING      = -6.25
+SPACING      = -2.25
+# SPACING      = -6.25
+
+# Script parameters
+SHOW_GRAIN_ID = False
 
 # Main function
 def main():
@@ -79,6 +86,11 @@ def main():
             ipf.plot_ipf_trajectory(sim_trajectories, direction, "plot", {"color": sim_colour, "linewidth": 2, "zorder": 3})
             ipf.plot_ipf_trajectory(sim_trajectories, direction, "arrow", {"color": sim_colour, "head_width": 0.0075, "head_length": 0.0075*1.5, "zorder": 3})
             ipf.plot_ipf_trajectory([[st[0]] for st in sim_trajectories], direction, "scatter", {"color": sim_colour, "s": 6**2, "zorder": 3})
+
+            # Plot grain IDs
+            if SHOW_GRAIN_ID:
+                for exp_trajectory, grain_id in zip(exp_trajectories, grain_ids):
+                    ipf.plot_ipf_trajectory([[exp_trajectory[0]]], direction, "text", {"color": "blue", "fontsize": 8, "s": grain_id, "zorder": 3})
 
         # Add geodesic errors to legend
         ge_list = get_geodesic_errors(SIM_INFO_LIST, exp_dict, eval_strains, grain_ids)

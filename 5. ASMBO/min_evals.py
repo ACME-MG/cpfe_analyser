@@ -12,10 +12,12 @@ import numpy as np
 import sys; sys.path += [".."]
 from __common__.plotter import save_plot
 from assess import pareto, tolerance
+from sm_error import sm_error
 
 # Evaluation function
 # EVALUATE = [pareto, "par"]
-EVALUATE = [tolerance, "tol"]
+# EVALUATE = [tolerance, "tol"]
+EVALUATE = [sm_error, "sme"]
 
 # Paths
 ASMBO_DIR_DICT = {
@@ -83,6 +85,7 @@ def main():
     # Manual
     eval_list[0]["adpt"] += [32, 32]
     eval_list[1]["adpt"] += [32, 32]
+    eval_list[4]["adpt"] += [4]
 
     # Plot the evaluations
     plot_min_evals(eval_list)

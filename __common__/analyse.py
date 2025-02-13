@@ -75,6 +75,53 @@ def get_geodesics(grain_ids:list, data_dict_1:dict, data_dict_2:dict,
     # Return list of lists of geodesic distances
     return geodesic_grid
 
+def get_errors(sim_dict_list:list, exp_dict:dict, eval_strains:list, grain_ids:list) -> tuple:
+    """
+    Calculates the errors of a list of simulations relative to experimental data
+
+    Parameters:
+    * `sim_dict_list`: The list of dictionaries of simulation results
+    * `exp_dict`:      The dictionary of experimental data
+    * `eval_strains`:  The strains to conduct the error evaluations
+    * `grain_ids`:     The list of grain IDs
+    
+    Returns the stress and geodesic errors
+    """
+
+    # Initialise
+    stress_error_list = []
+    geodesic_error_list = []
+
+    # Iterate through the simulations
+    for sim_dict in sim_dict_list:
+    
+        # Calculate stress error
+        stress_error = get_stress(
+            stress_list_1 = exp_dict["stress"],
+            stress_list_2 = sim_dict["average_stress"],
+            strain_list_1 = exp_dict["strain"],
+            strain_list_2 = sim_dict["average_strain"],
+            eval_strains  = eval_strains
+        )
+
+        # Calculate orientation error
+        geodesic_grid = get_geodesics(
+            grain_ids     = grain_ids,
+            data_dict_1   = sim_dict,
+            data_dict_2   = exp_dict,
+            strain_list_1 = sim_dict["average_strain"],
+            strain_list_2 = exp_dict["strain_intervals"],
+            eval_strains  = eval_strains
+        )
+        geodesic_error = np.average([np.average(geodesic_list) for geodesic_list in geodesic_grid])
+
+        # Calculate reduced error and append
+        stress_error_list.append(stress_error)
+        geodesic_error_list.append(geodesic_error)
+
+    # Return errors
+    return stress_error_list, geodesic_error_list
+
 def intervaluate_eulers(phi_1_list:list, Phi_list:list, phi_2_list:list,
                        strain_list:list, eval_strains:list) -> list:
     """
