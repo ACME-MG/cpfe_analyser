@@ -1,6 +1,6 @@
 """
- Title:         Normal Distributions
- Description:   Plots the errors of the optimised simulations using normal distributions
+ Title:         Plot Strain
+ Description:   Plots the errors of the optimised simulations based on each strain
  Author:        Janzen Choi
 
 """
@@ -10,9 +10,8 @@ import sys; sys.path += [".."]
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-import scipy.stats as stats 
 from __common__.io import csv_to_dict
-from __common__.general import round_sf, pad_to_length
+from __common__.general import transpose
 from __common__.plotter import save_plot, Plotter
 from __common__.analyse import get_geodesics
 
@@ -20,14 +19,9 @@ from __common__.analyse import get_geodesics
 EXP_PATH    = "data/617_s3_40um_exp.csv"
 EXP_COLOUR  = "silver"
 EXP_EBSD_ID = "ebsd_4"
-# GRAIN_IDS   = [
-#     51, 56, 126, 237, 262, 44, 60, 78, 86, 190, 53, 54, 59, 69, 82, 173, 254, 256, 271,
-#     283, 303, 72, 80, 223, 178, 207, 244, 63, 77, 101, 117, 120, 141, 149, 157, 159, 193,
-#     242, 255, 264, 273, 276, 277, 278, 280, 281, 286, 295, 299, 10, 37, 47, 76, 90, 91,
-#     192, 202, 230, 235, 238, 259, 265, 306, 11, 20, 38, 39, 40, 64, 87, 107, 111, 128,
-#     18, 85, 217, 284, 285
-# ]
-GRAIN_IDS = []
+# GRAIN_IDS   = [51, 56, 72, 80, 126, 223, 237, 262]  # Calibration
+# GRAIN_IDS   = [44, 50, 60, 178, 190, 207, 278, 299] # Validation
+GRAIN_IDS   = []
 REMOVE_OUTLIERS = True
 
 # Simulation Information
@@ -49,14 +43,14 @@ SIM_INFO_LIST = [
     # {"label": "High-fidelity", "ebsd_id": "ebsd_2", "colour": "tab:red",   "path": f"{MOOSE_PATH}/2025-02-14 (617_s3_10um_lh6)"},
     
     # All low-fidelity
-    {"label": "VH",   "ebsd_id": "ebsd_4", "colour": "tab:cyan",   "path": f"{ASMBO_PATH}/2025-02-02 (vh_sm8_i72)/250202092030_i59_simulate"},
-    {"label": "LH2",  "ebsd_id": "ebsd_4", "colour": "tab:orange", "path": f"{ASMBO_PATH}/2025-02-06 (lh2_sm8_i15)/250206013451_i12_simulate"},
-    {"label": "LH6",  "ebsd_id": "ebsd_4", "colour": "tab:purple", "path": f"{ASMBO_PATH}/2025-02-14 (lh6_sm16_i34)/250213134340_i26_simulate"},
+    # {"label": "VH",   "ebsd_id": "ebsd_4", "colour": "tab:cyan",   "path": f"{ASMBO_PATH}/2025-02-02 (vh_sm8_i72)/250202092030_i59_simulate"},
+    # {"label": "LH2",  "ebsd_id": "ebsd_4", "colour": "tab:orange", "path": f"{ASMBO_PATH}/2025-02-06 (lh2_sm8_i15)/250206013451_i12_simulate"},
+    # {"label": "LH6",  "ebsd_id": "ebsd_4", "colour": "tab:purple", "path": f"{ASMBO_PATH}/2025-02-14 (lh6_sm16_i34)/250213134340_i26_simulate"},
     
     # All high-fidelity
-    # {"label": "VH",   "ebsd_id": "ebsd_2", "colour": "tab:cyan",   "path": f"{MOOSE_PATH}/2025-02-04 (617_s3_10um_vh)"},
-    # {"label": "LH2",  "ebsd_id": "ebsd_2", "colour": "tab:orange", "path": f"{MOOSE_PATH}/2025-02-09 (617_s3_10um_lh2)"},
-    # {"label": "LH6",  "ebsd_id": "ebsd_2", "colour": "tab:purple", "path": f"{MOOSE_PATH}/2025-02-14 (617_s3_10um_lh6)"},
+    {"label": "VH",   "ebsd_id": "ebsd_2", "colour": "tab:cyan",   "path": f"{MOOSE_PATH}/2025-02-04 (617_s3_10um_vh)"},
+    {"label": "LH2",  "ebsd_id": "ebsd_2", "colour": "tab:orange", "path": f"{MOOSE_PATH}/2025-02-09 (617_s3_10um_lh2)"},
+    {"label": "LH6",  "ebsd_id": "ebsd_2", "colour": "tab:purple", "path": f"{MOOSE_PATH}/2025-02-14 (617_s3_10um_lh6)"},
 ]
 for si in SIM_INFO_LIST:
     si["data"] = csv_to_dict(f"{si['path']}/summary.csv")
@@ -65,8 +59,6 @@ for si in SIM_INFO_LIST:
 STRAIN_FIELD = "average_strain"
 STRESS_FIELD = "average_stress"
 RES_DATA_MAP = "data/res_grain_map.csv"
-# SPACING      = -2.25
-SPACING      = -2.25
 
 # Main function
 def main():
@@ -78,40 +70,29 @@ def main():
     # Get the geodesic errors
     grain_ids = [int(key.replace("g","").replace("_phi_1","")) for key in BASE_SIM.keys() if "_phi_1" in key]
     grain_ids = grain_ids if GRAIN_IDS == [] else GRAIN_IDS
+
     ge_grid = get_geodesic_errors(SIM_INFO_LIST, exp_dict, eval_strains, grain_ids)
 
     # Initialise the plotter
     plotter = Plotter("strain", "", "mm/mm")
     plotter.prep_plot(size=14)
-    plt.xlabel(r"$E_{\phi}$", fontsize=14)
-    plt.ylabel("Probability Density", fontsize=14)
-    plotter.set_limits((0,0.25), (0,25))
-    plt.yticks([0, 5, 10, 15, 20, 25])
+    plt.xlabel("Strain (mm/mm)", fontsize=14)
+    plt.ylabel(r"$E_{\phi}$", fontsize=14)
+    # plotter.set_limits((0,0.25), (0,25))
+    # plt.yticks([0, 5, 10, 15, 20, 25])
 
-    # Calculate normal distributions for each simulation
+    # Plot each simulation result
     for sim_info, ge_list in zip(SIM_INFO_LIST, ge_grid):
-
-        # Get mean and standard deviation
+        strain_list = eval_strains
         if REMOVE_OUTLIERS:
-            ge_list = remove_outliers(ge_list)
-        mean = np.average(ge_list)
-        std  = np.std(ge_list)
-
-        # Plot the distribution
-        ge_x_list = np.linspace(min(ge_list)-1, max(ge_list)+1, 1000)
-        ge_y_list = stats.norm.pdf(ge_x_list, mean, std)
-        plt.plot(ge_x_list, ge_y_list, linewidth=3, color=sim_info["colour"])
-        
-        # Store distribution information
-        mean_str = pad_to_length(round_sf(mean, 3), 6)
-        std_str  = pad_to_length(round_sf(std, 3), 6)
-        sim_info["norm"] = f"({mean_str}, {std_str})"
+            new_ge_list = remove_outliers(ge_list)
+            strain_list = [strain for strain, ge in zip(strain_list, ge_list) if ge in new_ge_list]
+            ge_list = new_ge_list
+        plt.plot(strain_list, ge_list, color=sim_info["colour"], label=sim_info["label"], marker="o", linewidth=3)
     
     # Define legend with supplementary information
     handles  = [plt.plot([], [], color=sim_info["colour"], label=sim_info["label"], marker="o", linewidth=3)[0] for sim_info in SIM_INFO_LIST]
-    handles += [plt.scatter([], [], color="white", label=sim_info["norm"], marker="o", s=0) for sim_info in SIM_INFO_LIST]
-    legend = plt.legend(handles=handles, ncol=2, columnspacing=SPACING, framealpha=1, edgecolor="black",
-                        fancybox=True, facecolor="white", fontsize=12, loc="upper left")
+    legend = plt.legend(handles=handles, framealpha=1, edgecolor="black", fancybox=True, facecolor="white", fontsize=12, loc="upper left")
     plt.gca().add_artist(legend)
 
     # Format and save
@@ -119,7 +100,7 @@ def main():
     plt.yticks(fontsize=12)
     for spine in plt.gca().spines.values():
         spine.set_linewidth(1)
-    save_plot("results/norm_dist_ge.png")
+    save_plot("results/strain_ge.png")
 
 def remove_outliers(data_list:list):
     """
@@ -159,7 +140,7 @@ def initialise_error_plot(label_list:list):
 
 def get_geodesic_errors(sim_info_list:list, exp_dict:dict, eval_strains:list, grain_ids:list) -> tuple:
     """
-    Calculates the errors of a list of simulations relative to experimental data
+    Calculates the errors of a list of simulations relative to experimental data for each strain
 
     Parameters:
     * `sim_info_list`: The list of dictionaries of simulation results
@@ -196,7 +177,7 @@ def get_geodesic_errors(sim_info_list:list, exp_dict:dict, eval_strains:list, gr
         )
 
         # Compile geodesic errors
-        geodesic_errors = [np.average(geodesic_list) for geodesic_list in geodesic_grid]
+        geodesic_errors = [np.average(geodesic_list) for geodesic_list in transpose(geodesic_grid)]
         geodesic_error_list.append(geodesic_errors)
     
     # Return

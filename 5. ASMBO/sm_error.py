@@ -14,15 +14,17 @@ from __common__.io import csv_to_dict, dict_to_stdout
 from __common__.analyse import get_stress, get_geodesics
 from __common__.plotter import save_plot
 from __common__.surrogate import Model
+from assess import find_knee_point
 
 # Paths
-ASMBO_DIR     = "2025-02-03 (vh_sm8_i46)"
+ASMBO_DIR     = "2025-02-19 (lh2_sm8_i17)"
 SIM_DATA_PATH = f"/mnt/c/Users/janzen/OneDrive - UNSW/PhD/results/asmbo/{ASMBO_DIR}"
 EXP_DATA_PATH = "data/617_s3_40um_exp.csv"
 RESULTS_PATH  = "results"
 
 # Model information
-PARAM_NAMES = ["cp_tau_s", "cp_b", "cp_tau_0", "cp_n"]
+# PARAM_NAMES = ["cp_tau_s", "cp_b", "cp_tau_0", "cp_n"]
+PARAM_NAMES = [f"cp_lh_{i}" for i in range(6)] + ["cp_tau_0", "cp_n"]
 
 # Plotting parameters
 MAX_ITERS    = 32
@@ -44,8 +46,13 @@ def sm_error(sim_path:str=""):
     # Check if the path to the simulation data is defined
     sim_data_path = SIM_DATA_PATH if sim_path == "" else sim_path
 
-    # Get errors
+    # Get surrogate model errors
     errors_dict = get_errors_dict(sim_data_path)
+
+    # Calculate termination iteration
+    error_grid = [errors_dict["se"], errors_dict["ge"]]
+    termination = get_termination(error_grid, [SE_THRESHOLD, GE_THRESHOLD])+1
+    knee_point = find_knee_point([error_list[:termination] for error_list in error_grid])+1
 
     # If undefined, plot
     if sim_path == "":
@@ -65,12 +72,11 @@ def sm_error(sim_path:str=""):
         # plt.ylim(10**-3, 10**9)
         save_plot("results/sme_ge.png")
 
-    # Otherwise, return termination iteration
-    termination = get_termination(
-        error_grid = [errors_dict["se"], errors_dict["ge"]],
-        thresholds = [SE_THRESHOLD, GE_THRESHOLD]
-    )
-    print(termination)
+        # Display calibration summary
+        print(f"Termination Iteration: {termination}")
+        print(f"Knee Point Iteration:  {knee_point}")
+    
+    # Otherwise, just return termination iteration
     return termination
 
 def get_termination(error_grid:list, thresholds:list):
@@ -80,7 +86,7 @@ def get_termination(error_grid:list, thresholds:list):
     Parameters:
     * `error_grid`: Lists of error lists
 
-    Returns the termination iteration
+    Returns the termination iteration index (starting from 0)
     """
     
     # Identify indexes of errors below their thresholds

@@ -16,7 +16,7 @@ from __common__.analyse import get_geodesics, get_stress
 from __common__.plotter import save_plot
 
 # Paths
-ASMBO_DIR     = "2025-02-06 (lh2_sm8_i15)"
+ASMBO_DIR     = "2025-02-14 (lh6_sm16_i34)" # 250213134340_i26_simulate
 SIM_DATA_PATH = f"/mnt/c/Users/janzen/OneDrive - UNSW/PhD/results/asmbo/{ASMBO_DIR}"
 EXP_DATA_PATH = "data/617_s3_40um_exp.csv"
 RESULTS_PATH  = "results"
@@ -26,11 +26,11 @@ STRAIN_FIELD = "average_strain"
 STRESS_FIELD = "average_stress"
 
 # Grain information
-CAL_GRAIN_IDS = [59, 63, 86, 237, 303]
-VAL_GRAIN_IDS = [44, 53, 60, 78, 190]
+CAL_GRAIN_IDS = [51, 56, 72, 80, 126, 223, 237, 262]
+VAL_GRAIN_IDS = [44, 50, 60, 178, 190, 207, 278, 299]
 
 # Iteration information
-END_ITER = 15
+END_ITER = 31
 CUSTOM_LABEL_LIST = list(range(1,END_ITER+2,2)) # None
 
 # Error information

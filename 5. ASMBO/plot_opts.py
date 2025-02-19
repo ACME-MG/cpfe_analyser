@@ -24,13 +24,30 @@ EXP_EBSD_ID = "ebsd_4"
 ASMBO_PATH = "/mnt/c/Users/janzen/OneDrive - UNSW/PhD/results/asmbo"
 MOOSE_PATH = "/mnt/c/Users/janzen/OneDrive - UNSW/PhD/results/moose_sim"
 SIM_INFO_LIST = [
+
+    # Voce Hardening Model
     # {"label": "Low-fidelity",  "ebsd_id": "ebsd_4", "colour": "tab:green", "path": f"{ASMBO_PATH}/2025-02-02 (vh_sm8_i72)/250202092030_i59_simulate"},
     # {"label": "High-fidelity", "ebsd_id": "ebsd_2", "colour": "tab:red",   "path": f"{MOOSE_PATH}/2025-02-04 (617_s3_10um_vh)"},
-    {"label": "Low-fidelity",  "ebsd_id": "ebsd_4", "colour": "tab:green", "path": f"{ASMBO_PATH}/2025-02-06 (lh2_sm8_i15)/250206013451_i12_simulate"},
-    {"label": "High-fidelity", "ebsd_id": "ebsd_2", "colour": "tab:red",   "path": f"{MOOSE_PATH}/2025-02-09 (617_s3_10um_lh2)"},
-    # {"label": "VH",  "ebsd_id": "ebsd_2", "colour": "tab:cyan",   "path": f"{MOOSE_PATH}/2025-02-04 (617_s3_10um_vh)"},
-    # {"label": "LH2", "ebsd_id": "ebsd_4", "colour": "tab:orange", "path": f"{ASMBO_PATH}/2025-01-09 (lh_sm32_i16)/250108194247_i8_simulate"},
-    # {"label": "LH6", "ebsd_id": "ebsd_4", "colour": "tab:purple", "path": f"{ASMBO_PATH}/2025-01-18 (lh6_sm72_i20)/250117013234_i11_simulate"},
+    
+    # Two-coefficient latent hardening model
+    # {"label": "Low-fidelity",  "ebsd_id": "ebsd_4", "colour": "tab:green", "path": f"{ASMBO_PATH}/2025-02-06 (lh2_sm8_i15)/250206013451_i12_simulate"},
+    # {"label": "High-fidelity", "ebsd_id": "ebsd_2", "colour": "tab:red",   "path": f"{MOOSE_PATH}/2025-02-09 (617_s3_10um_lh2)"},
+    {"label": "Low-fidelity",  "ebsd_id": "ebsd_4", "colour": "tab:green", "path": f"{ASMBO_PATH}/2025-02-19 (lh2_sm8_i17)/250218212104_i8_simulate"},
+    # {"label": "High-fidelity", "ebsd_id": "ebsd_2", "colour": "tab:red",   "path": f"{MOOSE_PATH}/"},
+    
+    # Six-coefficient latent hardening model
+    # {"label": "Low-fidelity",  "ebsd_id": "ebsd_4", "colour": "tab:green", "path": f"{ASMBO_PATH}/2025-02-14 (lh6_sm16_i34)/250213134340_i26_simulate"},
+    # {"label": "High-fidelity", "ebsd_id": "ebsd_2", "colour": "tab:red",   "path": f"{MOOSE_PATH}/2025-02-14 (617_s3_10um_lh6)"},
+    
+    # All low-fidelity
+    # {"label": "VH",   "ebsd_id": "ebsd_4", "colour": "tab:cyan",   "path": f"{ASMBO_PATH}/2025-02-02 (vh_sm8_i72)/250202092030_i59_simulate"},
+    # {"label": "LH2",  "ebsd_id": "ebsd_4", "colour": "tab:orange", "path": f"{ASMBO_PATH}/2025-02-06 (lh2_sm8_i15)/250206013451_i12_simulate"},
+    # {"label": "LH6",  "ebsd_id": "ebsd_4", "colour": "tab:purple", "path": f"{ASMBO_PATH}/2025-02-14 (lh6_sm16_i34)/250213134340_i26_simulate"},
+    
+    # All high-fidelity
+    {"label": "VH",   "ebsd_id": "ebsd_2", "colour": "tab:cyan",   "path": f"{MOOSE_PATH}/2025-02-04 (617_s3_10um_vh)"},
+    {"label": "LH2",  "ebsd_id": "ebsd_2", "colour": "tab:orange", "path": f"{MOOSE_PATH}/2025-02-09 (617_s3_10um_lh2)"},
+    {"label": "LH6",  "ebsd_id": "ebsd_2", "colour": "tab:purple", "path": f"{MOOSE_PATH}/2025-02-14 (617_s3_10um_lh6)"},
 ]
 for si in SIM_INFO_LIST:
     si["data"] = csv_to_dict(f"{si['path']}/summary.csv")
@@ -45,8 +62,8 @@ GRAIN_IDS = [
 STRAIN_FIELD = "average_strain"
 STRESS_FIELD = "average_stress"
 RES_DATA_MAP = "data/res_grain_map.csv"
-SPACING      = -2.25
-# SPACING      = -6.25
+# SPACING      = -2.25
+SPACING      = -6.25
 
 # Script parameters
 SHOW_GRAIN_ID = False
