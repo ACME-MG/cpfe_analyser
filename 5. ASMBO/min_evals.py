@@ -11,54 +11,49 @@ import matplotlib.pyplot as plt
 import numpy as np
 import sys; sys.path += [".."]
 from __common__.plotter import save_plot
-from assess import pareto, tolerance
 from sm_error import sm_error
-
-# Evaluation function
-# EVALUATE = [pareto, "par"]
-# EVALUATE = [tolerance, "tol"]
-EVALUATE = [sm_error, "sme"]
 
 # Paths
 ASMBO_DIR_DICT = {
-    2: [
-        "2025-01-23 (vh_sm2_i32)",
-        "2025-01-31 (vh_sm2_i47)",
-    ],
-    4: [
-        "2025-01-20 (vh_sm4_i17)",
-        "2025-01-20 (vh_sm4_i22)",
-        "2025-01-20 (vh_sm4_i25)",
-        "2025-01-25 (vh_sm4_i29)",
-        "2025-01-31 (vh_sm4_i44)",
-    ],
-    6: [
-        "2025-01-22 (vh_sm6_i23)",
-        "2025-01-22 (vh_sm6_i18)",
-        "2025-01-28 (vh_sm6_i43)",
-    ],
+    # 2: [
+    #     "2025-01-23 (vh_sm2_i32)",
+    #     "2025-01-31 (vh_sm2_i47)",
+    # ],
+    # 4: [
+    #     "2025-01-20 (vh_sm4_i17)",
+    #     "2025-01-20 (vh_sm4_i22)",
+    #     "2025-01-20 (vh_sm4_i25)",
+    #     "2025-01-25 (vh_sm4_i29)",
+    #     "2025-01-31 (vh_sm4_i44)",
+    # ],
+    # 6: [
+    #     "2025-01-22 (vh_sm6_i23)",
+    #     "2025-01-22 (vh_sm6_i18)",
+    #     "2025-01-28 (vh_sm6_i43)",
+    # ],
     8: [
-        "2025-01-18 (vh_sm8_i24)",
-        "2025-01-19 (vh_sm8_i22)",
-        "2025-01-25 (vh_sm8_i16)",
-        "2025-02-02 (vh_sm8_i72)",
-        "2025-02-03 (vh_sm8_i46)",
+        # "2025-01-18 (vh_sm8_i24)",
+        # "2025-01-19 (vh_sm8_i22)",
+        # "2025-01-25 (vh_sm8_i16)",
+        # "2025-02-02 (vh_sm8_i72)",
+        # "2025-02-03 (vh_sm8_i46)",
+        "2025-02-28 (vh_pinned_sm8_i29)",
     ],
-    10: [
-        "2025-01-24 (vh_sm10_i22)",
-        "2025-01-26 (vh_sm10_i10)",
-        "2025-02-01 (vh_sm10_i27)",
-    ],
-    12: [
-        "2025-01-26 (vh_sm12_i15)",
-    ],
-    14: [
-        "2025-01-26 (vh_sm14_i25)",
-        "2025-01-27 (vh_sm14_i23)",
-    ],
-    16: [
-        "2025-01-21 (vh_sm16_i19)",
-    ],
+    # 10: [
+    #     "2025-01-24 (vh_sm10_i22)",
+    #     "2025-01-26 (vh_sm10_i10)",
+    #     "2025-02-01 (vh_sm10_i27)",
+    # ],
+    # 12: [
+    #     "2025-01-26 (vh_sm12_i15)",
+    # ],
+    # 14: [
+    #     "2025-01-26 (vh_sm14_i25)",
+    #     "2025-01-27 (vh_sm14_i23)",
+    # ],
+    # 16: [
+    #     "2025-01-21 (vh_sm16_i19)",
+    # ],
 }
 SIM_DATA_PATH = "/mnt/c/Users/janzen/OneDrive - UNSW/PhD/results/asmbo"
 RESULTS_PATH  = "results"
@@ -77,15 +72,25 @@ def main():
     # Get the number of initial and adaptive evaluations
     eval_list = []
     for init_evals in ASMBO_DIR_DICT.keys():
+        
+        # Initialise
+        num_evals = []
+
+        # Evaluate each path
         sim_path_list = [f"{SIM_DATA_PATH}/{sim_dir}" for sim_dir in ASMBO_DIR_DICT[init_evals]]
-        num_evals = [EVALUATE[0](sim_path) for sim_path in sim_path_list]
-        num_evals = [ne for ne in num_evals if ne != None]
+        for sim_path in sim_path_list:
+            termination, knee_point = sm_error(sim_path)
+            num_evals.append(termination)
+            print(f"init: {init_evals}\ttermination: {termination}\tknee_point: {knee_point}")
+        print("==================================================")
+
+        # Save
         eval_list.append({"init": init_evals, "adpt": num_evals})
 
-    # Manual
-    eval_list[0]["adpt"] += [32, 32]
-    eval_list[1]["adpt"] += [32, 32]
-    eval_list[4]["adpt"] += [4]
+    # # Manual
+    # eval_list[0]["adpt"] += [32, 32]
+    # eval_list[1]["adpt"] += [32, 32]
+    # eval_list[4]["adpt"] += [4]
 
     # Plot the evaluations
     plot_min_evals(eval_list)
@@ -124,7 +129,7 @@ def plot_min_evals(eval_list:list) -> None:
 
     # Save
     plt.legend(framealpha=1, edgecolor="black", fancybox=True, facecolor="white", fontsize=12, loc="upper left")
-    save_plot(f"{RESULTS_PATH}/min_{EVALUATE[1]}_evals.png")
+    save_plot(f"{RESULTS_PATH}/min_evals.png")
 
 # Calls the main function
 if __name__ == "__main__":

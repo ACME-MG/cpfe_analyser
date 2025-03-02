@@ -25,29 +25,37 @@ ASMBO_PATH = "/mnt/c/Users/janzen/OneDrive - UNSW/PhD/results/asmbo"
 MOOSE_PATH = "/mnt/c/Users/janzen/OneDrive - UNSW/PhD/results/moose_sim"
 SIM_INFO_LIST = [
 
-    # Voce Hardening Model
-    # {"label": "Low-fidelity",  "ebsd_id": "ebsd_4", "colour": "tab:green", "path": f"{ASMBO_PATH}/2025-02-02 (vh_sm8_i72)/250202092030_i59_simulate"},
-    # {"label": "High-fidelity", "ebsd_id": "ebsd_2", "colour": "tab:red",   "path": f"{MOOSE_PATH}/2025-02-04 (617_s3_10um_vh)"},
+    {"label": "Unpinned", "alpha": 1.0, "ebsd_id": "ebsd_4", "colour": "tab:purple", "path": f"{ASMBO_PATH}/2025-01-19 (vh_sm8_i22)/250119093435_i13_simulate"},
+    {"label": "Pinned",   "alpha": 1.0, "ebsd_id": "ebsd_4", "colour": "tab:orange", "path": f"{ASMBO_PATH}/2025-02-28 (vh_pinned_sm8_i29)/250228104126_i28_simulate"},
     
+    # Voce Hardening Model
+    # {"label": "Low-fidelity",  "alpha": 1.0, "ebsd_id": "ebsd_4", "colour": "tab:green", "path": f"{ASMBO_PATH}/2025-01-19 (vh_sm8_i22)/250119093435_i13_simulate"},
+    # {"label": "High-fidelity", "alpha": 1.0, "ebsd_id": "ebsd_2", "colour": "tab:red",   "path": f"{MOOSE_PATH}/2025-02-04 (617_s3_10um_vh)"},
+    # {"label": "Run 1", "alpha": 0.3, "ebsd_id": "ebsd_4", "colour": "tab:green",   "path": f"{ASMBO_PATH}/2025-01-18 (vh_sm8_i24)/250118230307_i16_simulate"},
+    # {"label": "Run 2", "alpha": 1.0, "ebsd_id": "ebsd_4", "colour": "tab:green",   "path": f"{ASMBO_PATH}/2025-01-19 (vh_sm8_i22)/250119093435_i13_simulate"},
+    # {"label": "Run 3", "alpha": 0.3, "ebsd_id": "ebsd_4", "colour": "tab:green",   "path": f"{ASMBO_PATH}/2025-01-25 (vh_sm8_i16)/250125081401_i8_simulate"},
+    # {"label": "Run 4", "alpha": 0.3, "ebsd_id": "ebsd_4", "colour": "tab:green",   "path": f"{ASMBO_PATH}/2025-02-02 (vh_sm8_i72)/250201073857_i8_simulate"},
+    # {"label": "Run 5", "alpha": 0.3, "ebsd_id": "ebsd_4", "colour": "tab:green",   "path": f"{ASMBO_PATH}/2025-02-03 (vh_sm8_i46)/250203003505_i13_simulate"},
+
     # Two-coefficient latent hardening model
-    # {"label": "Low-fidelity",  "ebsd_id": "ebsd_4", "colour": "tab:green", "path": f"{ASMBO_PATH}/2025-02-06 (lh2_sm8_i15)/250206013451_i12_simulate"},
-    # {"label": "High-fidelity", "ebsd_id": "ebsd_2", "colour": "tab:red",   "path": f"{MOOSE_PATH}/2025-02-09 (617_s3_10um_lh2)"},
-    {"label": "Low-fidelity",  "ebsd_id": "ebsd_4", "colour": "tab:green", "path": f"{ASMBO_PATH}/2025-02-19 (lh2_sm8_i17)/250218212104_i8_simulate"},
-    # {"label": "High-fidelity", "ebsd_id": "ebsd_2", "colour": "tab:red",   "path": f"{MOOSE_PATH}/"},
+    # {"label": "Low-fidelity",  "alpha": 1.0, "ebsd_id": "ebsd_4", "colour": "tab:green", "path": f"{ASMBO_PATH}/2025-02-06 (lh2_sm8_i15)/250206013451_i12_simulate"},
+    # {"label": "High-fidelity", "alpha": 1.0, "ebsd_id": "ebsd_2", "colour": "tab:red",   "path": f"{MOOSE_PATH}/2025-02-09 (617_s3_10um_lh2)"},
+    # {"label": "Low-fidelity",  "alpha": 1.0, "ebsd_id": "ebsd_4", "colour": "tab:green", "path": f"{ASMBO_PATH}/2025-02-19 (lh2_sm8_i17)/250218212104_i8_simulate"},
+    # {"label": "High-fidelity", "alpha": 1.0, "ebsd_id": "ebsd_2", "colour": "tab:red",   "path": f"{MOOSE_PATH}/2025-02-24 (617_s3_10um_lh2)"},
     
     # Six-coefficient latent hardening model
-    # {"label": "Low-fidelity",  "ebsd_id": "ebsd_4", "colour": "tab:green", "path": f"{ASMBO_PATH}/2025-02-14 (lh6_sm16_i34)/250213134340_i26_simulate"},
-    # {"label": "High-fidelity", "ebsd_id": "ebsd_2", "colour": "tab:red",   "path": f"{MOOSE_PATH}/2025-02-14 (617_s3_10um_lh6)"},
+    # {"label": "Low-fidelity",  "alpha": 1.0, "ebsd_id": "ebsd_4", "colour": "tab:green", "path": f"{ASMBO_PATH}/2025-02-14 (lh6_sm16_i34)/250213134340_i26_simulate"},
+    # {"label": "High-fidelity", "alpha": 1.0, "ebsd_id": "ebsd_2", "colour": "tab:red",   "path": f"{MOOSE_PATH}/2025-02-14 (617_s3_10um_lh6)"},
     
     # All low-fidelity
-    # {"label": "VH",   "ebsd_id": "ebsd_4", "colour": "tab:cyan",   "path": f"{ASMBO_PATH}/2025-02-02 (vh_sm8_i72)/250202092030_i59_simulate"},
-    # {"label": "LH2",  "ebsd_id": "ebsd_4", "colour": "tab:orange", "path": f"{ASMBO_PATH}/2025-02-06 (lh2_sm8_i15)/250206013451_i12_simulate"},
-    # {"label": "LH6",  "ebsd_id": "ebsd_4", "colour": "tab:purple", "path": f"{ASMBO_PATH}/2025-02-14 (lh6_sm16_i34)/250213134340_i26_simulate"},
+    # {"label": "VH",   "alpha": 1.0, "ebsd_id": "ebsd_4", "colour": "tab:cyan",   "path": f"{ASMBO_PATH}/2025-02-02 (vh_sm8_i72)/250202092030_i59_simulate"},
+    # {"label": "LH2",  "alpha": 1.0, "ebsd_id": "ebsd_4", "colour": "tab:orange", "path": f"{ASMBO_PATH}/2025-02-06 (lh2_sm8_i15)/250206013451_i12_simulate"},
+    # {"label": "LH6",  "alpha": 1.0, "ebsd_id": "ebsd_4", "colour": "tab:purple", "path": f"{ASMBO_PATH}/2025-02-14 (lh6_sm16_i34)/250213134340_i26_simulate"},
     
     # All high-fidelity
-    {"label": "VH",   "ebsd_id": "ebsd_2", "colour": "tab:cyan",   "path": f"{MOOSE_PATH}/2025-02-04 (617_s3_10um_vh)"},
-    {"label": "LH2",  "ebsd_id": "ebsd_2", "colour": "tab:orange", "path": f"{MOOSE_PATH}/2025-02-09 (617_s3_10um_lh2)"},
-    {"label": "LH6",  "ebsd_id": "ebsd_2", "colour": "tab:purple", "path": f"{MOOSE_PATH}/2025-02-14 (617_s3_10um_lh6)"},
+    # {"label": "VH",   "alpha": 1.0, "ebsd_id": "ebsd_2", "colour": "tab:cyan",   "path": f"{MOOSE_PATH}/2025-02-04 (617_s3_10um_vh)"},
+    # {"label": "LH2",  "alpha": 1.0, "ebsd_id": "ebsd_2", "colour": "tab:orange", "path": f"{MOOSE_PATH}/2025-02-09 (617_s3_10um_lh2)"},
+    # {"label": "LH6",  "alpha": 1.0, "ebsd_id": "ebsd_2", "colour": "tab:purple", "path": f"{MOOSE_PATH}/2025-02-14 (617_s3_10um_lh6)"},
 ]
 for si in SIM_INFO_LIST:
     si["data"] = csv_to_dict(f"{si['path']}/summary.csv")
@@ -63,9 +71,12 @@ STRAIN_FIELD = "average_strain"
 STRESS_FIELD = "average_stress"
 RES_DATA_MAP = "data/res_grain_map.csv"
 # SPACING      = -2.25
-SPACING      = -6.25
+SPACING      = -5.25
+# SPACING      = -6.25
+SPACING      = -3
 
 # Script parameters
+SHOW_LEGEND   = True
 SHOW_GRAIN_ID = False
 
 # Main function
@@ -100,9 +111,9 @@ def main():
             
             # Plot simulated reorientation trajectories
             sim_colour = si["colour"]
-            ipf.plot_ipf_trajectory(sim_trajectories, direction, "plot", {"color": sim_colour, "linewidth": 2, "zorder": 3})
-            ipf.plot_ipf_trajectory(sim_trajectories, direction, "arrow", {"color": sim_colour, "head_width": 0.0075, "head_length": 0.0075*1.5, "zorder": 3})
-            ipf.plot_ipf_trajectory([[st[0]] for st in sim_trajectories], direction, "scatter", {"color": sim_colour, "s": 6**2, "zorder": 3})
+            ipf.plot_ipf_trajectory(sim_trajectories, direction, "plot", {"color": sim_colour, "linewidth": 2, "zorder": 3, "alpha": si["alpha"]})
+            ipf.plot_ipf_trajectory(sim_trajectories, direction, "arrow", {"color": sim_colour, "head_width": 0.0075, "head_length": 0.0075*1.5, "zorder": 3, "alpha": si["alpha"]})
+            ipf.plot_ipf_trajectory([[st[0]] for st in sim_trajectories], direction, "scatter", {"color": sim_colour, "s": 6**2, "zorder": 3, "alpha": si["alpha"]})
 
             # Plot grain IDs
             if SHOW_GRAIN_ID:
@@ -119,17 +130,18 @@ def main():
     # Initialise stress-strain plot
     plotter = Plotter("strain", "stress", "mm/mm", "MPa")
     plotter.prep_plot(size=14)
-    plotter.set_limits((0,0.5), (0,1600))
+    plotter.set_limits((0,0.5), (0,1800))
 
     # Plot stress-strain data
     plt.scatter(exp_dict["strain"], exp_dict["stress"], color=EXP_COLOUR, s=8**2)
     for si in SIM_INFO_LIST:
-        plt.plot(si["data"][STRAIN_FIELD], si["data"][STRESS_FIELD], color=si["colour"], linewidth=3)
+        plt.plot(si["data"][STRAIN_FIELD], si["data"][STRESS_FIELD], color=si["colour"], alpha=si["alpha"], linewidth=3)
 
     # Add stress errors to legend
     sim_dict_list = [si["data"] for si in SIM_INFO_LIST]
     se_list = get_stress_errors(sim_dict_list, exp_dict, eval_strains)
-    add_supp_legend(se_list, SPACING)
+    if SHOW_LEGEND:
+        add_supp_legend(se_list, SPACING)
 
     # Format and save
     plt.xticks(fontsize=12)
@@ -151,7 +163,7 @@ def add_supp_legend(error_list:list, spacing:float=-5.5) -> None:
 
     # Define main keys of the legend
     handles = [plt.scatter([], [], color=EXP_COLOUR, label="Experiment", s=8**2)]
-    handles += [plt.plot([], [], color=si["colour"], label=si['label'], linewidth=3)[0] for si in SIM_INFO_LIST]
+    handles += [plt.plot([], [], color=si["colour"], label=si['label'], alpha=si["alpha"], linewidth=3)[0] for si in SIM_INFO_LIST]
 
     # Define supplementary information
     se_label_list = [" "] + [f"({round_sf(error, 3)})" for error in error_list]

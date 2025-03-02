@@ -15,32 +15,31 @@ import matplotlib.pyplot as plt
 ASMBO_PATH = "/mnt/c/Users/janzen/OneDrive - UNSW/PhD/results/asmbo"
 MOOSE_PATH = "/mnt/c/Users/janzen/OneDrive - UNSW/PhD/results/moose_sim"
 SIM_PATH_LIST = [
-    f"{ASMBO_PATH}/2025-01-18 (vh_sm8_i24)/250118223742_i15_simulate", # 15
-    f"{ASMBO_PATH}/2025-01-19 (vh_sm8_i22)/250119091242_i12_simulate", # 12
-    f"{ASMBO_PATH}/2025-01-25 (vh_sm8_i16)/250125074848_i7_simulate",  # 7
-    f"{ASMBO_PATH}/2025-02-02 (vh_sm8_i72)/250201071915_i7_simulate",  # 7
-    f"{ASMBO_PATH}/2025-02-03 (vh_sm8_i46)/250203001503_i12_simulate", # 12
-
-    f"{ASMBO_PATH}/2025-02-03 (vh_sm8_i46)/250203135536_i42_simulate",
-    f"{ASMBO_PATH}/2025-02-03 (vh_sm8_i46)/250203142952_i43_simulate",
-    f"{ASMBO_PATH}/2025-02-03 (vh_sm8_i46)/250203150417_i44_simulate",
-    f"{ASMBO_PATH}/2025-02-03 (vh_sm8_i46)/250203153904_i45_simulate",
-    f"{ASMBO_PATH}/2025-02-03 (vh_sm8_i46)/250203161457_i46_simulate",
+    f"{ASMBO_PATH}/2025-01-18 (vh_sm8_i24)/250118230307_i16_simulate",
+    f"{ASMBO_PATH}/2025-01-19 (vh_sm8_i22)/250119093435_i13_simulate",
+    f"{ASMBO_PATH}/2025-01-25 (vh_sm8_i16)/250125081401_i8_simulate",
+    f"{ASMBO_PATH}/2025-02-02 (vh_sm8_i72)/250201073857_i8_simulate",
+    f"{ASMBO_PATH}/2025-02-03 (vh_sm8_i46)/250203003505_i13_simulate",
 ]
 
 # Parameter information
 PRM_INFO = [
-    {"name": "cp_tau_s", "bounds": (0, 2000), "label": r"$\tau_s$", "ticks": [0, 400, 800, 1200, 1600, 2000]},
-    {"name": "cp_b",     "bounds": (0, 20),   "label": r"$b$",      "ticks": [0, 4, 8, 12, 16, 20]},
     {"name": "cp_tau_0", "bounds": (0, 500),  "label": r"$\tau_0$", "ticks": [0, 100, 200, 300, 400, 500]},
-    {"name": "cp_n",     "bounds": (0, 20),   "label": r"$n$",      "ticks": [0, 4, 8, 12, 16, 20]},
+    {"name": "cp_n",     "bounds": (1, 20),   "label": r"$n$",      "ticks": [1, 4, 8, 12, 16, 20]},
+    {"name": "cp_b",     "bounds": (0, 20),   "label": r"$b$",      "ticks": [0, 4, 8, 12, 16, 20]},
+    {"name": "cp_tau_s", "bounds": (0, 2000), "label": r"$\tau_s$", "ticks": [0, 400, 800, 1200, 1600, 2000]},
     # {"name": "cp_lh_0",  "bounds": (0, 1000), "label": r"$\tau_s$"},
     # {"name": "cp_lh_1",  "bounds": (0, 1000), "label": r"$b$"},
 ]
+OPT_INDEX = 1
 
 # Plotting parameters
-HORIZONTAL = False
-COLOUR     = (0.8, 0.6, 1.0)
+HORIZONTAL     = False
+BOXPLOT_COLOUR = (0.6, 1.0, 0.6)
+OPT_COLOUR     = "tab:green"
+WIDTH_FACTOR   = 0.6
+WHITE_SPACE    = 1.0
+MARGIN_SPACE   = 0.1
 
 # Main function
 def main():
@@ -50,11 +49,12 @@ def main():
 
     # Identify number of parameters
     num_params = len(PRM_INFO)
+    length = 2*MARGIN_SPACE+num_params*WIDTH_FACTOR+(num_params-1)*WHITE_SPACE
     if HORIZONTAL:
-        fig, axes = plt.subplots(nrows=num_params, ncols=1, figsize=(5, num_params*0.8), sharex=False, dpi=300)
+        fig, axes = plt.subplots(nrows=num_params, ncols=1, figsize=(5, length), sharex=False, dpi=300)
     else:
-        fig, axes = plt.subplots(nrows=1, ncols=num_params, figsize=(num_params*1.6, 5), sharex=False, dpi=300)
-    plt.subplots_adjust(wspace=0.5, hspace=0.5)
+        fig, axes = plt.subplots(nrows=1, ncols=num_params, figsize=(length, 5), sharex=False, dpi=300)
+    plt.subplots_adjust(left=MARGIN_SPACE, wspace=WHITE_SPACE, hspace=WHITE_SPACE)
 
     # Add boxplots and data points
     for i, axis in enumerate(axes):
@@ -63,7 +63,7 @@ def main():
         pi = PRM_INFO[i]
 
         # Add formatting
-        axis.set_title(pi["label"], pad=20, fontsize=14)
+        axis.set_title(pi["label"], pad=10, fontsize=14)
         axis.grid(which="major", axis="both", color="SlateGray", linewidth=2, linestyle=":", alpha=0.5)
         for spine in axis.spines.values():
             spine.set_linewidth(1)
@@ -75,25 +75,34 @@ def main():
         y_list = position_list if HORIZONTAL else data_list
         orientation = "h" if HORIZONTAL else "v"
 
-        # Plot
+        # Plot boxplots
         sns.boxplot(
             x=x_list, y=y_list, ax=axis, width=0.5, showfliers=False,
-            boxprops=dict(edgecolor="black", linewidth=1),  # Set box edge color
-            medianprops=dict(color="black", linewidth=1),  # Set median line width
-            whiskerprops=dict(color="black", linewidth=1),  # Set whisker line width
-            capprops=dict(color="black", linewidth=1),  # Set cap line width
+            boxprops=dict(edgecolor="black", linewidth=1), # set box edge color
+            medianprops=dict(color="black", linewidth=1),  # set median line width
+            whiskerprops=dict(color="black", linewidth=1), # set whisker line width
+            capprops=dict(color="black", linewidth=1),     # set cap line width
             flierprops=dict(markerfacecolor='r', markersize=3, linestyle='none'),
-            orient=orientation, color=COLOUR
+            orient=orientation, color=BOXPLOT_COLOUR
         )
+
+        # Plot optimal line
+        if OPT_INDEX != None:
+            opt_data  = data_list[OPT_INDEX]
+            opt_x_list = [opt_data, opt_data] if HORIZONTAL else [-1, 1]
+            opt_y_list = [-1, 1] if HORIZONTAL else [opt_data, opt_data]
+            axis.plot(opt_x_list, opt_y_list, color=OPT_COLOUR, linewidth=2, zorder=3)
 
         # Apply bounds
         if HORIZONTAL:
             axis.set_yticks([])
             axis.set_xticks(pi["ticks"])
             axis.set_xlim(pi["bounds"])
+            axis.set_ylim((-0.4, 0.4))
         else:
             axis.set_xticks([])
             axis.set_yticks(pi["ticks"])
+            axis.set_xlim((-0.4, 0.4))
             axis.set_ylim(pi["bounds"])
 
     # Format and save

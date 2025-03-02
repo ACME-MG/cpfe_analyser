@@ -8,23 +8,24 @@
 # Libraries
 import os
 import matplotlib.pyplot as plt
-import numpy as np
+import math, numpy as np
 import sys; sys.path += ["..", "/home/janzen/code/mms"]
 from __common__.io import csv_to_dict, dict_to_stdout
 from __common__.analyse import get_stress, get_geodesics
 from __common__.plotter import save_plot
 from __common__.surrogate import Model
-from assess import find_knee_point
 
 # Paths
-ASMBO_DIR     = "2025-02-19 (lh2_sm8_i17)"
+# ASMBO_DIR     = "2025-02-28 (vh_pinned_sm8_i29)"
+ASMBO_DIR     = "2025-03-01 (vh_pinned_sm8_i56)"
+# ASMBO_DIR     = "2025-03-02 (vh_pinned_sm8_i39)"
 SIM_DATA_PATH = f"/mnt/c/Users/janzen/OneDrive - UNSW/PhD/results/asmbo/{ASMBO_DIR}"
 EXP_DATA_PATH = "data/617_s3_40um_exp.csv"
 RESULTS_PATH  = "results"
 
 # Model information
-# PARAM_NAMES = ["cp_tau_s", "cp_b", "cp_tau_0", "cp_n"]
-PARAM_NAMES = [f"cp_lh_{i}" for i in range(6)] + ["cp_tau_0", "cp_n"]
+PARAM_NAMES = ["cp_tau_s", "cp_b", "cp_tau_0", "cp_n"]
+# PARAM_NAMES = [f"cp_lh_{i}" for i in range(6)] + ["cp_tau_0", "cp_n"]
 
 # Plotting parameters
 MAX_ITERS    = 32
@@ -77,7 +78,62 @@ def sm_error(sim_path:str=""):
         print(f"Knee Point Iteration:  {knee_point}")
     
     # Otherwise, just return termination iteration
-    return termination
+    return termination, knee_point
+
+def find_pareto_efficiency(error_grid:list) -> list:
+    """
+    Identifies the Pareto-efficient errors
+
+    Parameters:
+    * `error_grid`: The list of list of errors
+
+    Returns a list of booleans corresponding to Pareto-efficiency
+    """
+    is_dominated = lambda a_list, b_list : not True in [a < b for a, b in zip(a_list, b_list)]
+    is_equivalent = lambda a_list, b_list : not False in [a == b for a, b in zip(a_list, b_list)]
+    pe_list = [True]*len(error_grid[0])
+    for i in range(len(error_grid[0])):
+        curr_error_list = [error_list[i] for error_list in error_grid]
+        for j in range(len(error_grid[0])):
+            other_error_list = [error_list[j] for error_list in error_grid]
+            if not is_equivalent(curr_error_list, other_error_list) and is_dominated(curr_error_list, other_error_list):
+                pe_list[i] = False
+                break
+    return pe_list
+
+def find_knee_point(error_grid:list) -> int:
+    """
+    Identifies the knee point given a list of error lists
+
+    Parameters:
+    * `error_grid`: The list of list of errors
+
+    Returns the index of the knee point
+    """
+    
+    # Extract Pareto-efficient errors
+    pe_list = find_pareto_efficiency(error_grid)
+    pe_error_grid = [[error for error, pe in zip(error_list, pe_list) if pe] for error_list in error_grid]
+
+    # Normalise the errors
+    norm_error_grid = []
+    for error_list in pe_error_grid:
+        average_error = np.average(error_list)
+        norm_error_list = [error/average_error for error in error_list]
+        norm_error_grid.append(norm_error_list)
+    
+    # Comput distances to the ideal point (i.e., 0)
+    distance_list = []
+    for i in range(len(norm_error_grid[0])):
+        square_list = [norm_error_list[i]**2 for norm_error_list in norm_error_grid]
+        distance = math.sqrt(sum(square_list))
+        distance_list.append(distance)
+    
+    # Return the index of the knee point
+    min_distance = min(distance_list)
+    pe_min_index = distance_list.index(min_distance)
+    min_index = [i for i in range(len(pe_list)) if pe_list[i]][pe_min_index]
+    return min_index
 
 def get_termination(error_grid:list, thresholds:list):
     """
