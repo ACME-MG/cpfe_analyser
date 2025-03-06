@@ -21,8 +21,8 @@ SIM_PATH = f"/mnt/c/Users/janzen/OneDrive - UNSW/PhD/results/asmbo/{SIM_FILE}/su
 # SIM_PATH = f"/mnt/c/Users/janzen/OneDrive - UNSW/PhD/results/moose_sim/{SIM_FILE}/summary.csv"
 
 # Simulation information
-CAL_GRAIN_IDS = [51, 56, 72, 80, 126, 223, 237, 262]
-VAL_GRAIN_IDS = [44, 60, 78, 86, 178, 190, 207, 244]
+CAL_GRAIN_IDS = [60, 79, 178, 189, 190, 215, 237, 278]
+VAL_GRAIN_IDS = [14, 56, 72, 101, 223, 255, 262, 299]
 STRAIN_FIELD = "average_strain"
 STRESS_FIELD = "average_stress"
 RES_DATA_MAP = "data/res_grain_map.csv"

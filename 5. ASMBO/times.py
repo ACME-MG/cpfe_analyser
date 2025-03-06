@@ -14,9 +14,10 @@ from __common__.plotter import save_plot
 # Model information
 RESULTS_PATH = "/mnt/c/Users/janzen/OneDrive - UNSW/PhD/results/"
 MODEL_INFO = [
-    {"name": "VH",  "init": 8,  "adpt": 12,  "vald": 8.97, "path": f"{RESULTS_PATH}/moose_sim/2025-01-03 (617_s3_40um_vh_sm32)"},
-    {"name": "LH2", "init": 8,  "adpt": 7.5, "vald": 73.7, "path": f"{RESULTS_PATH}/moose_sim/2025-01-07 (617_s3_40um_lh_sm32)"},
-    {"name": "LH6", "init": 16, "adpt": 26,  "vald": 69.2, "path": f"{RESULTS_PATH}/moose_sim/2025-01-07 (617_s3_40um_lh_sm32)"},
+    {"name": "VH",  "init": 1,  "adpt": 1,  "vald": 1, "path": f"{RESULTS_PATH}/asmbo/2025-03-01 (vh_pinned_sm8_i56)"},
+    # {"name": "VH",  "init": 8,  "adpt": 12,  "vald": 8.97, "path": f"{RESULTS_PATH}/moose_sim/2025-01-03 (617_s3_40um_vh_sm32)"},
+    # {"name": "LH2", "init": 8,  "adpt": 7.5, "vald": 73.7, "path": f"{RESULTS_PATH}/moose_sim/2025-01-07 (617_s3_40um_lh_sm32)"},
+    # {"name": "LH6", "init": 16, "adpt": 26,  "vald": 69.2, "path": f"{RESULTS_PATH}/moose_sim/2025-01-07 (617_s3_40um_lh_sm32)"},
 ] # "init" and "adpt" initially contain number of simulations; "vald" contains total hours
 
 # Plotting parameters
@@ -27,7 +28,8 @@ ADPT_COLOUR = (0.6, 1.0, 0.6) # "tab:green"
 INIT_COLOUR = (0.6, 0.6, 1.0) # "tab:blue"
 
 # File constants
-SUFFIX  = ".log"
+# SUFFIX  = ".log"
+SUFFIX  = ".out"
 KEYWORD = "  Finished on "
 
 def main():
@@ -47,9 +49,11 @@ def main():
         time_list = []
         for log_path in log_paths:
             time_list += get_times(log_path)
+        time_list = sorted(time_list, reverse=True)[:56]
+        print(time_list)
 
         # Calculate average time and apply
-        average_time = np.average(time_list)/4*1.2
+        average_time = np.average(time_list)#/4*1.2
         print(f"{mi['name']} {average_time}")
         mi["init"] *= average_time
         mi["adpt"] *= average_time

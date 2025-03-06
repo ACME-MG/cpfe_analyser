@@ -11,6 +11,7 @@ import numpy as np
 import seaborn as sns
 import matplotlib.pyplot as plt
 import matplotlib.cm as cm
+from scipy.stats import gaussian_kde
 from matplotlib.patches import PathPatch
 from matplotlib.path import Path
 from matplotlib.collections import PathCollection
@@ -126,7 +127,7 @@ class PF:
         polar_points = np.array([cart2pol(cp) for cp in cart_points])
         return polar_points
 
-    def plot_pf(self, euler_list:list, plane:list, colour_list:list=None, size_list:list=None) -> None:
+    def plot_pf(self, euler_list:list, plane:list, colour:str=None, colour_list:list=None, size_list:list=None) -> None:
         """
         Plots a standard pole figure using a stereographic projection;
         only works for cubic structures
@@ -134,6 +135,7 @@ class PF:
         Parameters:
         * `euler_list`:  The list of orientations in euler-bunge form (rads)
         * `plane`:       Plane of the projection (i.e., crystal direction)
+        * `colour`:      Colour for plotting; overrides `colour_list`
         * `colour_list`: List of values to define the colouring scheme
         * `size_list`:   List of values to define the sizing scheme
         
@@ -152,25 +154,46 @@ class PF:
         for i, euler in enumerate(euler_list):
             polar_points = self.get_polar_points(euler, eq_poles)
             size = norm_size_list[i] if size_list != None else 3
-            colour = rgb_colours[i] if colour_list != None else None
-            plot_points(axis, polar_points, size, colour)
+            orientation_colour = rgb_colours[i] if colour_list != None else None
+            orientation_colour = orientation_colour if colour == None else colour
+            plot_points(axis, polar_points, size, orientation_colour)
 
-    def plot_pf_density(self, euler_list:list, plane:list) -> None:
+    def plot_pf_density(self, euler_list:list, plane:list, colour:str) -> None:
         """
         Plots a standard pole figure with contoured colours based on point density
         
         Parameters:
         * `euler_list`:  The list of orientations in euler-bunge form (rads)
         * `plane`:       Plane of the projection (i.e., crystal direction)
+        * `colour`:      Colour for plotting
         """
+
+        # Get radius and theta values
         eq_poles = self.get_equivalent_poles(plane)
-        self.initialise_polar_grid()
         radius_list, theta_list = [], [] 
         for euler in euler_list:
             polar_points = self.get_polar_points(euler, eq_poles)
-            radius_list += list(polar_points[:,0])
-            theta_list += list(polar_points[:,1])
-        sns.kdeplot(x=radius_list, y=theta_list, cmap="viridis", levels=5, thresh=0)
+            radius_list += list(polar_points[:,1])
+            theta_list += list(polar_points[:,0])
+        radius_list = [radius*4*np.pi for radius in radius_list]
+        # theta_list = [(theta+2*np.pi)/4/np.pi for theta in theta_list]
+
+        # Normalise theta values and stack
+        values = np.vstack([theta_list, radius_list])
+        kde = gaussian_kde(values)
+
+        # Create grid in normalised domain
+        theta_grid, radius_grid = np.meshgrid(np.linspace(-2*np.pi, 2*np.pi, 100), np.linspace(0, 4*np.pi, 100))
+        # theta_grid, radius_grid = np.meshgrid(np.linspace(-2*np.pi, 2*np.pi, 100), np.linspace(0, 1, 100))
+        # theta_grid, radius_grid = np.meshgrid(np.linspace(0, 1, 100), np.linspace(0, 1, 100))
+        grid_values = np.vstack([theta_grid.ravel(), radius_grid.ravel()])
+        density = kde(grid_values).reshape(theta_grid.shape)
+
+        # Plot pole figure
+        self.initialise_polar_grid()
+        # theta_grid = theta_grid*(4*np.pi)-2*np.pi
+        plt.gca().contourf(theta_grid, radius_grid, density, levels=4, cmap='viridis')
+        plt.ylim([0, 4*np.pi])
 
 # Inverse pole figure class
 class IPF:
@@ -542,7 +565,7 @@ def cart2pol(cart_point:np.array):
     """
     return np.array([np.arctan2(cart_point[1], cart_point[0]), np.linalg.norm(cart_point)])
 
-def plot_points(axis:plt.Axes, points:list, size:float, colour:np.ndarray) -> PathCollection:
+def plot_points(axis:plt.Axes, points:list, size:float, colour:np.ndarray=None) -> PathCollection:
     """
     Plots the points on a plot
 
@@ -555,7 +578,7 @@ def plot_points(axis:plt.Axes, points:list, size:float, colour:np.ndarray) -> Pa
 
     Returns the scatter object
     """
-    if not isinstance(colour, np.ndarray):
+    if colour == None:
         scatter = axis.scatter(points[:,0], points[:,1], c="black", s=size**2)
     else:
         scatter = axis.scatter(points[:,0], points[:,1], color=colour, edgecolor="black", linewidth=0.25, s=size**2)

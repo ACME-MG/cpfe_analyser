@@ -15,11 +15,11 @@ import matplotlib.pyplot as plt
 ASMBO_PATH = "/mnt/c/Users/janzen/OneDrive - UNSW/PhD/results/asmbo"
 MOOSE_PATH = "/mnt/c/Users/janzen/OneDrive - UNSW/PhD/results/moose_sim"
 SIM_PATH_LIST = [
-    f"{ASMBO_PATH}/2025-01-18 (vh_sm8_i24)/250118230307_i16_simulate",
-    f"{ASMBO_PATH}/2025-01-19 (vh_sm8_i22)/250119093435_i13_simulate",
-    f"{ASMBO_PATH}/2025-01-25 (vh_sm8_i16)/250125081401_i8_simulate",
-    f"{ASMBO_PATH}/2025-02-02 (vh_sm8_i72)/250201073857_i8_simulate",
-    f"{ASMBO_PATH}/2025-02-03 (vh_sm8_i46)/250203003505_i13_simulate",
+    f"{ASMBO_PATH}/2025-02-28 (vh_pinned_sm8_i29)/250228104126_i28_simulate",
+    f"{ASMBO_PATH}/2025-03-01 (vh_pinned_sm8_i56)/250228195658_i20_simulate",
+    f"{ASMBO_PATH}/2025-03-02 (vh_pinned_sm8_i39)/250302135720_i38_simulate",
+    f"{ASMBO_PATH}/2025-03-03 (vh_pinned_sm8_i43)/250303022723_i26_simulate",
+    f"{ASMBO_PATH}/2025-03-04 (vh_pinned_sm8_i29)/250304122851_i20_simulate",
 ]
 
 # Parameter information
@@ -63,7 +63,7 @@ def main():
         pi = PRM_INFO[i]
 
         # Add formatting
-        axis.set_title(pi["label"], pad=10, fontsize=14)
+        axis.set_title(pi["label"], pad=12, fontsize=14)
         axis.grid(which="major", axis="both", color="SlateGray", linewidth=2, linestyle=":", alpha=0.5)
         for spine in axis.spines.values():
             spine.set_linewidth(1)

@@ -25,32 +25,24 @@ ASMBO_PATH = "/mnt/c/Users/janzen/OneDrive - UNSW/PhD/results/asmbo"
 MOOSE_PATH = "/mnt/c/Users/janzen/OneDrive - UNSW/PhD/results/moose_sim"
 SIM_INFO_LIST = [
 
-    {"label": "Unpinned", "alpha": 1.0, "ebsd_id": "ebsd_4", "colour": "tab:purple", "path": f"{ASMBO_PATH}/2025-01-19 (vh_sm8_i22)/250119093435_i13_simulate"},
-    {"label": "Pinned",   "alpha": 1.0, "ebsd_id": "ebsd_4", "colour": "tab:orange", "path": f"{ASMBO_PATH}/2025-02-28 (vh_pinned_sm8_i29)/250228104126_i28_simulate"},
-    
     # Voce Hardening Model
-    # {"label": "Low-fidelity",  "alpha": 1.0, "ebsd_id": "ebsd_4", "colour": "tab:green", "path": f"{ASMBO_PATH}/2025-01-19 (vh_sm8_i22)/250119093435_i13_simulate"},
-    # {"label": "High-fidelity", "alpha": 1.0, "ebsd_id": "ebsd_2", "colour": "tab:red",   "path": f"{MOOSE_PATH}/2025-02-04 (617_s3_10um_vh)"},
-    # {"label": "Run 1", "alpha": 0.3, "ebsd_id": "ebsd_4", "colour": "tab:green",   "path": f"{ASMBO_PATH}/2025-01-18 (vh_sm8_i24)/250118230307_i16_simulate"},
-    # {"label": "Run 2", "alpha": 1.0, "ebsd_id": "ebsd_4", "colour": "tab:green",   "path": f"{ASMBO_PATH}/2025-01-19 (vh_sm8_i22)/250119093435_i13_simulate"},
-    # {"label": "Run 3", "alpha": 0.3, "ebsd_id": "ebsd_4", "colour": "tab:green",   "path": f"{ASMBO_PATH}/2025-01-25 (vh_sm8_i16)/250125081401_i8_simulate"},
-    # {"label": "Run 4", "alpha": 0.3, "ebsd_id": "ebsd_4", "colour": "tab:green",   "path": f"{ASMBO_PATH}/2025-02-02 (vh_sm8_i72)/250201073857_i8_simulate"},
-    # {"label": "Run 5", "alpha": 0.3, "ebsd_id": "ebsd_4", "colour": "tab:green",   "path": f"{ASMBO_PATH}/2025-02-03 (vh_sm8_i46)/250203003505_i13_simulate"},
+    # {"label": "Run 1", "alpha": 0.3, "ebsd_id": "ebsd_4", "colour": "tab:green",   "path": f"{ASMBO_PATH}/2025-02-28 (vh_pinned_sm8_i29)/250228104126_i28_simulate"},
+    # {"label": "Run 2", "alpha": 0.3, "ebsd_id": "ebsd_4", "colour": "tab:green",   "path": f"{ASMBO_PATH}/2025-03-01 (vh_pinned_sm8_i56)/250228195658_i20_simulate"},
+    # {"label": "Run 3", "alpha": 0.3, "ebsd_id": "ebsd_4", "colour": "tab:green",   "path": f"{ASMBO_PATH}/2025-03-02 (vh_pinned_sm8_i39)/250302135720_i38_simulate"},
+    # {"label": "Run 4", "alpha": 1.0, "ebsd_id": "ebsd_4", "colour": "tab:green",   "path": f"{ASMBO_PATH}/2025-03-03 (vh_pinned_sm8_i43)/250303022723_i26_simulate"},
+    # {"label": "Run 5", "alpha": 0.3, "ebsd_id": "ebsd_4", "colour": "tab:green",   "path": f"{ASMBO_PATH}/2025-03-04 (vh_pinned_sm8_i29)/250304122851_i20_simulate"},
+    # {"label": "Low-fidelity",  "alpha": 1.0, "ebsd_id": "ebsd_4", "colour": "tab:green", "path": f"{ASMBO_PATH}/2025-03-03 (vh_pinned_sm8_i43)/250303022723_i26_simulate"},
+    # {"label": "High-fidelity", "alpha": 1.0, "ebsd_id": "ebsd_2", "colour": "tab:red",   "path": f"{MOOSE_PATH}/2025-03-05 (617_s3_vh_10um_pin2)"},
+    # {"label": "Low-fidelity",  "alpha": 1.0, "ebsd_id": "ebsd_4", "colour": "tab:green", "path": f"{MOOSE_PATH}/2025-03-05 (617_s3_vh_40um_pin2)"},
+    {"label": "Test", "alpha": 1.0, "ebsd_id": "ebsd_4", "colour": "tab:red",   "path": f"{ASMBO_PATH}/2025-03-06 (vh_pin2_sm8_i40)/250306051551_i27_simulate"},
 
     # Two-coefficient latent hardening model
     # {"label": "Low-fidelity",  "alpha": 1.0, "ebsd_id": "ebsd_4", "colour": "tab:green", "path": f"{ASMBO_PATH}/2025-02-06 (lh2_sm8_i15)/250206013451_i12_simulate"},
     # {"label": "High-fidelity", "alpha": 1.0, "ebsd_id": "ebsd_2", "colour": "tab:red",   "path": f"{MOOSE_PATH}/2025-02-09 (617_s3_10um_lh2)"},
-    # {"label": "Low-fidelity",  "alpha": 1.0, "ebsd_id": "ebsd_4", "colour": "tab:green", "path": f"{ASMBO_PATH}/2025-02-19 (lh2_sm8_i17)/250218212104_i8_simulate"},
-    # {"label": "High-fidelity", "alpha": 1.0, "ebsd_id": "ebsd_2", "colour": "tab:red",   "path": f"{MOOSE_PATH}/2025-02-24 (617_s3_10um_lh2)"},
     
     # Six-coefficient latent hardening model
     # {"label": "Low-fidelity",  "alpha": 1.0, "ebsd_id": "ebsd_4", "colour": "tab:green", "path": f"{ASMBO_PATH}/2025-02-14 (lh6_sm16_i34)/250213134340_i26_simulate"},
     # {"label": "High-fidelity", "alpha": 1.0, "ebsd_id": "ebsd_2", "colour": "tab:red",   "path": f"{MOOSE_PATH}/2025-02-14 (617_s3_10um_lh6)"},
-    
-    # All low-fidelity
-    # {"label": "VH",   "alpha": 1.0, "ebsd_id": "ebsd_4", "colour": "tab:cyan",   "path": f"{ASMBO_PATH}/2025-02-02 (vh_sm8_i72)/250202092030_i59_simulate"},
-    # {"label": "LH2",  "alpha": 1.0, "ebsd_id": "ebsd_4", "colour": "tab:orange", "path": f"{ASMBO_PATH}/2025-02-06 (lh2_sm8_i15)/250206013451_i12_simulate"},
-    # {"label": "LH6",  "alpha": 1.0, "ebsd_id": "ebsd_4", "colour": "tab:purple", "path": f"{ASMBO_PATH}/2025-02-14 (lh6_sm16_i34)/250213134340_i26_simulate"},
     
     # All high-fidelity
     # {"label": "VH",   "alpha": 1.0, "ebsd_id": "ebsd_2", "colour": "tab:cyan",   "path": f"{MOOSE_PATH}/2025-02-04 (617_s3_10um_vh)"},
@@ -62,18 +54,20 @@ for si in SIM_INFO_LIST:
 
 # Grain IDs
 GRAIN_IDS = [
-    [51, 56, 72, 80, 126, 223, 237, 262], # Calibration
-    [44, 50, 60, 178, 190, 207, 278, 299] # Validation
+    # [51, 56, 72, 80, 126, 223, 237, 262], # Calibration
+    # [44, 50, 60, 178, 190, 207, 278, 299] # Validation
+    [60, 79, 178, 189, 190, 215, 237, 278], # Pin 2 Calibration
+    [14, 56, 72, 101, 223, 255, 262, 299],  # Pin 2 Validation
+    # [136, 135, 302],
 ]
 
 # Other Constants
 STRAIN_FIELD = "average_strain"
 STRESS_FIELD = "average_stress"
 RES_DATA_MAP = "data/res_grain_map.csv"
-# SPACING      = -2.25
-SPACING      = -5.25
+SPACING      = -2.25
+# SPACING      = -5.25
 # SPACING      = -6.25
-SPACING      = -3
 
 # Script parameters
 SHOW_LEGEND   = True
@@ -96,6 +90,8 @@ def main():
 
         # Plot experimental reorientation trajectories
         exp_trajectories = get_trajectories(exp_dict, grain_ids)
+        if 14 in grain_ids:
+            exp_trajectories[grain_ids.index(14)] = exp_trajectories[grain_ids.index(14)][:-1] 
         ipf.plot_ipf_trajectory(exp_trajectories, direction, "plot", {"color": EXP_COLOUR, "linewidth": 3})
         ipf.plot_ipf_trajectory(exp_trajectories, direction, "arrow", {"color": EXP_COLOUR, "head_width": 0.01, "head_length": 0.015})
         ipf.plot_ipf_trajectory([[et[0]] for et in exp_trajectories], direction, "scatter", {"color": EXP_COLOUR, "s": 8**2})

@@ -16,9 +16,7 @@ from __common__.plotter import save_plot
 from __common__.surrogate import Model
 
 # Paths
-# ASMBO_DIR     = "2025-02-28 (vh_pinned_sm8_i29)"
-ASMBO_DIR     = "2025-03-01 (vh_pinned_sm8_i56)"
-# ASMBO_DIR     = "2025-03-02 (vh_pinned_sm8_i39)"
+ASMBO_DIR     = "2025-03-06 (vh_pin2_sm8_i40)"
 SIM_DATA_PATH = f"/mnt/c/Users/janzen/OneDrive - UNSW/PhD/results/asmbo/{ASMBO_DIR}"
 EXP_DATA_PATH = "data/617_s3_40um_exp.csv"
 RESULTS_PATH  = "results"
