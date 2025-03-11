@@ -25,7 +25,14 @@ ASMBO_PATH = "/mnt/c/Users/janzen/OneDrive - UNSW/PhD/results/asmbo"
 MOOSE_PATH = "/mnt/c/Users/janzen/OneDrive - UNSW/PhD/results/moose_sim"
 SIM_INFO_LIST = [
 
-    # Voce Hardening Model
+    # Pinned Voce Hardening Model
+    {"label": "Run 1", "alpha": 0.3, "ebsd_id": "ebsd_4", "colour": "tab:green", "path": f"{ASMBO_PATH}/2025-03-06 (vh_pin2_sm8_i40)/250306051551_i27_simulate"},
+    {"label": "Run 2", "alpha": 0.3, "ebsd_id": "ebsd_4", "colour": "tab:green", "path": f"{ASMBO_PATH}/2025-03-09 (vh_pin2_sm8_i22)/250309175121_i10_simulate"},
+    {"label": "Run 3", "alpha": 0.3, "ebsd_id": "ebsd_4", "colour": "tab:green", "path": f"{ASMBO_PATH}/2025-03-09 (vh_pin2_sm8_i25)/250308143546_i4_simulate"},
+    {"label": "Run 4", "alpha": 1.0, "ebsd_id": "ebsd_4", "colour": "tab:green", "path": f"{ASMBO_PATH}/2025-03-10 (vh_pin2_sm8_i25)/250310145710_i22_simulate"},
+    {"label": "Run 5", "alpha": 0.3, "ebsd_id": "ebsd_4", "colour": "tab:green", "path": f"{ASMBO_PATH}/2025-03-11 (vh_pin2_sm8_i29)/250311135934_i19_simulate"},
+    
+    # Unpinned Voce Hardening Model
     # {"label": "Run 1", "alpha": 0.3, "ebsd_id": "ebsd_4", "colour": "tab:green",   "path": f"{ASMBO_PATH}/2025-02-28 (vh_pinned_sm8_i29)/250228104126_i28_simulate"},
     # {"label": "Run 2", "alpha": 0.3, "ebsd_id": "ebsd_4", "colour": "tab:green",   "path": f"{ASMBO_PATH}/2025-03-01 (vh_pinned_sm8_i56)/250228195658_i20_simulate"},
     # {"label": "Run 3", "alpha": 0.3, "ebsd_id": "ebsd_4", "colour": "tab:green",   "path": f"{ASMBO_PATH}/2025-03-02 (vh_pinned_sm8_i39)/250302135720_i38_simulate"},
@@ -33,8 +40,6 @@ SIM_INFO_LIST = [
     # {"label": "Run 5", "alpha": 0.3, "ebsd_id": "ebsd_4", "colour": "tab:green",   "path": f"{ASMBO_PATH}/2025-03-04 (vh_pinned_sm8_i29)/250304122851_i20_simulate"},
     # {"label": "Low-fidelity",  "alpha": 1.0, "ebsd_id": "ebsd_4", "colour": "tab:green", "path": f"{ASMBO_PATH}/2025-03-03 (vh_pinned_sm8_i43)/250303022723_i26_simulate"},
     # {"label": "High-fidelity", "alpha": 1.0, "ebsd_id": "ebsd_2", "colour": "tab:red",   "path": f"{MOOSE_PATH}/2025-03-05 (617_s3_vh_10um_pin2)"},
-    # {"label": "Low-fidelity",  "alpha": 1.0, "ebsd_id": "ebsd_4", "colour": "tab:green", "path": f"{MOOSE_PATH}/2025-03-05 (617_s3_vh_40um_pin2)"},
-    {"label": "Test", "alpha": 1.0, "ebsd_id": "ebsd_4", "colour": "tab:red",   "path": f"{ASMBO_PATH}/2025-03-06 (vh_pin2_sm8_i40)/250306051551_i27_simulate"},
 
     # Two-coefficient latent hardening model
     # {"label": "Low-fidelity",  "alpha": 1.0, "ebsd_id": "ebsd_4", "colour": "tab:green", "path": f"{ASMBO_PATH}/2025-02-06 (lh2_sm8_i15)/250206013451_i12_simulate"},
@@ -58,15 +63,14 @@ GRAIN_IDS = [
     # [44, 50, 60, 178, 190, 207, 278, 299] # Validation
     [60, 79, 178, 189, 190, 215, 237, 278], # Pin 2 Calibration
     [14, 56, 72, 101, 223, 255, 262, 299],  # Pin 2 Validation
-    # [136, 135, 302],
 ]
 
 # Other Constants
 STRAIN_FIELD = "average_strain"
 STRESS_FIELD = "average_stress"
 RES_DATA_MAP = "data/res_grain_map.csv"
-SPACING      = -2.25
-# SPACING      = -5.25
+# SPACING      = -2.25
+SPACING      = -5.25
 # SPACING      = -6.25
 
 # Script parameters

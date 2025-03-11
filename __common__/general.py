@@ -10,6 +10,25 @@
 import math, os, sys
 import numpy as np
 
+def periodify(value:float, min:float, max:float) -> float:
+    """
+    Applies periodicity to a value
+
+    Parameters:
+    * `value`: The value to be applied
+    * `min`:   The lower bound of the periodicity
+    * `max`:   The upper bound of the periodicity
+    
+    Returns the periodified value
+    """
+    if value >= min and value <= max:
+        return value
+    range = max - min
+    if value < min:
+        return periodify(value+range, min, max)
+    if value > max:
+        return periodify(value-range, min, max)
+
 def remove_nan(data_list:list) -> list:
     """
     Removes nan values from a list of data values

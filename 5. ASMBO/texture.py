@@ -8,23 +8,28 @@
 # Libraries
 import sys; sys.path += [".."]
 import numpy as np
-from __common__.general import transpose
+from __common__.general import transpose, round_sf
 from __common__.io import csv_to_dict
 from __common__.plotter import save_plot
-from __common__.pole_figure import get_lattice, PF
+from __common__.pole_figure import get_lattice, PFD, PF
 from __common__.interpolator import intervaluate
 
 # Paths
 EXP_PATH     = "data/617_s3_40um_exp.csv"
-RESULTS_PATH = "/mnt/c/Users/janzen/OneDrive - UNSW/PhD/results/"
-SIM_PATH     = f"{RESULTS_PATH}/asmbo/2025-02-28 (vh_pinned_sm8_i29)/250228104126_i28_simulate"
+DATA_PATH    = "/mnt/c/Users/janzen/OneDrive - UNSW/PhD/results/"
+RESULTS_PATH = "results/pf"
 
-# Plotting parameters
-EXP_COLOUR   = "silver"
-SIM_COLOUR   = "tab:cyan" # VH
-# SIM_COLOUR   = "tab:orange" # LH2
-# SIM_COLOUR   = "tab:purple" # LH6
+# Simulation information
+SIM_INFO_LIST = [
+    # {"path": f"{DATA_PATH}/asmbo/2025-03-03 (vh_pinned_sm8_i43)/250303022723_i26_simulate", "colour": (1.0, 0.2, 0.2), "alpha": (0.2, 1.0)},
+    {"path": f"{DATA_PATH}/asmbo/2025-03-06 (vh_pin2_sm8_i40)/250306051551_i27_simulate", "colour": (1.0, 0.2, 0.2), "alpha": (0.6, 1.0)},
+    # {"path": f"{DATA_PATH}/asmbo/2025-03-09 (vh_pin2_sm8_i22)/250309175121_i10_simulate", "colour": (1.0, 0.2, 0.2), "alpha": (0.6, 1.0)}
+]
+EXP_COLOUR = {"colour": (0, 0, 0), "alpha": (0, 0.4)}
+
+# Other parameters
 EVAL_STRAINS = [0.30]
+NUM_LEVELS   = 5
 
 def main():
     """
@@ -42,33 +47,46 @@ def main():
     exp_trajectories = get_trajectories(exp_dict, exp_grain_ids)
 
     # Read simulation data
-    sim_dict = csv_to_dict(f"{SIM_PATH}/summary.csv")
-    sim_strain_list = sim_dict["average_strain"]
-    sim_grain_ids = get_grain_ids(sim_dict)
-    sim_trajectories = get_trajectories(sim_dict, sim_grain_ids)
+    for sim_info in SIM_INFO_LIST:
+        sim_info["dict"] = csv_to_dict(f"{sim_info['path']}/summary.csv")
+        sim_info["strain"] = sim_info["dict"]["average_strain"]
+        sim_grain_ids = get_grain_ids(sim_info["dict"])
+        sim_info["trajectories"] = get_trajectories(sim_info["dict"], sim_grain_ids)
 
     # Plot orientations for each evaluation strain
     for i, eval_strain in enumerate(EVAL_STRAINS):
-        
-        # Get orientations
+
+        # Get experimental orientations
         exp_orientations = [intervaluate_orientation(exp_strain_list, et, eval_strain) for et in exp_trajectories]
-        sim_orientations = [intervaluate_orientation(sim_strain_list, st, eval_strain) for st in sim_trajectories]
+        
+        # Get simulated orientations
+        sim_orientations_list = []
+        for sim_info in SIM_INFO_LIST:
+            sim_orientations = [intervaluate_orientation(sim_info["strain"], st, eval_strain) for st in sim_info["trajectories"]]
+            sim_orientations_list.append(sim_orientations)
         
         # Plot orientations for each direction
-        # for direction in [[1,0,0], [1,1,0], [1,1,1]]:
-        for direction in [[1,1,1]]:
+        for direction in [[1,0,0], [1,1,0], [1,1,1]]:
             dir_str = "".join([str(d) for d in direction])
             
-            # pf.plot_pf(exp_orientations, direction, colour=EXP_COLOUR)
-            
-            pf = PF(get_lattice("fcc"))
-            pf.plot_pf(sim_orientations, direction, colour=SIM_COLOUR)
-            save_plot(f"results/pf_{dir_str}_a{i+1}")
-            
-            pf = PF(get_lattice("fcc"))
-            pf.plot_pf_density(sim_orientations, direction, colour=SIM_COLOUR)
-            save_plot(f"results/pf_{dir_str}_b{i+1}")
+            # # Plot raw experimental texture
+            # pf = PF(get_lattice("fcc"))
+            # pf.plot_pf(exp_orientations, direction, colour=EXP_COLOUR["colour"])
+            # save_plot(f"{RESULTS_PATH}/exp_{dir_str}_e{i+1}")
 
+            # # Plot raw simulated texture
+            # for j, sim_orientations in enumerate(sim_orientations_list):
+            #     pf = PF(get_lattice("fcc"))
+            #     pf.plot_pf(sim_orientations, direction, colour=sim_info["colour"])
+            #     save_plot(f"{RESULTS_PATH}/sim{j+1}_{dir_str}_e{i+1}")
+
+            # Plot contoured texture together
+            pfd = PFD(get_lattice("fcc"))
+            pfd.plot_pfd(exp_orientations, direction, levels=NUM_LEVELS, colour=EXP_COLOUR["colour"], alpha_limits=EXP_COLOUR["alpha"])
+            for sim_orientations in sim_orientations_list:
+                pfd.plot_pfd(sim_orientations, direction, levels=NUM_LEVELS, colour=sim_info["colour"], alpha_limits=sim_info["alpha"])
+            save_plot(f"{RESULTS_PATH}/con_{dir_str}_e{i+1}")
+        
 def intervaluate_orientation(strain_list:list, orientation_list:list, strain:float) -> list:
     """
     Interpolates and evaluates from a list of orientations

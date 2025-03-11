@@ -15,18 +15,27 @@ import matplotlib.pyplot as plt
 ASMBO_PATH = "/mnt/c/Users/janzen/OneDrive - UNSW/PhD/results/asmbo"
 MOOSE_PATH = "/mnt/c/Users/janzen/OneDrive - UNSW/PhD/results/moose_sim"
 SIM_PATH_LIST = [
-    f"{ASMBO_PATH}/2025-02-28 (vh_pinned_sm8_i29)/250228104126_i28_simulate",
-    f"{ASMBO_PATH}/2025-03-01 (vh_pinned_sm8_i56)/250228195658_i20_simulate",
-    f"{ASMBO_PATH}/2025-03-02 (vh_pinned_sm8_i39)/250302135720_i38_simulate",
-    f"{ASMBO_PATH}/2025-03-03 (vh_pinned_sm8_i43)/250303022723_i26_simulate",
-    f"{ASMBO_PATH}/2025-03-04 (vh_pinned_sm8_i29)/250304122851_i20_simulate",
+
+    # Pinned
+    f"{ASMBO_PATH}/2025-03-06 (vh_pin2_sm8_i40)/250306051551_i27_simulate",
+    f"{ASMBO_PATH}/2025-03-09 (vh_pin2_sm8_i22)/250309175121_i10_simulate",
+    f"{ASMBO_PATH}/2025-03-09 (vh_pin2_sm8_i25)/250308143546_i4_simulate",
+    f"{ASMBO_PATH}/2025-03-10 (vh_pin2_sm8_i25)/250310145710_i22_simulate",
+    f"{ASMBO_PATH}/2025-03-11 (vh_pin2_sm8_i29)/250311135934_i19_simulate",
+    
+    # Unpinned
+    # f"{ASMBO_PATH}/2025-02-28 (vh_pinned_sm8_i29)/250228104126_i28_simulate",
+    # f"{ASMBO_PATH}/2025-03-01 (vh_pinned_sm8_i56)/250228195658_i20_simulate",
+    # f"{ASMBO_PATH}/2025-03-02 (vh_pinned_sm8_i39)/250302135720_i38_simulate",
+    # f"{ASMBO_PATH}/2025-03-03 (vh_pinned_sm8_i43)/250303022723_i26_simulate",
+    # f"{ASMBO_PATH}/2025-03-04 (vh_pinned_sm8_i29)/250304122851_i20_simulate",
 ]
 
 # Parameter information
 PRM_INFO = [
     {"name": "cp_tau_0", "bounds": (0, 500),  "label": r"$\tau_0$", "ticks": [0, 100, 200, 300, 400, 500]},
     {"name": "cp_n",     "bounds": (1, 20),   "label": r"$n$",      "ticks": [1, 4, 8, 12, 16, 20]},
-    {"name": "cp_b",     "bounds": (0, 20),   "label": r"$b$",      "ticks": [0, 4, 8, 12, 16, 20]},
+    {"name": "cp_b",     "bounds": (0, 10),   "label": r"$b$",      "ticks": [0, 2, 4, 6, 8, 10]},
     {"name": "cp_tau_s", "bounds": (0, 2000), "label": r"$\tau_s$", "ticks": [0, 400, 800, 1200, 1600, 2000]},
     # {"name": "cp_lh_0",  "bounds": (0, 1000), "label": r"$\tau_s$"},
     # {"name": "cp_lh_1",  "bounds": (0, 1000), "label": r"$b$"},

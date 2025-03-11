@@ -8,7 +8,6 @@
 
 # Libraries
 import numpy as np
-import seaborn as sns
 import matplotlib.pyplot as plt
 import matplotlib.cm as cm
 from scipy.stats import gaussian_kde
@@ -19,6 +18,7 @@ from matplotlib.colors import Normalize
 from matplotlib.colorbar import ColorbarBase
 from neml.math import rotations, tensors
 from neml.cp import crystallography
+from __common__.general import periodify
 
 def flatten(list_of_lists:list) -> list:
     """
@@ -56,22 +56,6 @@ class PF:
         
         Parameters:
         * `lattice`:         The lattice object
-        * `sample_symmetry`: Sample direction of the projection ([1] is no symmetry)
-        * `x_direction`:     X crystallographic direction of the projection
-        * `y_direction`:     Y crystallographic direction of the projection
-        """
-        self.lattice = lattice
-        sample_symmetry_str = "".join([str(ss) for ss in sample_symmetry])
-        self.sample_symmetry = crystallography.symmetry_rotations(sample_symmetry_str)
-        self.x_direction = [float(x) for x in x_direction]
-        self.y_direction = [float(y) for y in y_direction]
-
-    def __init__(self, lattice, sample_symmetry:list=[2,2,2], x_direction=[1.0,0,0], y_direction=[0,1.0,0]):
-        """
-        Constructor for PF class
-        
-        Parameters:
-        * `lattice`:         The lattice object
         * `sample_symmetry`: Sample direction of the projection
         * `x_direction`:     X crystallographic direction of the projection
         * `y_direction`:     Y crystallographic direction of the projection
@@ -81,6 +65,7 @@ class PF:
         self.sample_symmetry = crystallography.symmetry_rotations(sample_symmetry_str)
         self.x_direction = [float(x) for x in x_direction]
         self.y_direction = [float(y) for y in y_direction]
+        self.initialise_polar_grid()
 
     def get_equivalent_poles(self, plane:list) -> list:
         """
@@ -97,17 +82,15 @@ class PF:
         eq_poles = [op.apply(p) for p in eq_poles for op in self.sample_symmetry]
         return eq_poles
 
-    def initialise_polar_grid(self) -> plt.Axes:
+    def initialise_polar_grid(self):
         """
-        Initialises the polar grid;
-        returns the axis
+        Initialises a polar grid
         """
         _, axis = plt.subplots(figsize=(5, 5), subplot_kw={"projection": "polar"})
         axis.grid(False)
         axis.get_yaxis().set_visible(False)
         plt.ylim([0, 1.0])
         plt.xticks([0, np.pi/2], ["  RD", "TD"], fontsize=15)
-        return axis
 
     def get_polar_points(self, euler:list, eq_poles:list) -> list:
         """
@@ -148,7 +131,6 @@ class PF:
 
         # Get the standard rotationn and equivalent poles, and creates the grid
         eq_poles = self.get_equivalent_poles(plane)
-        axis = self.initialise_polar_grid()
 
         # Iterate through the orientations
         for i, euler in enumerate(euler_list):
@@ -156,16 +138,71 @@ class PF:
             size = norm_size_list[i] if size_list != None else 3
             orientation_colour = rgb_colours[i] if colour_list != None else None
             orientation_colour = orientation_colour if colour == None else colour
-            plot_points(axis, polar_points, size, orientation_colour)
+            plot_points(plt.gca(), polar_points, size, orientation_colour)
 
-    def plot_pf_density(self, euler_list:list, plane:list, colour:str) -> None:
+# Pole figure density class
+class PFD(PF):
+
+    def __init__(self, lattice, sample_symmetry:list=[2,2,2], x_direction=[1.0,0,0], y_direction=[0,1.0,0]):
         """
-        Plots a standard pole figure with contoured colours based on point density
+        Constructor for PF class
         
         Parameters:
-        * `euler_list`:  The list of orientations in euler-bunge form (rads)
-        * `plane`:       Plane of the projection (i.e., crystal direction)
-        * `colour`:      Colour for plotting
+        * `lattice`:         The lattice object
+        * `sample_symmetry`: Sample direction of the projection
+        * `x_direction`:     X crystallographic direction of the projection
+        * `y_direction`:     Y crystallographic direction of the projection
+        """
+        super().__init__(lattice, sample_symmetry, x_direction, y_direction)
+        self.initialise_cartesian_grid()
+        
+    def initialise_cartesian_grid(self):
+        """
+        Initialises a cartesian grid
+        """
+        _, axis = plt.subplots(figsize=(5, 5))
+        axis.grid(False)
+        axis.get_xaxis().set_visible(False)
+        axis.get_yaxis().set_visible(False)
+        plt.xlim([-1.05, 1.05])
+        plt.ylim([-1.05, 1.05])
+        for direction in ["left", "right", "top", "bottom"]:
+            plt.gca().spines[direction].set_color(None)
+        plt.text(0, 1.1, "TD", fontsize=15, ha="center", va="center")
+        plt.text(1.15, 0, "RD", fontsize=15, ha="center", va="center")
+    
+    def add_polar_patch(self):
+        """
+        Creates the illusion that it is a polar plot
+        """
+
+        # Add blocking patch
+        eps, hl = 0.01, 1.05 # small number and half length of the plot
+        block_points = [(np.cos(t), np.sin(t)) for t in np.linspace(eps, 2*np.pi-eps, 64)]
+        block_points = [(hl,hl), (hl,eps)] + block_points + [(hl,-eps), (hl,-hl), (-hl,-hl), (-hl,hl), (hl,hl)]
+        path_codes = [Path.MOVETO] + [Path.LINETO]*(len(block_points)-2) + [Path.CLOSEPOLY]
+        path = Path(block_points, path_codes)
+        patch = PathPatch(path, facecolor="white", edgecolor="none", zorder=10)
+        plt.gca().add_patch(patch)
+
+        # Add outline patch
+        path_points = [(np.cos(t), np.sin(t)) for t in np.linspace(0, 2*np.pi, 64)]
+        path_codes = [Path.MOVETO] + [Path.LINETO]*(len(path_points)-2) + [Path.CLOSEPOLY]
+        path = Path(path_points, path_codes)
+        patch = PathPatch(path, facecolor="none", edgecolor="black", zorder=10)
+        plt.gca().add_patch(patch)
+
+    def plot_pfd(self, euler_list:list, plane:list, levels:int, colour:str, alpha_limits:tuple=(0.4, 0.8)) -> None:
+        """
+        Plots a standard pole figure with contoured colours based on point density;
+        uses cartesian values instead of polar
+        
+        Parameters:
+        * `euler_list`:   The list of orientations in euler-bunge form (rads)
+        * `plane`:        Plane of the projection (i.e., crystal direction)
+        * `levels`:       Number of contour lines
+        * `colour`:       Colour for plotting
+        * `alpha_limits`: The alpha value for the sparsest and densest contour lines
         """
 
         # Get radius and theta values
@@ -175,26 +212,26 @@ class PF:
             polar_points = self.get_polar_points(euler, eq_poles)
             radius_list += list(polar_points[:,1])
             theta_list += list(polar_points[:,0])
-        radius_list = [radius*4*np.pi for radius in radius_list]
-        # theta_list = [(theta+2*np.pi)/4/np.pi for theta in theta_list]
 
-        # Normalise theta values and stack
-        values = np.vstack([theta_list, radius_list])
+        # Convert polar points into cartesian and get density values
+        x_list = [r * np.cos(t) for r, t in zip(radius_list, theta_list)]
+        y_list = [r * np.sin(t) for r, t in zip(radius_list, theta_list)]
+        values = np.vstack([x_list, y_list])
         kde = gaussian_kde(values)
 
         # Create grid in normalised domain
-        theta_grid, radius_grid = np.meshgrid(np.linspace(-2*np.pi, 2*np.pi, 100), np.linspace(0, 4*np.pi, 100))
-        # theta_grid, radius_grid = np.meshgrid(np.linspace(-2*np.pi, 2*np.pi, 100), np.linspace(0, 1, 100))
-        # theta_grid, radius_grid = np.meshgrid(np.linspace(0, 1, 100), np.linspace(0, 1, 100))
-        grid_values = np.vstack([theta_grid.ravel(), radius_grid.ravel()])
-        density = kde(grid_values).reshape(theta_grid.shape)
+        x_grid = np.linspace(min(x_list), max(x_list), 64)
+        y_grid = np.linspace(min(y_list), max(y_list), 64)
+        x_grid, y_grid = np.meshgrid(x_grid, y_grid)
+        grid_values = np.vstack([x_grid.ravel(), y_grid.ravel()])
+        density = kde(grid_values).reshape(x_grid.shape)
 
         # Plot pole figure
-        self.initialise_polar_grid()
-        # theta_grid = theta_grid*(4*np.pi)-2*np.pi
-        plt.gca().contourf(theta_grid, radius_grid, density, levels=4, cmap='viridis')
-        plt.ylim([0, 4*np.pi])
-
+        shades = np.linspace(*alpha_limits, levels)
+        level_colours = [tuple(list(colour)+[shade]) for shade in shades]
+        plt.gca().contour(x_grid, y_grid, density, levels=levels, colors=level_colours)
+        self.add_polar_patch()
+        
 # Inverse pole figure class
 class IPF:
 
@@ -282,15 +319,6 @@ class IPF:
         all_points = [tuple(point) for point in all_points]
         return all_points
 
-    def plot_outline(self) -> None:
-        """
-        Plots the outline
-        """
-        all_points = self.get_outline()
-        x_list = [point[0] for point in all_points]
-        y_list = [point[1] for point in all_points]
-        # plt.plot(x_list, y_list, color="black")
-
     def initialise_ipf(self) -> tuple:
         """
         Initialises the format and border of the IPF plot
@@ -362,9 +390,6 @@ class IPF:
             # Plot and clip
             pc = plot_points(axis, points, size, colour)
             pc.set_clip_path(patch)
-        
-        # Add final outline
-        self.plot_outline()
 
     def plot_ipf_trajectory(self, trajectories:list, direction:list, function:str="scatter", settings:dict={}) -> None:
         """
@@ -406,9 +431,6 @@ class IPF:
 
             # Clip the points
             pc.set_clip_path(patch)
-            
-        # Add final outline
-        self.plot_outline()
 
 def get_lattice(structure:str="fcc"):
     """
@@ -578,7 +600,8 @@ def plot_points(axis:plt.Axes, points:list, size:float, colour:np.ndarray=None) 
 
     Returns the scatter object
     """
-    if colour == None:
+    # if colour == None:
+    if not isinstance(colour, np.ndarray):
         scatter = axis.scatter(points[:,0], points[:,1], c="black", s=size**2)
     else:
         scatter = axis.scatter(points[:,0], points[:,1], color=colour, edgecolor="black", linewidth=0.25, s=size**2)
