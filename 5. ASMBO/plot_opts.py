@@ -25,57 +25,48 @@ ASMBO_PATH = "/mnt/c/Users/janzen/OneDrive - UNSW/PhD/results/asmbo"
 MOOSE_PATH = "/mnt/c/Users/janzen/OneDrive - UNSW/PhD/results/moose_sim"
 SIM_INFO_LIST = [
 
-    # Pinned Voce Hardening Model
-    {"label": "Run 1", "alpha": 0.3, "ebsd_id": "ebsd_4", "colour": "tab:green", "path": f"{ASMBO_PATH}/2025-03-06 (vh_pin2_sm8_i40)/250306051551_i27_simulate"},
-    {"label": "Run 2", "alpha": 0.3, "ebsd_id": "ebsd_4", "colour": "tab:green", "path": f"{ASMBO_PATH}/2025-03-09 (vh_pin2_sm8_i22)/250309175121_i10_simulate"},
-    {"label": "Run 3", "alpha": 0.3, "ebsd_id": "ebsd_4", "colour": "tab:green", "path": f"{ASMBO_PATH}/2025-03-09 (vh_pin2_sm8_i25)/250308143546_i4_simulate"},
-    {"label": "Run 4", "alpha": 1.0, "ebsd_id": "ebsd_4", "colour": "tab:green", "path": f"{ASMBO_PATH}/2025-03-10 (vh_pin2_sm8_i25)/250310145710_i22_simulate"},
-    {"label": "Run 5", "alpha": 0.3, "ebsd_id": "ebsd_4", "colour": "tab:green", "path": f"{ASMBO_PATH}/2025-03-11 (vh_pin2_sm8_i29)/250311135934_i19_simulate"},
-    
-    # Unpinned Voce Hardening Model
-    # {"label": "Run 1", "alpha": 0.3, "ebsd_id": "ebsd_4", "colour": "tab:green",   "path": f"{ASMBO_PATH}/2025-02-28 (vh_pinned_sm8_i29)/250228104126_i28_simulate"},
-    # {"label": "Run 2", "alpha": 0.3, "ebsd_id": "ebsd_4", "colour": "tab:green",   "path": f"{ASMBO_PATH}/2025-03-01 (vh_pinned_sm8_i56)/250228195658_i20_simulate"},
-    # {"label": "Run 3", "alpha": 0.3, "ebsd_id": "ebsd_4", "colour": "tab:green",   "path": f"{ASMBO_PATH}/2025-03-02 (vh_pinned_sm8_i39)/250302135720_i38_simulate"},
-    # {"label": "Run 4", "alpha": 1.0, "ebsd_id": "ebsd_4", "colour": "tab:green",   "path": f"{ASMBO_PATH}/2025-03-03 (vh_pinned_sm8_i43)/250303022723_i26_simulate"},
-    # {"label": "Run 5", "alpha": 0.3, "ebsd_id": "ebsd_4", "colour": "tab:green",   "path": f"{ASMBO_PATH}/2025-03-04 (vh_pinned_sm8_i29)/250304122851_i20_simulate"},
-    # {"label": "Low-fidelity",  "alpha": 1.0, "ebsd_id": "ebsd_4", "colour": "tab:green", "path": f"{ASMBO_PATH}/2025-03-03 (vh_pinned_sm8_i43)/250303022723_i26_simulate"},
-    # {"label": "High-fidelity", "alpha": 1.0, "ebsd_id": "ebsd_2", "colour": "tab:red",   "path": f"{MOOSE_PATH}/2025-03-05 (617_s3_vh_10um_pin2)"},
+    {"label": "Hold X",   "alpha": 1.0, "ebsd_id": "ebsd_4", "colour": "tab:green", "path": f"{MOOSE_PATH}/2025-03-15 (617_s3_vh_x)"},
 
-    # Two-coefficient latent hardening model
-    # {"label": "Low-fidelity",  "alpha": 1.0, "ebsd_id": "ebsd_4", "colour": "tab:green", "path": f"{ASMBO_PATH}/2025-02-06 (lh2_sm8_i15)/250206013451_i12_simulate"},
-    # {"label": "High-fidelity", "alpha": 1.0, "ebsd_id": "ebsd_2", "colour": "tab:red",   "path": f"{MOOSE_PATH}/2025-02-09 (617_s3_10um_lh2)"},
-    
-    # Six-coefficient latent hardening model
-    # {"label": "Low-fidelity",  "alpha": 1.0, "ebsd_id": "ebsd_4", "colour": "tab:green", "path": f"{ASMBO_PATH}/2025-02-14 (lh6_sm16_i34)/250213134340_i26_simulate"},
-    # {"label": "High-fidelity", "alpha": 1.0, "ebsd_id": "ebsd_2", "colour": "tab:red",   "path": f"{MOOSE_PATH}/2025-02-14 (617_s3_10um_lh6)"},
-    
-    # All high-fidelity
-    # {"label": "VH",   "alpha": 1.0, "ebsd_id": "ebsd_2", "colour": "tab:cyan",   "path": f"{MOOSE_PATH}/2025-02-04 (617_s3_10um_vh)"},
-    # {"label": "LH2",  "alpha": 1.0, "ebsd_id": "ebsd_2", "colour": "tab:orange", "path": f"{MOOSE_PATH}/2025-02-09 (617_s3_10um_lh2)"},
-    # {"label": "LH6",  "alpha": 1.0, "ebsd_id": "ebsd_2", "colour": "tab:purple", "path": f"{MOOSE_PATH}/2025-02-14 (617_s3_10um_lh6)"},
+    # {"label": "Run 1", "alpha": 0.3, "ebsd_id": "ebsd_4", "colour": "tab:green", "path": f"{ASMBO_PATH}/2025-03-06 (vh_pin2_sm8_i40)/250306051551_i27_simulate"},
+    # {"label": "Run 2", "alpha": 0.3, "ebsd_id": "ebsd_4", "colour": "tab:green", "path": f"{ASMBO_PATH}/2025-03-09 (vh_pin2_sm8_i22)/250309175121_i10_simulate"},
+    # {"label": "Run 3", "alpha": 0.3, "ebsd_id": "ebsd_4", "colour": "tab:green", "path": f"{ASMBO_PATH}/2025-03-09 (vh_pin2_sm8_i25)/250308143546_i4_simulate"},
+    # {"label": "Run 4", "alpha": 1.0, "ebsd_id": "ebsd_4", "colour": "tab:green", "path": f"{ASMBO_PATH}/2025-03-10 (vh_pin2_sm8_i25)/250310145710_i22_simulate"},
+    # {"label": "Run 5", "alpha": 0.3, "ebsd_id": "ebsd_4", "colour": "tab:green", "path": f"{ASMBO_PATH}/2025-03-11 (vh_pin2_sm8_i29)/250311135934_i19_simulate"},
+
+    # {"label": "Hold XYZ", "alpha": 1.0, "ebsd_id": "ebsd_4", "colour": "tab:red",   "path": f"{ASMBO_PATH}/2025-03-03 (vh_pinned_sm8_i43)/250303022723_i26_simulate"},
+    # {"label": "Hold X",   "alpha": 1.0, "ebsd_id": "ebsd_4", "colour": "tab:green", "path": f"{MOOSE_PATH}/2025-03-15 (617_s3_vh_x)"},
+    # {"label": "Hold XYZ", "alpha": 1.0, "ebsd_id": "ebsd_4", "colour": "tab:red",    "path": f"{MOOSE_PATH}/2025-03-14 (617_s3_vh_xyz)"},
+    # {"label": "Hold XZ",  "alpha": 1.0, "ebsd_id": "ebsd_4", "colour": "tab:green",  "path": f"{MOOSE_PATH}/2025-03-13 (617_s3_vh_sbc)"},
+    # {"label": "Hold XY",  "alpha": 1.0, "ebsd_id": "ebsd_4", "colour": "tab:blue",   "path": f"{MOOSE_PATH}/2025-03-14 (617_s3_vh_xy)"},
+    # {"label": "Neumann",  "alpha": 1.0, "ebsd_id": "ebsd_4", "colour": "tab:purple", "path": f"{MOOSE_PATH}/2025-03-14 (617_s3_vh_nbc)"},
+
+    # Boundary conditions
+    # {"label": "Over-",      "alpha": 1.0, "ebsd_id": "ebsd_4", "colour": "tab:red",   "path": f"{ASMBO_PATH}/2025/2025-01-19 (vh_sm8_i22)/250119093435_i13_simulate"},
+    # {"label": "Assymetric", "alpha": 1.0, "ebsd_id": "ebsd_4", "colour": "tab:green", "path": f"{MOOSE_PATH}/2025-03-05 (617_s3_vh_40um_pin2)"},
+    # {"label": "Symmetric",  "alpha": 1.0, "ebsd_id": "ebsd_4", "colour": "tab:blue",  "path": f"{MOOSE_PATH}/2025-03-13 (617_s3_vh_sbc)"},
+    # {"label": "Assymetric", "alpha": 1.0, "ebsd_id": "ebsd_4", "colour": "tab:green", "path": f"{ASMBO_PATH}/2025-03-10 (vh_pin2_sm8_i25)/250310145710_i22_simulate"},
+    # {"label": "Symmetric",  "alpha": 1.0, "ebsd_id": "ebsd_4", "colour": "tab:blue",  "path": f"{ASMBO_PATH}/2025-03-14 (vh_sbc_sm8_i37)/250314054502_i24_simulate"},
 ]
 for si in SIM_INFO_LIST:
     si["data"] = csv_to_dict(f"{si['path']}/summary.csv")
 
 # Grain IDs
 GRAIN_IDS = [
-    # [51, 56, 72, 80, 126, 223, 237, 262], # Calibration
-    # [44, 50, 60, 178, 190, 207, 278, 299] # Validation
-    [60, 79, 178, 189, 190, 215, 237, 278], # Pin 2 Calibration
-    [14, 56, 72, 101, 223, 255, 262, 299],  # Pin 2 Validation
+    [14, 72, 95, 101, 207, 240, 262, 287],  # Calibration
+    [39, 50, 138, 164, 185, 223, 243, 238], # Validation
 ]
 
 # Other Constants
 STRAIN_FIELD = "average_strain"
 STRESS_FIELD = "average_stress"
 RES_DATA_MAP = "data/res_grain_map.csv"
-# SPACING      = -2.25
-SPACING      = -5.25
+SPACING      = -2.25
+# SPACING      = -5.25
 # SPACING      = -6.25
 
 # Script parameters
 SHOW_LEGEND   = True
-SHOW_GRAIN_ID = False
+SHOW_GRAIN_ID = True
 
 # Main function
 def main():

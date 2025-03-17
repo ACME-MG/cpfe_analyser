@@ -15,11 +15,10 @@ from __common__.pole_figure import get_lattice, IPF
 from __common__.plotter import save_plot, Plotter
 
 # Constants
-SAMPLED_DIR  = f"2025-03-06 (vh_pin2_sm8_i40)/250306051551_i27_simulate"
+SAMPLED_DIR  = f"2025-03-06 (vh_pin2_sm8_i1)"
 EXP_PATH     = "data/617_s3_exp.csv"
 RESULTS_DIR  = "/mnt/c/Users/janzen/OneDrive - UNSW/PhD/results/asmbo"
-# GRAIN_IDS    = [255, 242, 295, 286, 141, 273, 207, 299, 149, 101, 278, 80, 280, 276, 159, 277, 244, 193, 77, 264, 281, 117, 120, 178, 223, 157, 72]
-GRAIN_IDS    = [59, 63, 86, 237, 303]
+GRAIN_IDS    = []
 STRAIN_FIELD = "average_strain"
 STRESS_FIELD = "average_stress"
 EXP_COLOUR   = "silver"
@@ -38,8 +37,8 @@ def main():
     sim_path_list = [f"{dir_path}/summary.csv" for dir_path in dir_path_list]
     sim_dict_list = [csv_to_dict(sim_path) for sim_path in sim_path_list]
 
-    # Plot stress-strain coverage
-    plot_ss(exp_dict, sim_dict_list, "results/plot_cvg_ss.png")
+    # # Plot stress-strain coverage
+    # plot_ss(exp_dict, sim_dict_list, "results/plot_cvg_ss.png")
 
     # Plot reorientation trajectory coverage
     all_grain_ids = sorted([int(key.replace("_phi_1","").replace("g","")) for key in sim_dict_list[0].keys() if "_phi_1" in key])
@@ -96,19 +95,19 @@ def plot_rt(exp_dict:dict, sim_dict_list:list, grain_ids:list, path:str=""):
     # Plot experimental reorientation trajectories
     exp_trajectories = get_trajectories(exp_dict)
     ipf.plot_ipf_trajectory(exp_trajectories, direction, "plot", {"color": EXP_COLOUR, "linewidth": 3})
-    ipf.plot_ipf_trajectory(exp_trajectories, direction, "arrow", {"color": EXP_COLOUR, "head_width": 0.01, "head_length": 0.015})
-    ipf.plot_ipf_trajectory([[et[0]] for et in exp_trajectories], direction, "scatter", {"color": EXP_COLOUR, "s": 8**2})
+    # ipf.plot_ipf_trajectory(exp_trajectories, direction, "arrow", {"color": EXP_COLOUR, "head_width": 0.01, "head_length": 0.015})
+    # ipf.plot_ipf_trajectory([[et[0]] for et in exp_trajectories], direction, "scatter", {"color": EXP_COLOUR, "s": 8**2})
 
     # Plot simulated reorientation trajectories
     for sim_dict in sim_dict_list:
         cal_trajectories = get_trajectories(sim_dict)
         ipf.plot_ipf_trajectory(cal_trajectories, direction, "plot", {"color": SIM_COLOUR, "linewidth": 2, "zorder": 3})
-        ipf.plot_ipf_trajectory(cal_trajectories, direction, "arrow", {"color": SIM_COLOUR, "head_width": 0.0075, "head_length": 0.0075*1.5, "zorder": 3})
-        ipf.plot_ipf_trajectory([[ct[0]] for ct in cal_trajectories], direction, "scatter", {"color": SIM_COLOUR, "s": 6**2, "zorder": 3})
+        # ipf.plot_ipf_trajectory(cal_trajectories, direction, "arrow", {"color": SIM_COLOUR, "head_width": 0.0075, "head_length": 0.0075*1.5, "zorder": 3})
+        # ipf.plot_ipf_trajectory([[ct[0]] for ct in cal_trajectories], direction, "scatter", {"color": SIM_COLOUR, "s": 6**2, "zorder": 3})
     
     # Plot grain ID
     for exp_trajectory, grain_id in zip(exp_trajectories, grain_ids):
-        ipf.plot_ipf_trajectory([[exp_trajectory[0]]], direction, "text", {"color": "blue", "fontsize": 8, "s": grain_id, "zorder": 3})
+        ipf.plot_ipf_trajectory([[exp_trajectory[0]]], direction, "text", {"color": "red", "fontsize": 16, "s": grain_id, "zorder": 3})
 
     # Format and save IPF plot
     handles = [

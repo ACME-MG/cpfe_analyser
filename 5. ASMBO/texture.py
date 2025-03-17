@@ -16,14 +16,19 @@ from __common__.interpolator import intervaluate
 
 # Paths
 EXP_PATH     = "data/617_s3_40um_exp.csv"
-DATA_PATH    = "/mnt/c/Users/janzen/OneDrive - UNSW/PhD/results/"
+ASMBO_PATH = "/mnt/c/Users/janzen/OneDrive - UNSW/PhD/results/asmbo"
+MOOSE_PATH = "/mnt/c/Users/janzen/OneDrive - UNSW/PhD/results/moose_sim"
 RESULTS_PATH = "results/pf"
 
 # Simulation information
 SIM_INFO_LIST = [
-    # {"path": f"{DATA_PATH}/asmbo/2025-03-03 (vh_pinned_sm8_i43)/250303022723_i26_simulate", "colour": (1.0, 0.2, 0.2), "alpha": (0.2, 1.0)},
-    {"path": f"{DATA_PATH}/asmbo/2025-03-06 (vh_pin2_sm8_i40)/250306051551_i27_simulate", "colour": (1.0, 0.2, 0.2), "alpha": (0.6, 1.0)},
-    # {"path": f"{DATA_PATH}/asmbo/2025-03-09 (vh_pin2_sm8_i22)/250309175121_i10_simulate", "colour": (1.0, 0.2, 0.2), "alpha": (0.6, 1.0)}
+    {"path": f"{MOOSE_PATH}//2025-03-15 (617_s3_vh_x)", "colour": (1.0, 0.2, 0.2), "alpha": (0.2, 1.0)},
+    # {"path": f"{ASMBO_PATH}/2025-03-03 (vh_pinned_sm8_i43)/250303022723_i26_simulate", "colour": (1.0, 0.2, 0.2), "alpha": (0.2, 1.0)},
+    # {"path": f"{MOOSE_PATH}/2025-03-15 (617_s3_vh_c44d2)", "colour": (1.0, 0.2, 0.2), "alpha": (0.2, 1.0)},
+    # {"path": f"{ASMBO_PATH}/2025-03-14 (vh_sbc_sm8_i37)/250314054502_i24_simulate", "colour": (1.0, 0.2, 0.2), "alpha": (0.2, 1.0)},
+    # {"path": f"{ASMBO_PATH}/2025-03-03 (vh_pinned_sm8_i43)/250303022723_i26_simulate", "colour": (1.0, 0.2, 0.2), "alpha": (0.2, 1.0)},
+    # {"path": f"{ASMBO_PATH}/2025-03-06 (vh_pin2_sm8_i40)/250306051551_i27_simulate", "colour": (1.0, 0.2, 0.2), "alpha": (0.6, 1.0)},
+    # {"path": f"{ASMBO_PATH}/2025-03-09 (vh_pin2_sm8_i22)/250309175121_i10_simulate", "colour": (1.0, 0.2, 0.2), "alpha": (0.6, 1.0)}
 ]
 EXP_COLOUR = {"colour": (0, 0, 0), "alpha": (0, 0.4)}
 

@@ -28,8 +28,8 @@ SM_DICT  = [
 # Constants
 EVAL_STRAINS  = np.linspace(0, 0.1, 32)
 MAX_STRAIN    = 0.1
-CAL_GRAIN_IDS = [60, 79, 178, 189, 190, 215, 237, 278]
-VAL_GRAIN_IDS = [14, 56, 72, 101, 223, 255, 262, 299]
+CAL_GRAIN_IDS = [14, 72, 95, 101, 207, 240, 262, 287]
+VAL_GRAIN_IDS = [39, 50, 138, 164, 185, 223, 243, 238]
 
 # Main function
 def main():
