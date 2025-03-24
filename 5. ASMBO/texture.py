@@ -22,7 +22,7 @@ RESULTS_PATH = "results/pf"
 
 # Simulation information
 SIM_INFO_LIST = [
-    {"path": f"{MOOSE_PATH}//2025-03-15 (617_s3_vh_x)", "colour": (1.0, 0.2, 0.2), "alpha": (0.2, 1.0)},
+    {"path": f"{MOOSE_PATH}/2025-03-15 (617_s3_vh_x_hr)", "colour": (1.0, 0.2, 0.2), "alpha": (0.2, 1.0)},
     # {"path": f"{ASMBO_PATH}/2025-03-03 (vh_pinned_sm8_i43)/250303022723_i26_simulate", "colour": (1.0, 0.2, 0.2), "alpha": (0.2, 1.0)},
     # {"path": f"{MOOSE_PATH}/2025-03-15 (617_s3_vh_c44d2)", "colour": (1.0, 0.2, 0.2), "alpha": (0.2, 1.0)},
     # {"path": f"{ASMBO_PATH}/2025-03-14 (vh_sbc_sm8_i37)/250314054502_i24_simulate", "colour": (1.0, 0.2, 0.2), "alpha": (0.2, 1.0)},

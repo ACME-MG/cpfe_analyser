@@ -18,7 +18,6 @@ from matplotlib.colors import Normalize
 from matplotlib.colorbar import ColorbarBase
 from neml.math import rotations, tensors
 from neml.cp import crystallography
-from __common__.general import periodify
 
 def flatten(list_of_lists:list) -> list:
     """

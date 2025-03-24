@@ -2,7 +2,7 @@
 BEGIN SCULPT
     
     # Dimensions
-    nelx = 71
+    nelx = 55
     nely = 39
     nelz = 3
     scale = 40
@@ -24,7 +24,7 @@ BEGIN SCULPT
     max_opt_iters = 50
     
     # Output
-    input_spn = ./results/241004105158_res/voxels.spn
-    exodus_file = ./results/241004105158_res/mesh.e
+    input_spn = ./results/241209173248_617_s3b/voxels.spn
+    exodus_file = ./results/241209173248_617_s3b/mesh.e
 
 END SCULPT

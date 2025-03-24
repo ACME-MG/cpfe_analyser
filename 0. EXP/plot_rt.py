@@ -19,11 +19,9 @@ RAW_RT_PATH  = "data/617_s3_20um_raw_rt.csv"
 PRC_RT_PATH  = "data/617_s3_20um_prc_rt.csv"
 
 # Other variables
-GRAIN_IDS     = [
-    # [51, 56, 72, 80, 126, 223, 237, 262],  # Calibration
-    # [44, 50, 60, 178, 190, 207, 278, 299], # Validation
-    [60, 79, 178, 189, 190, 215, 237, 278], # Pin 2 Calibration
-    [14, 56, 72, 101, 223, 255, 262, 299],  # Pin 2 Validation
+GRAIN_IDS = [
+    [14, 72, 95, 101, 207, 240, 262, 287],  # Calibration
+    [39, 50, 138, 164, 185, 223, 243, 238], # Validation
 ]
 RAW_COLOUR    = "silver"
 PRC_COLOUR    = "gray"
@@ -58,7 +56,9 @@ def main():
         # Plot processed orientation data
         prc_trajectories = get_trajectories(prc_rt_dict, grain_ids)
         if 14 in grain_ids:
-            prc_trajectories[grain_ids.index(14)] = prc_trajectories[grain_ids.index(14)][:-1] 
+            prc_trajectories[grain_ids.index(14)] = prc_trajectories[grain_ids.index(14)][:-1]
+        if 287 in grain_ids:
+            prc_trajectories[grain_ids.index(287)] = prc_trajectories[grain_ids.index(287)][:-3] 
         ipf.plot_ipf_trajectory(prc_trajectories, direction, "plot", {"color": PRC_COLOUR, "linewidth": 2, "zorder": 3})
         ipf.plot_ipf_trajectory(prc_trajectories, direction, "arrow", {"color": PRC_COLOUR, "head_width": 0.0075, "head_length": 0.0075*1.5, "zorder": 3})
         ipf.plot_ipf_trajectory([[pt[0]] for pt in prc_trajectories], direction, "scatter", {"color": PRC_COLOUR, "s": 6**2, "zorder": 3})

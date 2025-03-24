@@ -160,14 +160,15 @@ def define_legend(colour_list:list, label_list:list, type_list:list, **kwargs) -
             plt.plot([], [], color=colour_list[i], label=label_list[i], linewidth=2)
     plt.legend(framealpha=1, edgecolor="black", fancybox=True, facecolor="white", **kwargs)
 
-def save_plot(file_path:str) -> None:
+def save_plot(file_path:str, settings:dict={}) -> None:
     """
     Saves the plot and clears the figure
 
     Parameters:
     * `file_path`: The path to save the plot
+    * `settings`:  Settings for the `savefig` function
     """
-    plt.savefig(file_path)
+    plt.savefig(file_path, **settings)
     plt.cla()
     plt.clf()
     plt.close()

@@ -25,27 +25,18 @@ ASMBO_PATH = "/mnt/c/Users/janzen/OneDrive - UNSW/PhD/results/asmbo"
 MOOSE_PATH = "/mnt/c/Users/janzen/OneDrive - UNSW/PhD/results/moose_sim"
 SIM_INFO_LIST = [
 
-    {"label": "Hold X",   "alpha": 1.0, "ebsd_id": "ebsd_4", "colour": "tab:green", "path": f"{MOOSE_PATH}/2025-03-15 (617_s3_vh_x)"},
 
-    # {"label": "Run 1", "alpha": 0.3, "ebsd_id": "ebsd_4", "colour": "tab:green", "path": f"{ASMBO_PATH}/2025-03-06 (vh_pin2_sm8_i40)/250306051551_i27_simulate"},
-    # {"label": "Run 2", "alpha": 0.3, "ebsd_id": "ebsd_4", "colour": "tab:green", "path": f"{ASMBO_PATH}/2025-03-09 (vh_pin2_sm8_i22)/250309175121_i10_simulate"},
-    # {"label": "Run 3", "alpha": 0.3, "ebsd_id": "ebsd_4", "colour": "tab:green", "path": f"{ASMBO_PATH}/2025-03-09 (vh_pin2_sm8_i25)/250308143546_i4_simulate"},
-    # {"label": "Run 4", "alpha": 1.0, "ebsd_id": "ebsd_4", "colour": "tab:green", "path": f"{ASMBO_PATH}/2025-03-10 (vh_pin2_sm8_i25)/250310145710_i22_simulate"},
-    # {"label": "Run 5", "alpha": 0.3, "ebsd_id": "ebsd_4", "colour": "tab:green", "path": f"{ASMBO_PATH}/2025-03-11 (vh_pin2_sm8_i29)/250311135934_i19_simulate"},
+    # VH Model
+    {"label": "Run 1",  "alpha": 0.3, "ebsd_id": "ebsd_4", "colour": "tab:green", "path": f"{ASMBO_PATH}/2025-03-09 (vh_pin2_sm8_i25)/250308143546_i4_simulate"},
+    {"label": "Run 2",  "alpha": 0.3, "ebsd_id": "ebsd_4", "colour": "tab:green", "path": f"{ASMBO_PATH}/2025-03-10 (vh_pin2_sm8_i25)/250310145710_i22_simulate"},
+    {"label": "Run 3",  "alpha": 1.0, "ebsd_id": "ebsd_4", "colour": "tab:green", "path": f"{ASMBO_PATH}/2025-03-18 (vh_x_sm8_i41)/250318014435_i21_simulate"},
+    {"label": "Run 4",  "alpha": 0.3, "ebsd_id": "ebsd_4", "colour": "tab:green", "path": f"{ASMBO_PATH}/2025-03-19 (vh_xL_sm8_i17)/250319224652_i17_simulate"},
+    # {"label": "Low-Fidelity",  "alpha": 1.0, "ebsd_id": "ebsd_4", "colour": "tab:green", "path": f"{ASMBO_PATH}/2025-03-18 (vh_x_sm8_i41)/250318014435_i21_simulate"},
+    # {"label": "High-Fidelity", "alpha": 1.0, "ebsd_id": "ebsd_2", "colour": "tab:red",   "path": f"{MOOSE_PATH}/2025-03-15 (617_s3_vh_x_hr)"},
 
-    # {"label": "Hold XYZ", "alpha": 1.0, "ebsd_id": "ebsd_4", "colour": "tab:red",   "path": f"{ASMBO_PATH}/2025-03-03 (vh_pinned_sm8_i43)/250303022723_i26_simulate"},
-    # {"label": "Hold X",   "alpha": 1.0, "ebsd_id": "ebsd_4", "colour": "tab:green", "path": f"{MOOSE_PATH}/2025-03-15 (617_s3_vh_x)"},
-    # {"label": "Hold XYZ", "alpha": 1.0, "ebsd_id": "ebsd_4", "colour": "tab:red",    "path": f"{MOOSE_PATH}/2025-03-14 (617_s3_vh_xyz)"},
-    # {"label": "Hold XZ",  "alpha": 1.0, "ebsd_id": "ebsd_4", "colour": "tab:green",  "path": f"{MOOSE_PATH}/2025-03-13 (617_s3_vh_sbc)"},
-    # {"label": "Hold XY",  "alpha": 1.0, "ebsd_id": "ebsd_4", "colour": "tab:blue",   "path": f"{MOOSE_PATH}/2025-03-14 (617_s3_vh_xy)"},
-    # {"label": "Neumann",  "alpha": 1.0, "ebsd_id": "ebsd_4", "colour": "tab:purple", "path": f"{MOOSE_PATH}/2025-03-14 (617_s3_vh_nbc)"},
-
-    # Boundary conditions
-    # {"label": "Over-",      "alpha": 1.0, "ebsd_id": "ebsd_4", "colour": "tab:red",   "path": f"{ASMBO_PATH}/2025/2025-01-19 (vh_sm8_i22)/250119093435_i13_simulate"},
-    # {"label": "Assymetric", "alpha": 1.0, "ebsd_id": "ebsd_4", "colour": "tab:green", "path": f"{MOOSE_PATH}/2025-03-05 (617_s3_vh_40um_pin2)"},
-    # {"label": "Symmetric",  "alpha": 1.0, "ebsd_id": "ebsd_4", "colour": "tab:blue",  "path": f"{MOOSE_PATH}/2025-03-13 (617_s3_vh_sbc)"},
-    # {"label": "Assymetric", "alpha": 1.0, "ebsd_id": "ebsd_4", "colour": "tab:green", "path": f"{ASMBO_PATH}/2025-03-10 (vh_pin2_sm8_i25)/250310145710_i22_simulate"},
-    # {"label": "Symmetric",  "alpha": 1.0, "ebsd_id": "ebsd_4", "colour": "tab:blue",  "path": f"{ASMBO_PATH}/2025-03-14 (vh_sbc_sm8_i37)/250314054502_i24_simulate"},
+    # {"label": "Run 1",  "alpha": 0.3, "ebsd_id": "ebsd_4", "colour": "tab:green", "path": f"{ASMBO_PATH}/2025-03-06 (vh_pin2_sm8_i40)/250306051551_i27_simulate"},
+    # {"label": "Run 2",  "alpha": 0.3, "ebsd_id": "ebsd_4", "colour": "tab:green", "path": f"{ASMBO_PATH}/2025-03-09 (vh_pin2_sm8_i22)/250309175121_i10_simulate"},
+    # {"label": "Run 5",  "alpha": 0.3, "ebsd_id": "ebsd_4", "colour": "tab:green", "path": f"{ASMBO_PATH}/2025-03-11 (vh_pin2_sm8_i29)/250311135934_i19_simulate"},
 ]
 for si in SIM_INFO_LIST:
     si["data"] = csv_to_dict(f"{si['path']}/summary.csv")
@@ -60,9 +51,9 @@ GRAIN_IDS = [
 STRAIN_FIELD = "average_strain"
 STRESS_FIELD = "average_stress"
 RES_DATA_MAP = "data/res_grain_map.csv"
-SPACING      = -2.25
-# SPACING      = -5.25
-# SPACING      = -6.25
+# SPACING      = -6.25 # Model
+# SPACING      = -5.25 # Runs
+SPACING      = -2.25 # Fidelity
 
 # Script parameters
 SHOW_LEGEND   = True
@@ -87,6 +78,8 @@ def main():
         exp_trajectories = get_trajectories(exp_dict, grain_ids)
         if 14 in grain_ids:
             exp_trajectories[grain_ids.index(14)] = exp_trajectories[grain_ids.index(14)][:-1] 
+        if 287 in grain_ids:
+            exp_trajectories[grain_ids.index(287)] = exp_trajectories[grain_ids.index(287)][:-3] 
         ipf.plot_ipf_trajectory(exp_trajectories, direction, "plot", {"color": EXP_COLOUR, "linewidth": 3})
         ipf.plot_ipf_trajectory(exp_trajectories, direction, "arrow", {"color": EXP_COLOUR, "head_width": 0.01, "head_length": 0.015})
         ipf.plot_ipf_trajectory([[et[0]] for et in exp_trajectories], direction, "scatter", {"color": EXP_COLOUR, "s": 8**2})
