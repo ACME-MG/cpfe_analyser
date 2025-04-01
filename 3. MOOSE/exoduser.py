@@ -29,7 +29,7 @@ MESH_INFO = [
     # Low-fidelity mesh
     {
         "exodus":    "data/617_s3/40um/mesh.e",
-        "path":      "/mnt/c/Users/janzen/OneDrive - UNSW/PhD/data/2024-06-26 (ansto_617_s3)/prior_with_stage/res20gs5/ebsdExportColumnsTableReduced_FillRegion.csv",
+        "path":      "/mnt/c/Users/janzen/OneDrive - UNSW/H0419460/data/2024-06-26 (ansto_617_s3)/prior_with_stage/res20gs5/ebsdExportColumnsTableReduced_FillRegion.csv",
         "step":      20,
         "thickness": 3,
         "dec_res":   2,
@@ -38,7 +38,7 @@ MESH_INFO = [
     # High-fidelity mesh
     {
         "exodus":    "data/617_s3/10um/mesh.e",
-        "path":      "/mnt/c/Users/janzen/OneDrive - UNSW/PhD/data/2024-06-26 (ansto_617_s3)/prior_with_stage/res10gs10/ebsdExportColumnsTableReduced_FillRegion.csv",
+        "path":      "/mnt/c/Users/janzen/OneDrive - UNSW/H0419460/data/2024-06-26 (ansto_617_s3)/prior_with_stage/res10gs10/ebsdExportColumnsTableReduced_FillRegion.csv",
         "step":      10,
         "thickness": 10,
         "dec_res":   1,
@@ -46,20 +46,23 @@ MESH_INFO = [
 ][MESH_INDEX]
 
 # Simulation paths
-ASMBO_PATH    = "/mnt/c/Users/janzen/OneDrive - UNSW/PhD/results/asmbo"
-MOOSE_PATH    = "/mnt/c/Users/janzen/OneDrive - UNSW/PhD/results/moose_sim"
+ASMBO_PATH    = "/mnt/c/Users/janzen/OneDrive - UNSW/H0419460/results/asmbo"
+MOOSE_PATH    = "/mnt/c/Users/janzen/OneDrive - UNSW/H0419460/results/moose_sim"
 # SIM_PATH      = f"{MOOSE_PATH}/2025-03-19 (617_s3_vh_di_x)"
 SIM_PATH      = f"{MOOSE_PATH}/2025-03-23 (617_s3_vh_di_x_hr)"
 EXODUS_PREFIX = "simulation_exodus_ts"
 # for file in simulation_exodus.e*; do mv "$file" "$(echo "$file" | sed -E 's/simulation_exodus\.e(-s0*([0-9]+))?/simulation_exodus_ts\2.e/')"; done
 
-# Plotting parameters
-CREATE_PLOT   = True
-FIGURE_FACTOR = 40   # factor to change the size of the figure
+# Main parameters
 IPF_DIRECTION = "x"  # IPF direction to colour the grains
-EXODUS_FACE   = "xy" # face to be plotted (e.g., "xy")
-# EXODUS_FACE   = "xz" # face to be plotted (e.g., "xy")
-EXODUS_NORMAL = True # normal of the face to be plotted (True / False)
+# EXODUS_FACE   = "xy" # face to be plotted (e.g., "xy")
+EXODUS_FACE   = "xz" # face to be plotted (e.g., "xy")
+EXODUS_NORMAL = False # normal of the face to be plotted (True / False)
+SHOW_CB       = False # show cell boundaries
+
+# Plotting parameters
+CREATE_PLOT   = False
+FIGURE_FACTOR = 40 # factor to change the size of the figure
 
 # Video parameters
 CREATE_VIDEO = True
@@ -610,7 +613,7 @@ def plot_mesh(mesh, grain_dict:dict, element_indexes:list, ipf:str="x",
                 continue
             
             # Get cell coordinates and ignore if not surface
-            cell_coordinates = get_surface_cell_coordinates(grain, cell_id, included, excluded, face)
+            cell_coordinates = get_surface_cell_coordinates(grain, cell_id, included, excluded, positive)
             if cell_coordinates == []:
                 continue
 
@@ -623,8 +626,8 @@ def plot_mesh(mesh, grain_dict:dict, element_indexes:list, ipf:str="x",
             cell_coordinates = order_vertices(cell_coordinates)
             if cell_coordinates == None:
                 continue
-            # polygon = patches.Polygon(cell_coordinates, closed=True, fill=True, facecolor=colour, edgecolor="black")
-            polygon = patches.Polygon(cell_coordinates, closed=True, fill=True, facecolor=colour, edgecolor=None)
+            edge_colour = "black" if SHOW_CB else None
+            polygon = patches.Polygon(cell_coordinates, closed=True, fill=True, facecolor=colour, edgecolor=edge_colour)
             plt.gca().add_patch(polygon)
 
 def get_exodus_bounds(mesh, direction:str="z") -> float:
@@ -682,7 +685,7 @@ def get_element_indexes(mesh, directions:str, positive:bool) -> list:
     return element_index_grid
 
 def get_surface_cell_coordinates(grain:pv.core.pointset.UnstructuredGrid, cell_id:int,
-                                 included:list, excluded:int, face:bool) -> list:
+                                 included:list, excluded:int, positive:bool) -> list:
     """
     Gets the coordinates of a cell
 
@@ -691,13 +694,13 @@ def get_surface_cell_coordinates(grain:pv.core.pointset.UnstructuredGrid, cell_i
     * `cell_id`:  The cell ID
     * `included`: The coordinate positions to plot
     * `excluded`: The coordinate position to not plot
-    * `face`:     Whether to plot the positive or negative face
+    * `positive`: Whether to plot the positive or negative face
 
     Returns the list of coordinates for the surface corners of the cell
     """
     point_ids = grain.get_cell(cell_id).point_ids
     coordinates = [list(point) for point in grain.points[point_ids]]
-    coordinates = sorted(coordinates, key=lambda c: c[excluded], reverse=face)[:4] # doesn't work for major deformation
+    coordinates = sorted(coordinates, key=lambda c: c[excluded], reverse=positive)[:4] # doesn't work for major deformation
     coordinates = [[c[i] for i in included] for c in coordinates]
     return coordinates
 

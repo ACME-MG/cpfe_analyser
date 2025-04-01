@@ -28,7 +28,7 @@ RESOLUTIONS = [
 ]
 PARAM_KW_LIST  = ["p0", "p1", "p2", "p3", "p4", "p5", "p6", "p7"]
 GRAIN_MAP      = "data/res_grain_map.csv"
-SIM_PATH       = "/mnt/c/Users/janzen/OneDrive - UNSW/PhD/results/moose_sim/2024-09-26 (617_s3_converge_5pct_8p)"
+SIM_PATH       = "/mnt/c/Users/janzen/OneDrive - UNSW/H0419460/results/moose_sim/2024-09-26 (617_s3_converge_5pct_8p)"
 STRAIN_FIELD   = "average_strain"
 STRESS_FIELD   = "average_stress"
 EVAL_STRAINS   = np.linspace(0, 0.05, 50)

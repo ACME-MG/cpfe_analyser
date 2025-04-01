@@ -172,3 +172,17 @@ def save_plot(file_path:str, settings:dict={}) -> None:
     plt.cla()
     plt.clf()
     plt.close()
+
+def lighten_colour(colour:str, factor:float=0.5):
+    """
+    Lighten a color by mixing it with white
+    
+    Parameters:
+    * `colour`:  A Matplotlib colour (e.g., 'blue', '#FF0000', (1, 0, 0)).
+    * `factor`: A number between 0 and 1. Higher values make it lighter.
+    
+    Returns the lightened colour
+    """
+    rgb = mcolours.to_rgb(colour)
+    white = (1, 1, 1)
+    return tuple(factor * w + (1 - factor) * c for c, w in zip(rgb, white))

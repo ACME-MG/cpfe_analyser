@@ -8,24 +8,27 @@
 # Libraries
 import os, numpy as np
 import matplotlib.pyplot as plt
+import matplotlib.patches as mpatches
 import sys; sys.path += [".."]
-from __common__.plotter import save_plot
+from __common__.plotter import save_plot, lighten_colour
 
 # Model information
-RESULTS_PATH = "/mnt/c/Users/janzen/OneDrive - UNSW/PhD/results/"
+RESULTS_PATH = "/mnt/c/Users/janzen/OneDrive - UNSW/H0419460/results/"
 MODEL_INFO = [
-    {"name": "VH",  "init": 1,  "adpt": 1,  "vald": 1, "path": f"{RESULTS_PATH}/asmbo/2025-03-01 (vh_pinned_sm8_i56)"},
-    # {"name": "VH",  "init": 8,  "adpt": 12,  "vald": 8.97, "path": f"{RESULTS_PATH}/moose_sim/2025-01-03 (617_s3_40um_vh_sm32)"},
-    # {"name": "LH2", "init": 8,  "adpt": 7.5, "vald": 73.7, "path": f"{RESULTS_PATH}/moose_sim/2025-01-07 (617_s3_40um_lh_sm32)"},
-    # {"name": "LH6", "init": 16, "adpt": 26,  "vald": 69.2, "path": f"{RESULTS_PATH}/moose_sim/2025-01-07 (617_s3_40um_lh_sm32)"},
+    {"name": "VH",  "colour": "tab:cyan",   "init": 8,  "adpt": 12.6, "vald": 6.7,  "path": f"{RESULTS_PATH}/asmbo/2025-03-25 (vh_x_sm8_i31)"},
+    {"name": "LH2", "colour": "tab:orange", "init": 8,  "adpt": 14.5, "vald": 73.7, "path": f"{RESULTS_PATH}/asmbo/2025-03-25 (lh2_x_sm8_i19)"},
+    {"name": "LH6", "colour": "tab:purple", "init": 16, "adpt": 22.6, "vald": 69.2, "path": f"{RESULTS_PATH}/asmbo/2025-03-25 (lh2_x_sm8_i19)"},
 ] # "init" and "adpt" initially contain number of simulations; "vald" contains total hours
 
 # Plotting parameters
 INCREMENT   = 1.0
 WIDTH       = 0.8
-VALD_COLOUR = (1.0, 0.6, 0.6) # "tab:red"
-ADPT_COLOUR = (0.6, 1.0, 0.6) # "tab:green"
-INIT_COLOUR = (0.6, 0.6, 1.0) # "tab:blue"
+MAX_HOURS   = 160
+LIGHTEN     = 0.3
+DENSITY     = 4
+VALD_HATCH  = DENSITY*""
+ADPT_HATCH  = DENSITY*"\\"
+INIT_HATCH  = DENSITY*"X"
 
 # File constants
 # SUFFIX  = ".log"
@@ -50,7 +53,6 @@ def main():
         for log_path in log_paths:
             time_list += get_times(log_path)
         time_list = sorted(time_list, reverse=True)[:56]
-        print(time_list)
 
         # Calculate average time and apply
         average_time = np.average(time_list)#/4*1.2
@@ -67,28 +69,32 @@ def main():
     for spine in plt.gca().spines.values():
         spine.set_linewidth(1)
 
-    # Format evaluation times into coordinates
-    x_list = [INCREMENT*(i+1) for i in range(len(MODEL_INFO))]
-    init_y_list = [mi["init"] for mi in MODEL_INFO]
-    adpt_y_list = [mi["adpt"] for mi in MODEL_INFO]
-    calb_y_list = [i+a for i, a in zip(init_y_list, adpt_y_list)]
-    vald_y_list = [mi["vald"] for mi in MODEL_INFO]
-
     # Draw bar graphs
-    plt.bar(x_list, init_y_list, color=INIT_COLOUR, label="Sampling",    zorder=3, width=WIDTH, edgecolor="black")
-    plt.bar(x_list, adpt_y_list, color=ADPT_COLOUR, label="Calibration", zorder=3, width=WIDTH, edgecolor="black", bottom=init_y_list)
-    plt.bar(x_list, vald_y_list, color=VALD_COLOUR, label="Validation",  zorder=3, width=WIDTH, edgecolor="black", bottom=calb_y_list)
+    for i, mi in enumerate(MODEL_INFO):
+        settings = {"color": lighten_colour(mi["colour"], LIGHTEN), "zorder": 3, "width": WIDTH, "edgecolor": "black"}
+        plt.bar([INCREMENT*(i+1)], [mi["init"]], **settings, hatch=INIT_HATCH)
+        plt.bar([INCREMENT*(i+1)], [mi["adpt"]], **settings, hatch=ADPT_HATCH, bottom=[mi["init"]])
+        plt.bar([INCREMENT*(i+1)], [mi["vald"]], **settings, hatch=VALD_HATCH, bottom=[mi["init"]+mi["adpt"]])
+
+    # Define legend
+    handles = [
+        mpatches.Patch(facecolor="white", edgecolor="black", hatch=VALD_HATCH, label="Validation"),
+        mpatches.Patch(facecolor="white", edgecolor="black", hatch=ADPT_HATCH, label="Calibration"),
+        mpatches.Patch(facecolor="white", edgecolor="black", hatch=INIT_HATCH, label="Sampling"),
+    ]
+    legend = plt.legend(handles=handles, framealpha=1, edgecolor="black", fancybox=True, facecolor="white", fontsize=12, loc="upper left")
+    plt.gca().add_artist(legend)
 
     # Format specific values
+    x_list = [INCREMENT*(i+1) for i in range(len(MODEL_INFO))]
     plt.xlabel("Model", fontsize=14)
     plt.ylabel("Evaluation Time (h)", fontsize=14)
     plt.xticks(ticks=x_list, labels=[mi["name"] for mi in MODEL_INFO])
     padding = INCREMENT-WIDTH/2
     plt.xlim(min(x_list)-padding, max(x_list)+padding)
-    plt.ylim(0, 160)
+    plt.ylim(0, MAX_HOURS)
 
     # Save
-    plt.legend(framealpha=1, edgecolor="black", fancybox=True, facecolor="white", fontsize=12, loc="upper left")
     save_plot("results/times.png")
 
 def get_times(time_path:str) -> list:

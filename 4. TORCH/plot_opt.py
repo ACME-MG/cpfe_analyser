@@ -16,9 +16,9 @@ from __common__.plotter import save_plot, Plotter
 # Paths
 EXP_PATH = "data/617_s3_exp.csv"
 SIM_FILE = "2025-01-18 (lh6_sm72_i20)/250117013234_i11_simulate"
-SIM_PATH = f"/mnt/c/Users/janzen/OneDrive - UNSW/PhD/results/asmbo/{SIM_FILE}/summary.csv"
+SIM_PATH = f"/mnt/c/Users/janzen/OneDrive - UNSW/H0419460/results/asmbo/{SIM_FILE}/summary.csv"
 # SIM_FILE = "2025-01-01 (617_s3_10um_vh)"
-# SIM_PATH = f"/mnt/c/Users/janzen/OneDrive - UNSW/PhD/results/moose_sim/{SIM_FILE}/summary.csv"
+# SIM_PATH = f"/mnt/c/Users/janzen/OneDrive - UNSW/H0419460/results/moose_sim/{SIM_FILE}/summary.csv"
 
 # Simulation information
 CAL_GRAIN_IDS = [14, 72, 95, 101, 207, 240, 262, 287]

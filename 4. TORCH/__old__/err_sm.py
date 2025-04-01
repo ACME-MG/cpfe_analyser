@@ -17,7 +17,7 @@ from __common__.surrogate import Model
 
 # Paths
 EXP_PATH = "data/617_s3_exp.csv"
-SMS_PATH = "/mnt/c/Users/janzen/OneDrive - UNSW/PhD/results/mms"
+SMS_PATH = "/mnt/c/Users/janzen/OneDrive - UNSW/H0419460/results/mms"
 SM_DICT  = [
     {"dir": "2024-11-10 (617_s3_40um_lh2_s32)",    "params": [310.52, 19.295, 84.487, 8.2568]},
     {"dir": "2024-11-19 (617_s3_40um_lh2_s32_i1)", "params": [192.34, 223.94, 114.91, 2.6902]},

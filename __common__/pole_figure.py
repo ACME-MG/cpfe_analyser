@@ -137,12 +137,12 @@ class PF:
             size = norm_size_list[i] if size_list != None else 3
             orientation_colour = rgb_colours[i] if colour_list != None else None
             orientation_colour = orientation_colour if colour == None else colour
-            plot_points(plt.gca(), polar_points, size, orientation_colour)
 
 # Pole figure density class
 class PFD(PF):
 
-    def __init__(self, lattice, sample_symmetry:list=[2,2,2], x_direction=[1.0,0,0], y_direction=[0,1.0,0]):
+    def __init__(self, lattice, sample_symmetry:list=[2,2,2], x_direction=[1.0,0,0], y_direction=[0,1.0,0],
+                 figsize:tuple=(5,5), adjust:dict=None, fontsize:float=15, linewidth:float=2):
         """
         Constructor for PF class
         
@@ -151,24 +151,35 @@ class PFD(PF):
         * `sample_symmetry`: Sample direction of the projection
         * `x_direction`:     X crystallographic direction of the projection
         * `y_direction`:     Y crystallographic direction of the projection
+        * `figsize`:         Size of the figure
+        * `adjust`:          Dictionary with values to adjust spacing between plot and figure
+        * `fontsize`:        Size of the font to display the labels
+        * `linewidth`        Width of the contoured lines
         """
         super().__init__(lattice, sample_symmetry, x_direction, y_direction)
+        self.figsize = figsize
+        self.adjust = adjust
+        self.fontsize = fontsize
+        self.linewidth = linewidth
         self.initialise_cartesian_grid()
         
-    def initialise_cartesian_grid(self):
+    def initialise_cartesian_grid(self) -> None:
         """
         Initialises a cartesian grid
         """
-        _, axis = plt.subplots(figsize=(5, 5))
+        figure, axis = plt.subplots(figsize=self.figsize)
+        if self.adjust != None:
+            figure.subplots_adjust(**self.adjust)
         axis.grid(False)
         axis.get_xaxis().set_visible(False)
         axis.get_yaxis().set_visible(False)
         plt.xlim([-1.05, 1.05])
         plt.ylim([-1.05, 1.05])
         for direction in ["left", "right", "top", "bottom"]:
-            plt.gca().spines[direction].set_color(None)
-        plt.text(0, 1.1, "TD", fontsize=15, ha="center", va="center")
-        plt.text(1.15, 0, "RD", fontsize=15, ha="center", va="center")
+            axis.spines[direction].set_color(None)
+        plt.draw()
+        plt.text(1.1, 0.0, "X", fontsize=self.fontsize, ha="center", va="center")
+        plt.text(0.0, 1.1, "Y", fontsize=self.fontsize, ha="center", va="center")
     
     def add_polar_patch(self):
         """
@@ -188,20 +199,21 @@ class PFD(PF):
         path_points = [(np.cos(t), np.sin(t)) for t in np.linspace(0, 2*np.pi, 64)]
         path_codes = [Path.MOVETO] + [Path.LINETO]*(len(path_points)-2) + [Path.CLOSEPOLY]
         path = Path(path_points, path_codes)
-        patch = PathPatch(path, facecolor="none", edgecolor="black", zorder=10)
+        patch = PathPatch(path, facecolor="none", edgecolor="black", zorder=10, linewidth=self.linewidth)
         plt.gca().add_patch(patch)
 
-    def plot_pfd(self, euler_list:list, plane:list, levels:int, colour:str, alpha_limits:tuple=(0.4, 0.8)) -> None:
+    def plot_pfd(self, euler_list:list, plane:list, levels:int, colour_list:list) -> list:
         """
         Plots a standard pole figure with contoured colours based on point density;
         uses cartesian values instead of polar
         
         Parameters:
-        * `euler_list`:   The list of orientations in euler-bunge form (rads)
-        * `plane`:        Plane of the projection (i.e., crystal direction)
-        * `levels`:       Number of contour lines
-        * `colour`:       Colour for plotting
-        * `alpha_limits`: The alpha value for the sparsest and densest contour lines
+        * `euler_list`:  The list of orientations in euler-bunge form (rads)
+        * `plane`:       Plane of the projection (i.e., crystal direction)
+        * `levels`:      Number of contour lines
+        * `colour_list`: List of colours for plotting
+
+        Returns the MRD values
         """
 
         # Get radius and theta values
@@ -226,10 +238,12 @@ class PFD(PF):
         density = kde(grid_values).reshape(x_grid.shape)
 
         # Plot pole figure
-        shades = np.linspace(*alpha_limits, levels)
-        level_colours = [tuple(list(colour)+[shade]) for shade in shades]
-        plt.gca().contour(x_grid, y_grid, density, levels=levels, colors=level_colours)
+        contours = plt.gca().contour(x_grid, y_grid, density, levels=levels, colors=colour_list, linewidths=self.linewidth)
         self.add_polar_patch()
+        
+        # Return MRD values
+        mrd_values = list(contours.levels)
+        return mrd_values
         
 # Inverse pole figure class
 class IPF:

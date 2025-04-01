@@ -16,7 +16,7 @@ from __common__.analyse import get_geodesics, get_stress
 
 # Constants
 EXP_PATH = "data/617_s3_exp.csv"
-SIMS_PATH = "/mnt/c/Users/janzen/OneDrive - UNSW/PhD/results/moose_sim"
+SIMS_PATH = "/mnt/c/Users/janzen/OneDrive - UNSW/H0419460/results/moose_sim"
 SIM_PATHS = [f"{SIMS_PATH}/{sim_dir}/summary.csv" for sim_dir in [
     "2024-11-05 (617_s3_40um_lh2_opt)",
     "2024-11-28 (617_s3_40um_lh2_i1)",

@@ -21,22 +21,28 @@ EXP_COLOUR = "silver"
 EXP_EBSD_ID = "ebsd_4"
 
 # Simulation Information
-ASMBO_PATH = "/mnt/c/Users/janzen/OneDrive - UNSW/PhD/results/asmbo"
-MOOSE_PATH = "/mnt/c/Users/janzen/OneDrive - UNSW/PhD/results/moose_sim"
+ASMBO_PATH = "/mnt/c/Users/janzen/OneDrive - UNSW/H0419460/results/asmbo"
+MOOSE_PATH = "/mnt/c/Users/janzen/OneDrive - UNSW/H0419460/results/moose_sim"
 SIM_INFO_LIST = [
 
-
     # VH Model
-    {"label": "Run 1",  "alpha": 0.3, "ebsd_id": "ebsd_4", "colour": "tab:green", "path": f"{ASMBO_PATH}/2025-03-09 (vh_pin2_sm8_i25)/250308143546_i4_simulate"},
-    {"label": "Run 2",  "alpha": 0.3, "ebsd_id": "ebsd_4", "colour": "tab:green", "path": f"{ASMBO_PATH}/2025-03-10 (vh_pin2_sm8_i25)/250310145710_i22_simulate"},
-    {"label": "Run 3",  "alpha": 1.0, "ebsd_id": "ebsd_4", "colour": "tab:green", "path": f"{ASMBO_PATH}/2025-03-18 (vh_x_sm8_i41)/250318014435_i21_simulate"},
-    {"label": "Run 4",  "alpha": 0.3, "ebsd_id": "ebsd_4", "colour": "tab:green", "path": f"{ASMBO_PATH}/2025-03-19 (vh_xL_sm8_i17)/250319224652_i17_simulate"},
+    # {"label": "Run 1", "alpha": 0.3, "ebsd_id": "ebsd_4", "colour": "tab:green", "path": f"{ASMBO_PATH}/2025-03-09 (vh_pin2_sm8_i25)/250308143546_i4_simulate"},
+    # {"label": "Run 2", "alpha": 0.3, "ebsd_id": "ebsd_4", "colour": "tab:green", "path": f"{ASMBO_PATH}/2025-03-10 (vh_pin2_sm8_i25)/250310145710_i22_simulate"},
+    # {"label": "Run 3", "alpha": 1.0, "ebsd_id": "ebsd_4", "colour": "tab:green", "path": f"{ASMBO_PATH}/2025-03-18 (vh_x_sm8_i41)/250318014435_i21_simulate"},
+    # {"label": "Run 4", "alpha": 0.3, "ebsd_id": "ebsd_4", "colour": "tab:green", "path": f"{ASMBO_PATH}/2025-03-25 (vh_x_sm8_i31)/250325072901_i16_simulate"},
+    # {"label": "Run 5", "alpha": 0.3, "ebsd_id": "ebsd_4", "colour": "tab:green", "path": f"{ASMBO_PATH}/2025-03-10 (vh_pin2_sm8_i25)/250310161708_i25_simulate"},
     # {"label": "Low-Fidelity",  "alpha": 1.0, "ebsd_id": "ebsd_4", "colour": "tab:green", "path": f"{ASMBO_PATH}/2025-03-18 (vh_x_sm8_i41)/250318014435_i21_simulate"},
     # {"label": "High-Fidelity", "alpha": 1.0, "ebsd_id": "ebsd_2", "colour": "tab:red",   "path": f"{MOOSE_PATH}/2025-03-15 (617_s3_vh_x_hr)"},
 
-    # {"label": "Run 1",  "alpha": 0.3, "ebsd_id": "ebsd_4", "colour": "tab:green", "path": f"{ASMBO_PATH}/2025-03-06 (vh_pin2_sm8_i40)/250306051551_i27_simulate"},
-    # {"label": "Run 2",  "alpha": 0.3, "ebsd_id": "ebsd_4", "colour": "tab:green", "path": f"{ASMBO_PATH}/2025-03-09 (vh_pin2_sm8_i22)/250309175121_i10_simulate"},
-    # {"label": "Run 5",  "alpha": 0.3, "ebsd_id": "ebsd_4", "colour": "tab:green", "path": f"{ASMBO_PATH}/2025-03-11 (vh_pin2_sm8_i29)/250311135934_i19_simulate"},
+    # LH2 Model
+    {"label": "Run 1", "alpha": 0.3, "ebsd_id": "ebsd_4", "colour": "tab:green", "path": f"{ASMBO_PATH}/2025-03-25 (lh2_x_sm8_i19)/250323214745_i7_simulate"},
+    {"label": "Run 2", "alpha": 1.0, "ebsd_id": "ebsd_4", "colour": "tab:green", "path": f"{ASMBO_PATH}/2025-03-28 (lh2_x_sm8_i29)/250327093649_i16_simulate"},
+    {"label": "Run 3", "alpha": 0.3, "ebsd_id": "ebsd_4", "colour": "tab:green", "path": f"{ASMBO_PATH}/2025-03-31 (lh2_x_sm8_i31)/250330063457_i18_simulate"},
+    {"label": "Run 4", "alpha": 0.3, "ebsd_id": "ebsd_4", "colour": "tab:green", "path": f"{ASMBO_PATH}/2025-03-31 (lh2_x_sm8_i31)/250330213453_i29_simulate"},
+
+    # All Models
+    # {"label": "VH",  "alpha": 1.0, "ebsd_id": "ebsd_2", "colour": "tab:cyan",   "path": f"{MOOSE_PATH}/2025-03-15 (617_s3_vh_x_hr)"},
+    # {"label": "LH2", "alpha": 1.0, "ebsd_id": "ebsd_4", "colour": "tab:orange", "path": f"{ASMBO_PATH}/2025-03-28 (lh2_x_sm8_i29)/250327093649_i16_simulate"},
 ]
 for si in SIM_INFO_LIST:
     si["data"] = csv_to_dict(f"{si['path']}/summary.csv")
@@ -52,12 +58,12 @@ STRAIN_FIELD = "average_strain"
 STRESS_FIELD = "average_stress"
 RES_DATA_MAP = "data/res_grain_map.csv"
 # SPACING      = -6.25 # Model
-# SPACING      = -5.25 # Runs
-SPACING      = -2.25 # Fidelity
+SPACING      = -5.25 # Runs
+# SPACING      = -2.25 # Fidelity
 
 # Script parameters
 SHOW_LEGEND   = True
-SHOW_GRAIN_ID = True
+SHOW_GRAIN_ID = False
 
 # Main function
 def main():

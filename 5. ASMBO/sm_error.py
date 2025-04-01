@@ -16,14 +16,14 @@ from __common__.plotter import save_plot
 from __common__.surrogate import Model
 
 # Paths
-ASMBO_DIR     = "2025-03-19 (vh_xL_sm8_i17)"
-SIM_DATA_PATH = f"/mnt/c/Users/janzen/OneDrive - UNSW/PhD/results/asmbo/{ASMBO_DIR}"
+ASMBO_DIR     = "2025-03-31 (lh2_x_sm8_i31)"
+SIM_DATA_PATH = f"/mnt/c/Users/janzen/OneDrive - UNSW/H0419460/results/asmbo/{ASMBO_DIR}"
 EXP_DATA_PATH = "data/617_s3_40um_exp.csv"
 RESULTS_PATH  = "results"
 
 # Model information
 PARAM_NAMES = ["cp_tau_s", "cp_b", "cp_tau_0", "cp_n"]
-# PARAM_NAMES = [f"cp_lh_{i}" for i in range(6)] + ["cp_tau_0", "cp_n"]
+# PARAM_NAMES = [f"cp_lh_{i}" for i in range(2)] + ["cp_tau_0", "cp_n"]
 
 # Plotting parameters
 MAX_ITERS    = 32
@@ -63,12 +63,14 @@ def sm_error(sim_path:str=""):
         plot_errors(errors_dict["se"], SE_THRESHOLD)
         plt.ylabel(r"$E_{\sigma}$", fontsize=14)
         # plt.ylim(10**-3, 10**9)
+        plt.yscale("log")
         save_plot("results/sme_se.png")
         
         # Plot stress errors
         plot_errors(errors_dict["ge"], GE_THRESHOLD)
         plt.ylabel(r"$E_{\Phi}$", fontsize=14)
         # plt.ylim(10**-3, 10**9)
+        plt.yscale("log")
         save_plot("results/sme_ge.png")
 
         # Display calibration summary
@@ -76,7 +78,7 @@ def sm_error(sim_path:str=""):
         print(f"Knee Point Iteration:  {knee_point}")
     
     # Otherwise, just return termination iteration
-    return termination, knee_point
+    return termination, knee_point, errors_dict
 
 def find_pareto_efficiency(error_grid:list) -> list:
     """

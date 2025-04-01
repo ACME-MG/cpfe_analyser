@@ -13,7 +13,7 @@ from __common__.io import csv_to_dict, dict_to_csv
 from __common__.general import transpose, sort_dict, round_sf
 
 # Paths
-DIRECTORY = "/mnt/c/Users/janzen/OneDrive - UNSW/PhD/results/mms/2024-12-13 (617_s3_40um_lh2_s32_all)"
+DIRECTORY = "/mnt/c/Users/janzen/OneDrive - UNSW/H0419460/results/mms/2024-12-13 (617_s3_40um_lh2_s32_all)"
 SUR_PATH  = f"{DIRECTORY}/sm.pt"
 MAP_PATH  = f"{DIRECTORY}/map.csv"
 SUM_PATH  = f"{DIRECTORY}/617_s3_40um_lh2_sampled.csv"

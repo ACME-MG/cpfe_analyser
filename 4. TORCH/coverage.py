@@ -17,7 +17,7 @@ from __common__.plotter import save_plot, Plotter
 # Constants
 SAMPLED_DIR  = f"2025-03-06 (vh_pin2_sm8_i1)"
 EXP_PATH     = "data/617_s3_exp.csv"
-RESULTS_DIR  = "/mnt/c/Users/janzen/OneDrive - UNSW/PhD/results/asmbo"
+RESULTS_DIR  = "/mnt/c/Users/janzen/OneDrive - UNSW/H0419460/results/asmbo"
 GRAIN_IDS    = []
 STRAIN_FIELD = "average_strain"
 STRESS_FIELD = "average_stress"

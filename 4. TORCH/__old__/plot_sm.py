@@ -15,8 +15,8 @@ from __common__.surrogate import Model
 
 # Paths
 EXP_PATH = "data/617_s3_exp.csv"
-# DIRECTORY = "/mnt/c/Users/janzen/OneDrive - UNSW/PhD/results/asmbo/2024-12-12 test_run/241213172919_i1_s1_sm"
-DIRECTORY = "/mnt/c/Users/janzen/OneDrive - UNSW/PhD/results/mms/2024-12-13 (617_s3_40um_lh2_s32)"
+# DIRECTORY = "/mnt/c/Users/janzen/OneDrive - UNSW/H0419460/results/asmbo/2024-12-12 test_run/241213172919_i1_s1_sm"
+DIRECTORY = "/mnt/c/Users/janzen/OneDrive - UNSW/H0419460/results/mms/2024-12-13 (617_s3_40um_lh2_s32)"
 SUR_PATH = f"{DIRECTORY}/sm.pt"
 MAP_PATH = f"{DIRECTORY}/map.csv"
 

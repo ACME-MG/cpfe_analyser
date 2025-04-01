@@ -12,9 +12,9 @@ from __common__.general import round_sf, get_thinned_list, remove_nan, get_close
 from __common__.io import csv_to_dict, dict_to_csv, read_excel
 
 # Input Paths
-SS_PATH  = "/mnt/c/Users/janzen/OneDrive - UNSW/PhD/data/2024-06-26 (ansto_617_s3)/sscurve_corrected_janzen_3.xlsx"
-# PHI_PATH = "/mnt/c/Users/janzen/OneDrive - UNSW/PhD/results/ebsd_mapper/240813093129_617_s3_mapping/reorientation.csv"
-# PHI_PATH = "/mnt/c/Users/janzen/OneDrive - UNSW/PhD/results/ebsd_mapper/240912165226_617_s3_10u/reorientation.csv"
+SS_PATH  = "/mnt/c/Users/janzen/OneDrive - UNSW/H0419460/data/2024-06-26 (ansto_617_s3)/sscurve_corrected_janzen_3.xlsx"
+# PHI_PATH = "/mnt/c/Users/janzen/OneDrive - UNSW/H0419460/results/ebsd_mapper/240813093129_617_s3_mapping/reorientation.csv"
+# PHI_PATH = "/mnt/c/Users/janzen/OneDrive - UNSW/H0419460/results/ebsd_mapper/240912165226_617_s3_10u/reorientation.csv"
 PHI_PATH = "data/617_s3_20um_reorientation.csv"
 
 # Output Paths

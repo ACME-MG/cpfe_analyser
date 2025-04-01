@@ -16,7 +16,7 @@ from __common__.orientation import deg_to_rad
 SAMPLE_INDEX = int(sys.argv[1])
 
 # Main directory containing data
-DATA_DIR = "/mnt/c/Users/Janzen/OneDrive - UNSW/PhD/data/20240516 (ondrej_P91)"
+DATA_DIR = "/mnt/c/Users/Janzen/OneDrive - UNSW/H0419460/data/20240516 (ondrej_P91)"
 
 # Input for tensile
 TENSILE_PATH   = f"{DATA_DIR}/Bulk vs Micro tensile plots.xlsx"

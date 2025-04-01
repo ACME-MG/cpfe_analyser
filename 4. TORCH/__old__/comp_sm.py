@@ -16,8 +16,8 @@ from __common__.surrogate import Model
 
 # Constant Paths
 EXP_PATH   = "data/617_s3_exp.csv"
-OPT_PATH   = "/mnt/c/Users/janzen/OneDrive - UNSW/PhD/results/moose_sim"
-MMS_PATH   = "/mnt/c/Users/janzen/OneDrive - UNSW/PhD/results/mms"
+OPT_PATH   = "/mnt/c/Users/janzen/OneDrive - UNSW/H0419460/results/moose_sim"
+MMS_PATH   = "/mnt/c/Users/janzen/OneDrive - UNSW/H0419460/results/mms"
 TICK_SIZE  = 12
 LABEL_SIZE = 14
 

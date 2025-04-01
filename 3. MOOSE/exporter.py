@@ -12,8 +12,8 @@ from __common__.interpolator import intervaluate
 from __common__.io import csv_to_dict, dict_to_csv
 
 # Paths
-ASMBO_PATH = "/mnt/c/Users/janzen/OneDrive - UNSW/PhD/results/asmbo"
-MOOSE_PATH = "/mnt/c/Users/janzen/OneDrive - UNSW/PhD/results/moose_sim"
+ASMBO_PATH = "/mnt/c/Users/janzen/OneDrive - UNSW/H0419460/results/asmbo"
+MOOSE_PATH = "/mnt/c/Users/janzen/OneDrive - UNSW/H0419460/results/moose_sim"
 DATA_PATH = f"{MOOSE_PATH}/2025/2025-02-09 (617_s3_10um_lh2)"
 
 # Evaluation information

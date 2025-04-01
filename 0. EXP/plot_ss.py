@@ -15,10 +15,10 @@ from __common__.general import remove_nan
 from __common__.plotter import Plotter, save_plot
 
 # Paths
-ENG_SS_PATH  = f"/mnt/c/Users/Janzen/OneDrive - UNSW/PhD/data/2024-06-26 (ansto_617_s3)/j3_sscurve.xlsx"
+ENG_SS_PATH  = f"/mnt/c/Users/Janzen/OneDrive - UNSW/H0419460/data/2024-06-26 (ansto_617_s3)/j3_sscurve.xlsx"
 ENG_SS_SHEET = "curve"
 ENG_SI_SHEET = "ebsd_points"
-TRU_SS_PATH  = "/mnt/c/Users/janzen/OneDrive - UNSW/PhD/data/2024-06-26 (ansto_617_s3)/sscurve_corrected_janzen_3.xlsx"
+TRU_SS_PATH  = "/mnt/c/Users/janzen/OneDrive - UNSW/H0419460/data/2024-06-26 (ansto_617_s3)/sscurve_corrected_janzen_3.xlsx"
 TRU_SS_SHEET = "Sheet1"
 RAW_RT_PATH  = "data/617_s3_20um_raw_rt.csv"
 PRC_RT_PATH  = "data/617_s3_20um_prc_rt.csv"
