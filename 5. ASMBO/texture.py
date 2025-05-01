@@ -25,21 +25,30 @@ RESULTS_PATH = "results/pf"
 SIM_INFO_LIST = [
     
     # VH model
-    {"label": "Low-Fidelity", "path": f"{ASMBO_PATH}/2025-03-18 (vh_x_sm8_i41)/250318014435_i21_simulate", "colour": "tab:green", "lightness": (0.95, 0)},
-    {"label": "High-Fidelity", "path": f"{MOOSE_PATH}/2025-03-15 (617_s3_vh_x_hr)", "colour": "tab:red", "lightness": (0.95, 0)},
+    # {"label": "Low-Fidelity",  "colour": "tab:green", "lightness": (0.95, 0), "path": f"{ASMBO_PATH}/2025-03-18 (vh_x_sm8_i41)/250318014435_i21_simulate"},
+    # {"label": "High-Fidelity", "colour": "tab:red",   "lightness": (0.95, 0), "path": f"{MOOSE_PATH}/2025-03-15 (617_s3_vh_x_hr)"},
     
-    # # All models
-    # {"label": "VH",  "lightness": (0.95, 0), "colour": "tab:cyan",   "path": f"{MOOSE_PATH}/2025-03-15 (617_s3_vh_x_hr)"},
-    # {"label": "LH2", "lightness": (0.95, 0), "colour": "tab:orange", "path": f"{ASMBO_PATH}/2025-03-28 (lh2_x_sm8_i29)/250327093649_i16_simulate"},
-    # {"label": "LH6", "lightness": (0.95, 0), "colour": "tab:purple", "path": f"{ASMBO_PATH}/2025-03-25 (lh2_x_sm8_i19)/250323214745_i7_simulate"},
+    # LH2 model
+    # {"label": "Low-Fidelity",  "colour": "tab:green", "lightness": (0.95, 0), "path": f"{ASMBO_PATH}/2025-03-28 (lh2_x_sm8_i29)/250327093649_i16_simulate"},
+    # {"label": "High-Fidelity", "colour": "tab:red",   "lightness": (0.95, 0), "path": f"{MOOSE_PATH}/2025-04-05 (617_s3_lh2_di_x_hr)"},
+    
+    # LH6 model
+    # {"label": "Low-Fidelity",  "colour": "tab:green", "lightness": (0.95, 0), "path": f"{ASMBO_PATH}/2025-04-23 (lh6_x_sm8_i51)/250422034348_i36_simulate"},
+    # {"label": "High-Fidelity", "colour": "tab:red",   "lightness": (0.95, 0), "path": f"{MOOSE_PATH}/2025-04-28 (617_s3_lh6_di_x_hr)"},
+
+    # All models
+    {"label": "VH",  "colour": "tab:cyan",   "lightness": (0.95, 0), "path": f"{MOOSE_PATH}/2025-03-15 (617_s3_vh_x_hr)"},
+    {"label": "LH2", "colour": "tab:orange", "lightness": (0.95, 0), "path": f"{MOOSE_PATH}/2025-04-05 (617_s3_lh2_di_x_hr)"},
+    {"label": "LH6", "colour": "tab:red",    "lightness": (0.95, 0), "path": f"{MOOSE_PATH}/2025-04-28 (617_s3_lh6_di_x_hr)"},
 ]
 EXP_INFO = {"colour": "silver", "lightness": (0.95, 0)}
 
 # Plotting parameters
 DIRECTIONS   = [[1,1,1]]
-EVAL_STRAINS = [0.0, 0.052, 0.106, 0.208, 0.29]
+# EVAL_STRAINS = [0.01, 0.052, 0.106, 0.208, 0.29]
+EVAL_STRAINS = [0.0001, 0.00063414, 0.00153, 0.00494, 0.0098, 0.01483, 0.02085, 0.02646, 0.03516, 0.04409, 0.05197, 0.06013, 0.07059, 0.08208, 0.09406, 0.10561, 0.11929, 0.13656, 0.15442, 0.18237, 0.20849, 0.23627, 0.26264, 0.28965]
 NUM_LEVELS   = 5
-MRD_VALUES   = [0.0, 0.15, 0.30, 0.45, 0.60, 0.75]
+MRD_VALUES   = [0.0, 0.15, 0.30, 0.45, 0.60, 0.75] # broken
 
 # Output parameters
 SAVE_PLOT   = False
@@ -53,7 +62,7 @@ FIGURE_X     = 5.2
 FIGURE_Y     = 8
 SCALE_FACTOR = 10/FIGURE_Y
 DIM_RATIO    = (FIGURE_X/FIGURE_Y)
-FIELD_LIST   = ["phi_1", "Phi", "phi_2", "volume"]
+FIELD_LIST   = ["phi_1", "Phi", "phi_2", "volume", "area"]
 
 def main():
     """
@@ -101,6 +110,8 @@ def main():
 
         # Plot orientations for each evaluation strain
         for i, eval_strain in enumerate(EVAL_STRAINS):
+            if i == 0:
+                eval_strain = 0
             
             # Retrieve orientations
             exp_orientations = exp_orientations_list[i]
@@ -154,7 +165,7 @@ def export_data(euler_list:list, file_name:str) -> None:
 
     Parameters:
     * `euler_list`: The list of orientations in euler-bunge form (rads)
-    * `file_name`:  Name of file to save the data (wihtout extension)
+    * `file_name`:  Name of file to save the data (without extension)
     """
     phi_lists = transpose(euler_list)
     phi_dict = {}

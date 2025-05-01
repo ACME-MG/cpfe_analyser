@@ -15,9 +15,9 @@ from __common__.plotter import save_plot, lighten_colour
 # Model information
 RESULTS_PATH = "/mnt/c/Users/janzen/OneDrive - UNSW/H0419460/results/"
 MODEL_INFO = [
-    {"name": "VH",  "colour": "tab:cyan",   "init": 8,  "adpt": 12.6, "vald": 6.7,  "path": f"{RESULTS_PATH}/asmbo/2025-03-25 (vh_x_sm8_i31)"},
-    {"name": "LH2", "colour": "tab:orange", "init": 8,  "adpt": 14.5, "vald": 73.7, "path": f"{RESULTS_PATH}/asmbo/2025-03-25 (lh2_x_sm8_i19)"},
-    {"name": "LH6", "colour": "tab:purple", "init": 16, "adpt": 22.6, "vald": 69.2, "path": f"{RESULTS_PATH}/asmbo/2025-03-25 (lh2_x_sm8_i19)"},
+    {"name": "VH",  "colour": "tab:cyan",   "init": 8,  "adpt": np.average([18, 16, 8, 8, 13]), "vald": 6.7,  "path": f"{RESULTS_PATH}/asmbo/2025-03-25 (vh_x_sm8_i31)"},
+    {"name": "LH2", "colour": "tab:orange", "init": 8,  "adpt": np.average([7, 16, 18, 10, 29]), "vald": 73.7, "path": f"{RESULTS_PATH}/asmbo/2025-03-25 (lh2_x_sm8_i19)"},
+    {"name": "LH6", "colour": "tab:purple", "init": 16, "adpt": np.average([6, 23, 27, 36, 20]), "vald": 69.2, "path": f"{RESULTS_PATH}/asmbo/2025-04-23 (lh6_x_sm8_i51)"},
 ] # "init" and "adpt" initially contain number of simulations; "vald" contains total hours
 
 # Plotting parameters
@@ -42,6 +42,9 @@ def main():
 
     # Iterate through models
     for mi in MODEL_INFO:
+
+        # Print information
+        print("init", mi["init"], "adpt", mi["adpt"])
 
         # Get paths
         log_dir = mi["path"]
@@ -79,8 +82,8 @@ def main():
     # Define legend
     handles = [
         mpatches.Patch(facecolor="white", edgecolor="black", hatch=VALD_HATCH, label="Validation"),
-        mpatches.Patch(facecolor="white", edgecolor="black", hatch=ADPT_HATCH, label="Calibration"),
-        mpatches.Patch(facecolor="white", edgecolor="black", hatch=INIT_HATCH, label="Sampling"),
+        mpatches.Patch(facecolor="white", edgecolor="black", hatch=ADPT_HATCH, label="Additional"),
+        mpatches.Patch(facecolor="white", edgecolor="black", hatch=INIT_HATCH, label="Initial"),
     ]
     legend = plt.legend(handles=handles, framealpha=1, edgecolor="black", fancybox=True, facecolor="white", fontsize=12, loc="upper left")
     plt.gca().add_artist(legend)
