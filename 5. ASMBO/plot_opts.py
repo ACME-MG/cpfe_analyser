@@ -26,6 +26,17 @@ ASMBO_PATH = "/mnt/c/Users/janzen/OneDrive - UNSW/H0419460/results/asmbo"
 MOOSE_PATH = "/mnt/c/Users/janzen/OneDrive - UNSW/H0419460/results/moose_sim"
 SIM_INFO_LIST = [
 
+    {"label": "CPFEM 1",  "ebsd_id": "ebsd_4", "colour": "tab:red",   "path": f"{ASMBO_PATH}/2025-03-18 (vh_x_sm8_i41)/250318014435_i21_simulate"},
+    {"label": "CPFEM 2",  "ebsd_id": "ebsd_4", "colour": "tab:olive", "path": f"{ASMBO_PATH}/2025-03-28 (lh2_x_sm8_i29)/250327093649_i16_simulate"},
+    {"label": "CPFEM 3",  "ebsd_id": "ebsd_4", "colour": "tab:blue",  "path": f"{ASMBO_PATH}/2025-04-23 (lh6_x_sm8_i51)/250422034348_i36_simulate"},
+    # {"label": "Surrogate", "ebsd_id": "ebsd_4", "colour": "tab:green", "path": f"data"},
+    # {"label": "CPFEM", "ebsd_id": "ebsd_4", "colour": "tab:red",   "path": f"{ASMBO_PATH}/2025-03-18 (vh_x_sm8_i41)/250318014435_i21_simulate"},
+    # {"label": "Run 1", "ebsd_id": "ebsd_4", "colour": "tab:red", "path": f"{ASMBO_PATH}/2025-03-09 (vh_pin2_sm8_i25)/250308143546_i4_simulate"},
+    # {"label": "Run 2", "ebsd_id": "ebsd_4", "colour": "tab:red", "path": f"{ASMBO_PATH}/2025-03-10 (vh_pin2_sm8_i25)/250310145710_i22_simulate"},
+    # {"label": "Run 3", "ebsd_id": "ebsd_4", "colour": "tab:red", "path": f"{ASMBO_PATH}/2025-03-18 (vh_x_sm8_i41)/250318014435_i21_simulate"},
+    # {"label": "Run 4", "ebsd_id": "ebsd_4", "colour": "tab:red", "path": f"{ASMBO_PATH}/2025-03-25 (vh_x_sm8_i31)/250325072901_i16_simulate"},
+    # {"label": "Run 5", "ebsd_id": "ebsd_4", "colour": "tab:red", "path": f"{ASMBO_PATH}/2025-03-10 (vh_pin2_sm8_i25)/250310161708_i25_simulate"},
+
     # VH Model
     # {"label": "Run 1", "ebsd_id": "ebsd_4", "colour": "tab:green", "path": f"{ASMBO_PATH}/2025-03-09 (vh_pin2_sm8_i25)/250308143546_i4_simulate"},
     # {"label": "Run 2", "ebsd_id": "ebsd_4", "colour": "tab:green", "path": f"{ASMBO_PATH}/2025-03-10 (vh_pin2_sm8_i25)/250310145710_i22_simulate"},
@@ -54,9 +65,9 @@ SIM_INFO_LIST = [
     # {"label": "High-Fidelity", "ebsd_id": "ebsd_2", "colour": "tab:red",   "path": f"{MOOSE_PATH}/2025-04-28 (617_s3_lh6_di_x_hr)"},
     
     # All Models
-    {"label": "VH",  "ebsd_id": "ebsd_2", "colour": "tab:cyan",   "path": f"{MOOSE_PATH}/2025-03-15 (617_s3_vh_x_hr)"},
-    {"label": "LH2", "ebsd_id": "ebsd_2", "colour": "tab:orange", "path": f"{MOOSE_PATH}/2025-04-05 (617_s3_lh2_di_x_hr)"},
-    {"label": "LH6", "ebsd_id": "ebsd_2", "colour": "tab:purple", "path": f"{MOOSE_PATH}/2025-04-28 (617_s3_lh6_di_x_hr)"},
+    # {"label": "VH",  "ebsd_id": "ebsd_2", "colour": "tab:cyan",   "path": f"{MOOSE_PATH}/2025-03-15 (617_s3_vh_x_hr)"},
+    # {"label": "LH2", "ebsd_id": "ebsd_2", "colour": "tab:orange", "path": f"{MOOSE_PATH}/2025-04-05 (617_s3_lh2_di_x_hr)"},
+    # {"label": "LH6", "ebsd_id": "ebsd_2", "colour": "tab:purple", "path": f"{MOOSE_PATH}/2025-04-28 (617_s3_lh6_di_x_hr)"},
 ]
 for si in SIM_INFO_LIST:
     si["data"] = csv_to_dict(f"{si['path']}/summary.csv")
@@ -71,12 +82,13 @@ GRAIN_IDS = [
 OPT_ALPHA = 1.0
 OTH_ALPHA = 0.3
 # SPACING, FORCE_ALPHA = -5.25, None # Runs
-# SPACING, FORCE_ALPHA = -2.25, 1.0  # Fidelity
-SPACING, FORCE_ALPHA = -6.25, 1.0  # Models
+SPACING, FORCE_ALPHA = -2.25, 1.0  # Fidelity
+# SPACING, FORCE_ALPHA = -6.25, 1.0  # Models
 
 # Script parameters
 SHOW_LEGEND   = True
 SHOW_GRAIN_ID = False
+SHOW_ERROR    = False
 STRAIN_FIELD = "average_strain"
 STRESS_FIELD = "average_stress"
 RES_DATA_MAP = "data/res_grain_map.csv"
@@ -184,13 +196,15 @@ def add_supp_legend(error_list:list, alpha_list:list, spacing:float=-5.5) -> Non
     handles += [plt.plot([], [], color=si["colour"], label=si['label'], alpha=alpha, linewidth=3)[0] for si, alpha in zip(SIM_INFO_LIST, alpha_list)]
 
     # Define supplementary information
-    formatted_error_list = [round(error, 4) for error in error_list]
-    formatted_error_list = [str(fe) if len(str(fe)) == 6 else str(fe)+(6-len(str(fe)))*"0" for fe in formatted_error_list]
-    se_label_list = [" "] + [f"({fe})" for fe in formatted_error_list]
-    handles += [plt.scatter([], [], color="white", label=se_label, marker="o", s=0) for se_label in se_label_list]
+    if SHOW_ERROR:
+        formatted_error_list = [round(error, 4) for error in error_list]
+        formatted_error_list = [str(fe) if len(str(fe)) == 6 else str(fe)+(6-len(str(fe)))*"0" for fe in formatted_error_list]
+        se_label_list = [" "] + [f"({fe})" for fe in formatted_error_list]
+        handles += [plt.scatter([], [], color="white", label=se_label, marker="o", s=0) for se_label in se_label_list]
 
     # Add legend
-    legend = plt.legend(handles=handles, ncol=2, columnspacing=spacing, framealpha=1, edgecolor="black",
+    num_cols = 2 if SHOW_ERROR else 1
+    legend = plt.legend(handles=handles, ncol=num_cols, columnspacing=spacing, framealpha=1, edgecolor="black",
                         fancybox=True, facecolor="white", fontsize=12, loc="upper left")
     plt.gca().add_artist(legend)
 
