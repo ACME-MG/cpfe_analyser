@@ -27,6 +27,7 @@ LIGHTEN       = 0.3
 BOXPLOT_WIDTH = 0.5
 FONTSIZE      = 14
 DENSITY       = 4
+VALD_HATCH    = DENSITY*""
 ADPT_HATCH    = DENSITY*"\\"
 INIT_HATCH    = DENSITY*"X"
 MAX_ITERATIONS = 50
@@ -50,9 +51,11 @@ def main():
         settings = {"color": lighten_colour(mi["colour"], LIGHTEN), "zorder": 3, "width": WIDTH, "edgecolor": "black"}
         plt.bar([INCREMENT*(i+1)], [mi["init"]], **settings, hatch=INIT_HATCH)
         plt.bar([INCREMENT*(i+1)], [mi["adpt"]], **settings, hatch=ADPT_HATCH, bottom=[mi["init"]])
+        plt.bar([INCREMENT*(i+1)], [1], **settings, hatch=VALD_HATCH, bottom=[mi["init"]+mi["adpt"]])
 
     # Define legend
     handles = [
+        mpatches.Patch(facecolor="white", edgecolor="black", hatch=VALD_HATCH, label="Valid"),
         mpatches.Patch(facecolor="white", edgecolor="black", hatch=ADPT_HATCH, label="Additional"),
         mpatches.Patch(facecolor="white", edgecolor="black", hatch=INIT_HATCH, label="Initial"),
     ]

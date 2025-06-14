@@ -16,18 +16,18 @@ from __common__.plotter import save_plot
 from __common__.surrogate import Model
 
 # Paths
-ASMBO_DIR     = "2025-04-23 (lh6_x_sm8_i51)/"
+ASMBO_DIR     = "2025-06-11 (vh_x_sm8_i52_val)/"
 SIM_DATA_PATH = f"/mnt/c/Users/janzen/OneDrive - UNSW/H0419460/results/asmbo/{ASMBO_DIR}"
 EXP_DATA_PATH = "data/617_s3_40um_exp.csv"
 RESULTS_PATH  = "results"
 
 # Model information
-# PARAM_NAMES = ["cp_tau_s", "cp_b", "cp_tau_0", "cp_n"]
+PARAM_NAMES = ["cp_tau_s", "cp_b", "cp_tau_0", "cp_n"]
 # PARAM_NAMES = [f"cp_lh_{i}" for i in range(2)] + ["cp_tau_0", "cp_n"]
-PARAM_NAMES = [f"cp_lh_{i}" for i in range(6)] + ["cp_tau_0", "cp_n"]
+# PARAM_NAMES = [f"cp_lh_{i}" for i in range(6)] + ["cp_tau_0", "cp_n"]
 
 # Plotting parameters
-MAX_ITERS    = 32
+MAX_ITERS    = 97
 ERROR_COLOUR = "black"
 BT_COLOUR    = "tab:blue"
 

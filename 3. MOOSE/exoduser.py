@@ -23,7 +23,7 @@ from __common__.plotter import save_plot
 from __common__.video import Video
 
 # Resolution information
-MESH_INDEX = 1
+MESH_INDEX = 0
 MESH_INFO = [
 
     # Low-fidelity mesh
@@ -48,16 +48,16 @@ MESH_INFO = [
 # Simulation paths
 ASMBO_PATH    = "/mnt/c/Users/janzen/OneDrive - UNSW/H0419460/results/asmbo"
 MOOSE_PATH    = "/mnt/c/Users/janzen/OneDrive - UNSW/H0419460/results/moose_sim"
-# SIM_PATH      = f"{MOOSE_PATH}/2025-03-19 (617_s3_vh_di_x)"
-SIM_PATH      = f"{MOOSE_PATH}/2025-03-23 (617_s3_vh_di_x_hr)"
+SIM_PATH      = f"{MOOSE_PATH}/2025-03-19 (617_s3_vh_di_x)"
+# SIM_PATH      = f"{MOOSE_PATH}/2025-03-23 (617_s3_vh_di_x_hr)"
 EXODUS_PREFIX = "simulation_exodus_ts"
 # for file in simulation_exodus.e*; do mv "$file" "$(echo "$file" | sed -E 's/simulation_exodus\.e(-s0*([0-9]+))?/simulation_exodus_ts\2.e/')"; done
 
 # Main parameters
 IPF_DIRECTION = "x"  # IPF direction to colour the grains
 # EXODUS_FACE   = "xy" # face to be plotted (e.g., "xy")
-EXODUS_FACE   = "xz" # face to be plotted (e.g., "xy")
-EXODUS_NORMAL = False # normal of the face to be plotted (True / False)
+EXODUS_FACE   = "xy" # face to be plotted (e.g., "xy")
+EXODUS_NORMAL = True # normal of the face to be plotted (True / False)
 SHOW_CB       = False # show cell boundaries
 
 # Plotting parameters
@@ -178,6 +178,8 @@ def main():
             plot_mesh(ts_exodus, grain_dict, element_indexes, IPF_DIRECTION, EXODUS_FACE, EXODUS_NORMAL)
             plt.axis("off")
             figure = plt.gcf()
+            figure.patch.set_alpha(0.0) # make figure background transparent
+            plt.gca().patch.set_alpha(0.0) # make axes background transparent
             video.write_to_video(figure)
             plt.cla()
             plt.clf()

@@ -24,14 +24,14 @@ RESULTS_PATH = "results/pf"
 # Simulation information
 SIM_INFO_LIST = [
     
-    {"label": "CPFEM 1", "colour": "tab:green", "lightness": (0.95, 0), "path": f"{ASMBO_PATH}/2025-03-18 (vh_x_sm8_i41)/250318014435_i21_simulate"},
-    {"label": "CPFEM 2", "colour": "tab:green", "lightness": (0.95, 0), "path": f"{ASMBO_PATH}/2025-03-28 (lh2_x_sm8_i29)/250327093649_i16_simulate"},
-    {"label": "CPFEM 3", "colour": "tab:green", "lightness": (0.95, 0), "path": f"{ASMBO_PATH}/2025-04-23 (lh6_x_sm8_i51)/250422034348_i36_simulate"},
-    
     # VH model
     # {"label": "Low-Fidelity",  "colour": "tab:green", "lightness": (0.95, 0), "path": f"{ASMBO_PATH}/2025-03-18 (vh_x_sm8_i41)/250318014435_i21_simulate"},
     # {"label": "High-Fidelity", "colour": "tab:red",   "lightness": (0.95, 0), "path": f"{MOOSE_PATH}/2025-03-15 (617_s3_vh_x_hr)"},
     
+    # VH model alt
+    # {"label": "Low-Fidelity",  "colour": "tab:green", "lightness": (0.95, 0), "path": f"{ASMBO_PATH}/2025-06-11 (vh_x_sm8_i52_val)/250609222901_i8_simulate"},
+    # {"label": "High-Fidelity", "colour": "tab:red",   "lightness": (0.95, 0), "path": f"{MOOSE_PATH}/2025-06-12 (617_s3_vh_di_x_hr_val)"},
+
     # LH2 model
     # {"label": "Low-Fidelity",  "colour": "tab:green", "lightness": (0.95, 0), "path": f"{ASMBO_PATH}/2025-03-28 (lh2_x_sm8_i29)/250327093649_i16_simulate"},
     # {"label": "High-Fidelity", "colour": "tab:red",   "lightness": (0.95, 0), "path": f"{MOOSE_PATH}/2025-04-05 (617_s3_lh2_di_x_hr)"},
@@ -40,10 +40,15 @@ SIM_INFO_LIST = [
     # {"label": "Low-Fidelity",  "colour": "tab:green", "lightness": (0.95, 0), "path": f"{ASMBO_PATH}/2025-04-23 (lh6_x_sm8_i51)/250422034348_i36_simulate"},
     # {"label": "High-Fidelity", "colour": "tab:red",   "lightness": (0.95, 0), "path": f"{MOOSE_PATH}/2025-04-28 (617_s3_lh6_di_x_hr)"},
 
-    # All models
+    # All models (high-fidelity)
     # {"label": "VH",  "colour": "tab:cyan",   "lightness": (0.95, 0), "path": f"{MOOSE_PATH}/2025-03-15 (617_s3_vh_x_hr)"},
     # {"label": "LH2", "colour": "tab:orange", "lightness": (0.95, 0), "path": f"{MOOSE_PATH}/2025-04-05 (617_s3_lh2_di_x_hr)"},
     # {"label": "LH6", "colour": "tab:red",    "lightness": (0.95, 0), "path": f"{MOOSE_PATH}/2025-04-28 (617_s3_lh6_di_x_hr)"},
+    
+    # All models (low-fidelity)
+    {"label": "VH",  "colour": "tab:cyan",   "lightness": (0.95, 0), "path": f"{ASMBO_PATH}/2025-03-18 (vh_x_sm8_i41)/250318014435_i21_simulate"},
+    {"label": "LH2", "colour": "tab:orange", "lightness": (0.95, 0), "path": f"{ASMBO_PATH}/2025-03-28 (lh2_x_sm8_i29)/250327093649_i16_simulate"},
+    {"label": "LH6", "colour": "tab:red",    "lightness": (0.95, 0), "path": f"{ASMBO_PATH}/2025-04-23 (lh6_x_sm8_i51)/250422034348_i36_simulate"},
 ]
 EXP_INFO = {"colour": "silver", "lightness": (0.95, 0)}
 

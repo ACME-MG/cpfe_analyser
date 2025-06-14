@@ -26,17 +26,17 @@ ASMBO_PATH = "/mnt/c/Users/janzen/OneDrive - UNSW/H0419460/results/asmbo"
 MOOSE_PATH = "/mnt/c/Users/janzen/OneDrive - UNSW/H0419460/results/moose_sim"
 SIM_INFO_LIST = [
 
-    {"label": "CPFEM 1",  "ebsd_id": "ebsd_4", "colour": "tab:red",   "path": f"{ASMBO_PATH}/2025-03-18 (vh_x_sm8_i41)/250318014435_i21_simulate"},
-    {"label": "CPFEM 2",  "ebsd_id": "ebsd_4", "colour": "tab:olive", "path": f"{ASMBO_PATH}/2025-03-28 (lh2_x_sm8_i29)/250327093649_i16_simulate"},
-    {"label": "CPFEM 3",  "ebsd_id": "ebsd_4", "colour": "tab:blue",  "path": f"{ASMBO_PATH}/2025-04-23 (lh6_x_sm8_i51)/250422034348_i36_simulate"},
-    # {"label": "Surrogate", "ebsd_id": "ebsd_4", "colour": "tab:green", "path": f"data"},
-    # {"label": "CPFEM", "ebsd_id": "ebsd_4", "colour": "tab:red",   "path": f"{ASMBO_PATH}/2025-03-18 (vh_x_sm8_i41)/250318014435_i21_simulate"},
-    # {"label": "Run 1", "ebsd_id": "ebsd_4", "colour": "tab:red", "path": f"{ASMBO_PATH}/2025-03-09 (vh_pin2_sm8_i25)/250308143546_i4_simulate"},
-    # {"label": "Run 2", "ebsd_id": "ebsd_4", "colour": "tab:red", "path": f"{ASMBO_PATH}/2025-03-10 (vh_pin2_sm8_i25)/250310145710_i22_simulate"},
-    # {"label": "Run 3", "ebsd_id": "ebsd_4", "colour": "tab:red", "path": f"{ASMBO_PATH}/2025-03-18 (vh_x_sm8_i41)/250318014435_i21_simulate"},
-    # {"label": "Run 4", "ebsd_id": "ebsd_4", "colour": "tab:red", "path": f"{ASMBO_PATH}/2025-03-25 (vh_x_sm8_i31)/250325072901_i16_simulate"},
-    # {"label": "Run 5", "ebsd_id": "ebsd_4", "colour": "tab:red", "path": f"{ASMBO_PATH}/2025-03-10 (vh_pin2_sm8_i25)/250310161708_i25_simulate"},
-
+    # VH Model with validation data
+    # {"label": "Run X", "ebsd_id": "ebsd_4", "colour": "tab:green", "path": f"{ASMBO_PATH}/2025-06-11 (vh_x_sm8_i28_val)/250609013152_i7_simulate"},
+    # {"label": "Run X", "ebsd_id": "ebsd_4", "colour": "tab:green", "path": f"{ASMBO_PATH}/2025-06-11 (vh_x_sm8_i32_val)/250608124145_i6_simulate"},
+    # {"label": "Run 1", "ebsd_id": "ebsd_4", "colour": "tab:green", "path": f"{ASMBO_PATH}/2025-06-03 (vh_x_sm8_i97_val)/250601032309_i20_simulate"},
+    # {"label": "Run 2", "ebsd_id": "ebsd_4", "colour": "tab:green", "path": f"{ASMBO_PATH}/2025-06-11 (vh_x_sm8_i13_val)/250609093847_i7_simulate"},
+    # {"label": "Run 3", "ebsd_id": "ebsd_4", "colour": "tab:green", "path": f"{ASMBO_PATH}/2025-06-11 (vh_x_sm8_i28_val)/250608021510_i6_simulate"},
+    # {"label": "Run 4", "ebsd_id": "ebsd_4", "colour": "tab:green", "path": f"{ASMBO_PATH}/2025-06-11 (vh_x_sm8_i52_val)/250608004520_i6_simulate"},
+    # {"label": "Run 5", "ebsd_id": "ebsd_4", "colour": "tab:green", "path": f"{ASMBO_PATH}/2025-06-11 (vh_x_sm8_i52_val)/250609222901_i8_simulate"},
+    # {"label": "Low-Fidelity",  "ebsd_id": "ebsd_4", "colour": "tab:green", "path": f"{ASMBO_PATH}/2025-06-11 (vh_x_sm8_i52_val)/250609222901_i8_simulate"},
+    # {"label": "High-Fidelity", "ebsd_id": "ebsd_2", "colour": "tab:red",   "path": f"{MOOSE_PATH}/2025-06-12 (617_s3_vh_di_x_hr_val)"},
+    
     # VH Model
     # {"label": "Run 1", "ebsd_id": "ebsd_4", "colour": "tab:green", "path": f"{ASMBO_PATH}/2025-03-09 (vh_pin2_sm8_i25)/250308143546_i4_simulate"},
     # {"label": "Run 2", "ebsd_id": "ebsd_4", "colour": "tab:green", "path": f"{ASMBO_PATH}/2025-03-10 (vh_pin2_sm8_i25)/250310145710_i22_simulate"},
@@ -63,8 +63,13 @@ SIM_INFO_LIST = [
     # {"label": "Run 5", "ebsd_id": "ebsd_4", "colour": "tab:green", "path": f"{ASMBO_PATH}/2025-04-23 (lh6_x_sm8_i51)/250420224600_i20_simulate"},
     # {"label": "Low-Fidelity",  "ebsd_id": "ebsd_4", "colour": "tab:green", "path": f"{ASMBO_PATH}/2025-04-23 (lh6_x_sm8_i51)/250422034348_i36_simulate"},
     # {"label": "High-Fidelity", "ebsd_id": "ebsd_2", "colour": "tab:red",   "path": f"{MOOSE_PATH}/2025-04-28 (617_s3_lh6_di_x_hr)"},
+
+    # All Models (Low-Fidelity)
+    {"label": "VH",  "ebsd_id": "ebsd_4", "colour": "tab:cyan",   "path": f"{ASMBO_PATH}/2025-03-18 (vh_x_sm8_i41)/250318014435_i21_simulate"},
+    {"label": "LH2", "ebsd_id": "ebsd_4", "colour": "tab:orange", "path": f"{ASMBO_PATH}/2025-03-28 (lh2_x_sm8_i29)/250327093649_i16_simulate"},
+    {"label": "LH6", "ebsd_id": "ebsd_4", "colour": "tab:purple", "path": f"{ASMBO_PATH}/2025-04-23 (lh6_x_sm8_i51)/250422034348_i36_simulate"},
     
-    # All Models
+    # All Models (High-Fidelity)
     # {"label": "VH",  "ebsd_id": "ebsd_2", "colour": "tab:cyan",   "path": f"{MOOSE_PATH}/2025-03-15 (617_s3_vh_x_hr)"},
     # {"label": "LH2", "ebsd_id": "ebsd_2", "colour": "tab:orange", "path": f"{MOOSE_PATH}/2025-04-05 (617_s3_lh2_di_x_hr)"},
     # {"label": "LH6", "ebsd_id": "ebsd_2", "colour": "tab:purple", "path": f"{MOOSE_PATH}/2025-04-28 (617_s3_lh6_di_x_hr)"},
@@ -82,13 +87,13 @@ GRAIN_IDS = [
 OPT_ALPHA = 1.0
 OTH_ALPHA = 0.3
 # SPACING, FORCE_ALPHA = -5.25, None # Runs
-SPACING, FORCE_ALPHA = -2.25, 1.0  # Fidelity
-# SPACING, FORCE_ALPHA = -6.25, 1.0  # Models
+# SPACING, FORCE_ALPHA = -2.25, 1.0  # Fidelity
+SPACING, FORCE_ALPHA = -6.25, 1.0  # Models
 
 # Script parameters
 SHOW_LEGEND   = True
 SHOW_GRAIN_ID = False
-SHOW_ERROR    = False
+SHOW_ERROR    = True
 STRAIN_FIELD = "average_strain"
 STRESS_FIELD = "average_stress"
 RES_DATA_MAP = "data/res_grain_map.csv"

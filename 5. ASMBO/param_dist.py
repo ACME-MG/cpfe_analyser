@@ -16,6 +16,13 @@ ASMBO_PATH = "/mnt/c/Users/janzen/OneDrive - UNSW/H0419460/results/asmbo"
 MOOSE_PATH = "/mnt/c/Users/janzen/OneDrive - UNSW/H0419460/results/moose_sim"
 SIM_PATH_LIST = [
 
+    # Voce hardening with validation
+    f"{ASMBO_PATH}/2025-06-03 (vh_x_sm8_i97_val)/250601032309_i20_simulate",
+    f"{ASMBO_PATH}/2025-06-11 (vh_x_sm8_i13_val)/250609093847_i7_simulate",
+    f"{ASMBO_PATH}/2025-06-11 (vh_x_sm8_i28_val)/250608021510_i6_simulate",
+    f"{ASMBO_PATH}/2025-06-11 (vh_x_sm8_i52_val)/250608004520_i6_simulate",
+    f"{ASMBO_PATH}/2025-06-11 (vh_x_sm8_i52_val)/250609222901_i8_simulate",
+
     # Voce hardening
     # f"{ASMBO_PATH}/2025-03-09 (vh_pin2_sm8_i25)/250308143546_i4_simulate",
     # f"{ASMBO_PATH}/2025-03-10 (vh_pin2_sm8_i25)/250310145710_i22_simulate",
@@ -30,33 +37,35 @@ SIM_PATH_LIST = [
     # f"{ASMBO_PATH}/2025-04-02 (lh2_x_sm8_i23)/250401051359_i10_simulate",
     # f"{ASMBO_PATH}/2025-03-31 (lh2_x_sm8_i31)/250330213453_i29_simulate",
 
-    # Latent hardening 6
-    f"{ASMBO_PATH}/2025-04-09 (lh6_x_sm8_i44)/250407052902_i6_simulate",
-    f"{ASMBO_PATH}/2025-04-14 (lh6_x_sm8_i32)/250413031321_i23_simulate",
-    f"{ASMBO_PATH}/2025-04-18 (lh6_x_sm8_i27)/250418123844_i27_simulate",
-    f"{ASMBO_PATH}/2025-04-23 (lh6_x_sm8_i51)/250422034348_i36_simulate",
-    f"{ASMBO_PATH}/2025-04-23 (lh6_x_sm8_i51)/250420224600_i20_simulate",
+    # # Latent hardening 6
+    # f"{ASMBO_PATH}/2025-04-09 (lh6_x_sm8_i44)/250407052902_i6_simulate",
+    # f"{ASMBO_PATH}/2025-04-14 (lh6_x_sm8_i32)/250413031321_i23_simulate",
+    # f"{ASMBO_PATH}/2025-04-18 (lh6_x_sm8_i27)/250418123844_i27_simulate",
+    # f"{ASMBO_PATH}/2025-04-23 (lh6_x_sm8_i51)/250422034348_i36_simulate",
+    # f"{ASMBO_PATH}/2025-04-23 (lh6_x_sm8_i51)/250420224600_i20_simulate",
 ]
 
 # Parameter information
 PRM_INFO = [
     {"name": "cp_tau_0", "bounds": (0, 500),  "label": r"$\tau_0$", "ticks": [0, 100, 200, 300, 400, 500]},
     {"name": "cp_n",     "bounds": (1, 20),   "label": r"$n$",      "ticks": [1, 4, 8, 12, 16, 20]},
-    # {"name": "cp_b",     "bounds": (0, 10),   "label": r"$b$",      "ticks": [0, 2, 4, 6, 8, 10]},
-    # {"name": "cp_tau_s", "bounds": (0, 4000), "label": r"$\tau_s$", "ticks": [0, 800, 1600, 2400, 3200, 4000]},
+    {"name": "cp_b",     "bounds": (0, 10),   "label": r"$b$",      "ticks": [0, 2, 4, 6, 8, 10]},
+    {"name": "cp_tau_s", "bounds": (0, 4000), "label": r"$\tau_s$", "ticks": [0, 800, 1600, 2400, 3200, 4000]},
     # {"name": "cp_lh_0",  "bounds": (0, 1000), "label": r"$h_{\alpha\alpha}$", "ticks": [0, 200, 400, 600, 800, 1000]},
     # {"name": "cp_lh_1",  "bounds": (0, 1000), "label": r"$h_{\alpha\beta}$",  "ticks": [0, 200, 400, 600, 800, 1000]},
-    {"name": "cp_lh_0",  "bounds": (0, 1000), "label": r"$h_{\alpha\alpha}$", "ticks": [0, 200, 400, 600, 800, 1000]},
-    {"name": "cp_lh_1",  "bounds": (0, 1000), "label": r"$h_1$",              "ticks": [0, 200, 400, 600, 800, 1000]},
-    {"name": "cp_lh_2",  "bounds": (0, 1000), "label": r"$h_2$",              "ticks": [0, 200, 400, 600, 800, 1000]},
-    {"name": "cp_lh_3",  "bounds": (0, 1000), "label": r"$h_3$",              "ticks": [0, 200, 400, 600, 800, 1000]},
-    {"name": "cp_lh_4",  "bounds": (0, 1000), "label": r"$h_4$",              "ticks": [0, 200, 400, 600, 800, 1000]},
-    {"name": "cp_lh_5",  "bounds": (0, 1000), "label": r"$h_5$",              "ticks": [0, 200, 400, 600, 800, 1000]},
+    # {"name": "cp_lh_0",  "bounds": (0, 1000), "label": r"$h_{\alpha\alpha}$", "ticks": [0, 200, 400, 600, 800, 1000]},
+    # {"name": "cp_lh_1",  "bounds": (0, 1000), "label": r"$h_1$",              "ticks": [0, 200, 400, 600, 800, 1000]},
+    # {"name": "cp_lh_2",  "bounds": (0, 1000), "label": r"$h_2$",              "ticks": [0, 200, 400, 600, 800, 1000]},
+    # {"name": "cp_lh_3",  "bounds": (0, 1000), "label": r"$h_3$",              "ticks": [0, 200, 400, 600, 800, 1000]},
+    # {"name": "cp_lh_4",  "bounds": (0, 1000), "label": r"$h_4$",              "ticks": [0, 200, 400, 600, 800, 1000]},
+    # {"name": "cp_lh_5",  "bounds": (0, 1000), "label": r"$h_5$",              "ticks": [0, 200, 400, 600, 800, 1000]},
 ]
-OPT_INDEX = 3
+OPT_INDEX = 4
 
 # Plotting parameters
 HORIZONTAL     = True
+# BOXPLOT_COLOUR = (1.0, 0.6, 0.6, 0.5)
+# OPT_COLOUR     = "tab:red"
 BOXPLOT_COLOUR = (0.6, 1.0, 0.6, 0.5)
 OPT_COLOUR     = "tab:green"
 BOXPLOT_WIDTH  = 0.4

@@ -24,10 +24,10 @@ BLU_COLOUR = {"base": "tab:blue",   "start": [0.9, 0.9, 1.0], "end": [0.1, 0.1, 
 
 # Simulation parameters
 # HEADERS, LABELS, COLOURS = ["Experimental", "VH", "LH2", "LH6"], ["   Exp.", "VH", "LH2", "LH6"], [EXP_COLOUR, VH_COLOUR, LH2_COLOUR, LH6_COLOUR]
-# HEADERS, LABELS, COLOURS = ["Experimental", "Low-Fidelity", "High-Fidelity"], ["   Exp.", "LF  ", "HF  "], [EXP_COLOUR, CAL_COLOUR, VAL_COLOUR]
+HEADERS, LABELS, COLOURS = ["Experimental", "Low-Fidelity", "High-Fidelity"], ["   Exp.", "LF  ", "HF  "], [EXP_COLOUR, CAL_COLOUR, VAL_COLOUR]
 # HEADERS, LABELS, COLOURS = ["Experimental", "CPFEM"], ["Exp.  ", "CPFEM"], [EXP_COLOUR, VAL_COLOUR]
 # HEADERS, LABELS, COLOURS = ["Experimental", "Run 1", "Run 2", "Run 3", "Run 4", "Run 5"], ["Exp.  ", "CPFEM"], [EXP_COLOUR]+[VAL_COLOUR]*5
-HEADERS, LABELS, COLOURS = ["Experimental", "CPFEM 1", "CPFEM 2", "CPFEM 3"], ["  Exp.", "1  ", "2  ", "3  "], [EXP_COLOUR, VAL_COLOUR, OLV_COLOUR, BLU_COLOUR]
+# HEADERS, LABELS, COLOURS = ["Experimental", "CPFEM 1", "CPFEM 2", "CPFEM 3"], ["  Exp.", "1  ", "2  ", "3  "], [EXP_COLOUR, VAL_COLOUR, OLV_COLOUR, BLU_COLOUR]
 
 # Paths
 DATA_PATH    = "data/texture_indexes.csv"
