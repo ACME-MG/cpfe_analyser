@@ -6,29 +6,38 @@
 """
 
 # Libraries
-import os
+import os, numpy as np
 import sys; sys.path += [".."]
 import seaborn as sns
 import matplotlib.pyplot as plt
+from __common__.io import dict_to_stdout
+from __common__.general import round_sf
 
 # Simulation Information
 ASMBO_PATH = "/mnt/c/Users/janzen/OneDrive - UNSW/H0419460/results/asmbo"
 MOOSE_PATH = "/mnt/c/Users/janzen/OneDrive - UNSW/H0419460/results/moose_sim"
 SIM_PATH_LIST = [
 
-    # Voce hardening with validation
-    f"{ASMBO_PATH}/2025-06-03 (vh_x_sm8_i97_val)/250601032309_i20_simulate",
-    f"{ASMBO_PATH}/2025-06-11 (vh_x_sm8_i13_val)/250609093847_i7_simulate",
-    f"{ASMBO_PATH}/2025-06-11 (vh_x_sm8_i28_val)/250608021510_i6_simulate",
-    f"{ASMBO_PATH}/2025-06-11 (vh_x_sm8_i52_val)/250608004520_i6_simulate",
-    f"{ASMBO_PATH}/2025-06-11 (vh_x_sm8_i52_val)/250609222901_i8_simulate",
-
     # Voce hardening
-    # f"{ASMBO_PATH}/2025-03-09 (vh_pin2_sm8_i25)/250308143546_i4_simulate",
-    # f"{ASMBO_PATH}/2025-03-10 (vh_pin2_sm8_i25)/250310145710_i22_simulate",
-    # f"{ASMBO_PATH}/2025-03-18 (vh_x_sm8_i41)/250318014435_i21_simulate",
-    # f"{ASMBO_PATH}/2025-03-25 (vh_x_sm8_i31)/250325072901_i16_simulate",
-    # f"{ASMBO_PATH}/2025-03-10 (vh_pin2_sm8_i25)/250310161708_i25_simulate",
+    f"{ASMBO_PATH}/2025-03-09 (vh_pin2_sm8_i25)/250308143546_i4_simulate",
+    f"{ASMBO_PATH}/2025-03-10 (vh_pin2_sm8_i25)/250310145710_i22_simulate",
+    f"{ASMBO_PATH}/2025-03-18 (vh_x_sm8_i41)/250318014435_i21_simulate",
+    f"{ASMBO_PATH}/2025-03-25 (vh_x_sm8_i31)/250325072901_i16_simulate",
+    f"{ASMBO_PATH}/2025-03-10 (vh_pin2_sm8_i25)/250310161708_i25_simulate",
+
+    # Voce hardening cross-validation 1
+    # f"{ASMBO_PATH}/2025-06-03 (vh_x_sm8_i97_val)/250601032309_i20_simulate",
+    # f"{ASMBO_PATH}/2025-06-11 (vh_x_sm8_i13_val)/250609093847_i7_simulate",
+    # f"{ASMBO_PATH}/2025-06-11 (vh_x_sm8_i28_val)/250608021510_i6_simulate",
+    # f"{ASMBO_PATH}/2025-06-11 (vh_x_sm8_i52_val)/250608004520_i6_simulate",
+    # f"{ASMBO_PATH}/2025-06-11 (vh_x_sm8_i52_val)/250609222901_i8_simulate",
+    
+    # # Voce hardening cross-validation 2
+    # f"{ASMBO_PATH}/2025-07-08 (vh_x_sm8_i14_cv2)/250708122843_i14_simulate",
+    # f"{ASMBO_PATH}/2025-07-08 (vh_x_sm8_i26_cv2)/250707132454_i17_simulate",
+    # f"{ASMBO_PATH}/2025-07-08 (vh_x_sm8_i29_cv2)/250707105726_i9_simulate",
+    # f"{ASMBO_PATH}/2025-07-08 (vh_x_sm8_i30_cv2)/250708071533_i13_simulate",
+    # f"{ASMBO_PATH}/2025-07-08 (vh_x_sm8_i32_cv2)/250708043852_i9_simulate",
 
     # Latent hardening 2
     # f"{ASMBO_PATH}/2025-03-25 (lh2_x_sm8_i19)/250323214745_i7_simulate",
@@ -60,14 +69,14 @@ PRM_INFO = [
     # {"name": "cp_lh_4",  "bounds": (0, 1000), "label": r"$h_4$",              "ticks": [0, 200, 400, 600, 800, 1000]},
     # {"name": "cp_lh_5",  "bounds": (0, 1000), "label": r"$h_5$",              "ticks": [0, 200, 400, 600, 800, 1000]},
 ]
-OPT_INDEX = 4
+OPT_INDEX = 2
 
 # Plotting parameters
 HORIZONTAL     = True
 # BOXPLOT_COLOUR = (1.0, 0.6, 0.6, 0.5)
-# OPT_COLOUR     = "tab:red"
+OPT_COLOUR     = "tab:red"
 BOXPLOT_COLOUR = (0.6, 1.0, 0.6, 0.5)
-OPT_COLOUR     = "tab:green"
+# OPT_COLOUR     = "tab:green"
 BOXPLOT_WIDTH  = 0.4
 WIDTH_FACTOR   = 0.6
 WHITE_SPACE    = 1.5
@@ -84,7 +93,7 @@ def main():
     length = 2*MARGIN_SPACE+num_params*WIDTH_FACTOR+(num_params-1)*WHITE_SPACE
     if HORIZONTAL:
         _, axes = plt.subplots(nrows=num_params, ncols=1, figsize=(5, 5), sharex=False, dpi=300)
-        plt.subplots_adjust(bottom=0.12, top=0.87, left=MARGIN_SPACE, wspace=WHITE_SPACE, hspace=WHITE_SPACE)
+        plt.subplots_adjust(bottom=0.12, top=0.87, left=MARGIN_SPACE, right=0.67, wspace=WHITE_SPACE, hspace=WHITE_SPACE)
     else:
         _, axes = plt.subplots(nrows=1, ncols=num_params, figsize=(length, 5), sharex=False, dpi=300)
         plt.subplots_adjust(left=MARGIN_SPACE, wspace=WHITE_SPACE, hspace=WHITE_SPACE)
@@ -95,17 +104,24 @@ def main():
         # Get parameter information
         pi = PRM_INFO[i]
 
+        # Get parameter values
+        data_list = [pd[pi["name"]] for pd in prm_dict_list]
+        pi["data"] = data_list
+
         # Add formatting
         if HORIZONTAL:
-            axis.set_ylabel(pi["label"], fontsize=14, rotation=0, labelpad=18, va="center")
+            axis.set_ylabel(pi["label"], fontsize=14, fontweight="bold", rotation=0, labelpad=18, va="center")
+            x_position = pi["bounds"][1]*1.05
+            asterisked = f"${pi['label'].replace('$','')}^*$"
+            param_text = f"({asterisked}= {data_list[OPT_INDEX]})"
+            axis.text(x_position, 0, param_text, color=OPT_COLOUR, va="center", ha="left", fontsize=14)
         else:
             axis.set_title(pi["label"], pad=12, fontsize=14)
         axis.grid(which="major", axis="both", color="SlateGray", linewidth=2, linestyle=":", alpha=0.5)
         for spine in axis.spines.values():
             spine.set_linewidth(1)
 
-        # Get boxplot values
-        data_list = [pd[pi["name"]] for pd in prm_dict_list]
+        # Format boxplot
         position_list = [0]*len(data_list)
         x_list = data_list if HORIZONTAL else position_list
         y_list = position_list if HORIZONTAL else data_list
@@ -128,7 +144,7 @@ def main():
             opt_data  = data_list[OPT_INDEX]
             opt_x_list = [opt_data] if HORIZONTAL else [0]
             opt_y_list = [0] if HORIZONTAL else [opt_data]
-            axis.scatter(opt_x_list, opt_y_list, c=OPT_COLOUR, edgecolor="black", linewidths=1, s=6**2, zorder=3)
+            axis.scatter(opt_x_list, opt_y_list, c=OPT_COLOUR, edgecolor="black", linewidths=1, s=8**2, zorder=3)
 
         # Apply bounds
         if HORIZONTAL:
@@ -148,6 +164,14 @@ def main():
     plt.xticks(fontsize=12)
     plt.yticks(fontsize=12)
     plt.savefig("results/param_dist.png")
+
+    # Print summary
+    param_dict = {
+        "name":     [pi["name"] for pi in PRM_INFO],
+        "mean":     [round_sf(np.average(pi["data"]), 5) for pi in PRM_INFO],
+        "variance": [round_sf(np.var(pi["data"]), 5) for pi in PRM_INFO],
+    }
+    dict_to_stdout(param_dict)
 
 def read_params(params_path:str) -> dict:
     """

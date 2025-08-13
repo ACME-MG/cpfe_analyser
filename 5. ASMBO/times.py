@@ -15,20 +15,23 @@ from __common__.plotter import save_plot, lighten_colour
 # Model information
 RESULTS_PATH = "/mnt/c/Users/janzen/OneDrive - UNSW/H0419460/results/"
 MODEL_INFO = [
-    {"name": "VH",  "colour": "tab:cyan",   "init": 8,  "adpt": np.average([18, 16, 8, 8, 13]), "vald": 6.7,  "path": f"{RESULTS_PATH}/asmbo/2025-03-25 (vh_x_sm8_i31)"},
-    {"name": "LH2", "colour": "tab:orange", "init": 8,  "adpt": np.average([7, 16, 18, 10, 29]), "vald": 73.7, "path": f"{RESULTS_PATH}/asmbo/2025-03-25 (lh2_x_sm8_i19)"},
-    {"name": "LH6", "colour": "tab:purple", "init": 16, "adpt": np.average([6, 23, 27, 36, 20]), "vald": 69.2, "path": f"{RESULTS_PATH}/asmbo/2025-04-23 (lh6_x_sm8_i51)"},
+    {"name": "VH",  "colour": "tab:cyan",   "init": 8,  "adpt": np.average([13]), "vald": 6.7,  "path": f"{RESULTS_PATH}/asmbo/2025-03-25 (vh_x_sm8_i31)"},
+    {"name": "LH2", "colour": "tab:orange", "init": 8,  "adpt": np.average([16]), "vald": 73.7, "path": f"{RESULTS_PATH}/asmbo/2025-03-25 (lh2_x_sm8_i19)"},
+    {"name": "LH6", "colour": "tab:purple", "init": 16, "adpt": np.average([22]), "vald": 69.2, "path": f"{RESULTS_PATH}/asmbo/2025-04-23 (lh6_x_sm8_i51)"},
 ] # "init" and "adpt" initially contain number of simulations; "vald" contains total hours
 
 # Plotting parameters
 INCREMENT   = 1.0
 WIDTH       = 0.8
-MAX_HOURS   = 160
+# MAX_HOURS   = 160
+MAX_HOURS   = 80
 LIGHTEN     = 0.3
 DENSITY     = 4
 VALD_HATCH  = DENSITY*""
-ADPT_HATCH  = DENSITY*"\\"
-INIT_HATCH  = DENSITY*"X"
+# ADPT_HATCH  = DENSITY*"\\"
+# INIT_HATCH  = DENSITY*"X"
+ADPT_HATCH  = DENSITY*""
+INIT_HATCH  = DENSITY*"\\"
 
 # File constants
 # SUFFIX  = ".log"
@@ -59,7 +62,7 @@ def main():
 
         # Calculate average time and apply
         average_time = np.average(time_list)#/4*1.2
-        print(f"{mi['name']} {average_time}")
+        print(f"{mi['name']} {average_time}\tTotal: {average_time*mi['init']*mi['adpt']}")
         mi["init"] *= average_time
         mi["adpt"] *= average_time
 
@@ -77,11 +80,11 @@ def main():
         settings = {"color": lighten_colour(mi["colour"], LIGHTEN), "zorder": 3, "width": WIDTH, "edgecolor": "black"}
         plt.bar([INCREMENT*(i+1)], [mi["init"]], **settings, hatch=INIT_HATCH)
         plt.bar([INCREMENT*(i+1)], [mi["adpt"]], **settings, hatch=ADPT_HATCH, bottom=[mi["init"]])
-        plt.bar([INCREMENT*(i+1)], [mi["vald"]], **settings, hatch=VALD_HATCH, bottom=[mi["init"]+mi["adpt"]])
+        # plt.bar([INCREMENT*(i+1)], [mi["vald"]], **settings, hatch=VALD_HATCH, bottom=[mi["init"]+mi["adpt"]])
 
     # Define legend
     handles = [
-        mpatches.Patch(facecolor="white", edgecolor="black", hatch=VALD_HATCH, label="Validation"),
+        # mpatches.Patch(facecolor="white", edgecolor="black", hatch=VALD_HATCH, label="Validation"),
         mpatches.Patch(facecolor="white", edgecolor="black", hatch=ADPT_HATCH, label="Additional"),
         mpatches.Patch(facecolor="white", edgecolor="black", hatch=INIT_HATCH, label="Initial"),
     ]

@@ -11,7 +11,7 @@ import numpy as np
 import random
 import sys; sys.path += [".."]
 from __common__.plotter import save_plot
-from sm_error import sm_error, SE_THRESHOLD, GE_THRESHOLD
+from sm_error import sm_error
 
 # Simulation Information
 ASMBO_PATH = "/mnt/c/Users/janzen/OneDrive - UNSW/H0419460/results/asmbo"
@@ -26,9 +26,13 @@ ASMBO_PATH_LIST = [
 ]
 TERMINATION_LIST = [17, 15, 7, 7, 12] # starting from 0
 
+# Thresholds
+SE_THRESHOLD = 1 # %
+GE_THRESHOLD = 0.1 # degrees
+
 # Plotting parameters
-SIM_COLOUR         = "tab:blue"
-THRESHOLD_COLOUR   = "tab:green"
+SIM_COLOUR         = "black"
+THRESHOLD_COLOUR   = "tab:blue"
 TERMINATION_COLOUR = "tab:red"
 
 def main():
@@ -44,6 +48,12 @@ def main():
         se_list_list.append(errors_dict["se"])
         ge_list_list.append(errors_dict["ge"])
 
+    # Convert values
+    for i in range(len(se_list_list)):
+        for j in range(len(se_list_list[i])):
+            se_list_list[i][j] *= 100
+            ge_list_list[i][j] *= 180/np.pi
+
     # Manual changes
     termination_list = []
     for i, termination in enumerate(TERMINATION_LIST):
@@ -56,18 +66,18 @@ def main():
     # Plot stress errors
     initialise_plot()
     plot_errors(se_list_list, termination_list, SE_THRESHOLD)
-    plt.ylabel(r"$E_{\sigma}$", fontsize=14)
+    plt.ylabel(r"$E_{\sigma}$"+" (%)", fontsize=14)
     plt.yscale("log")
-    plt.ylim(1e-3, 1e2)
+    plt.ylim(1e-1, 1e4)
     add_legend()
     save_plot(f"results/cvg_se.png")
 
     # Plot geodesic errors
     initialise_plot()
     plot_errors(ge_list_list, termination_list, GE_THRESHOLD)
-    plt.ylabel(r"$E_{\Phi}$", fontsize=14)
+    plt.ylabel(r"$E_{\Phi}$"+" (°)", fontsize=14)
     plt.yscale("log")
-    plt.ylim(1e-4, 1e1)
+    plt.ylim(1e-2, 1e2)
     add_legend()
     save_plot(f"results/cvg_ge.png")
 

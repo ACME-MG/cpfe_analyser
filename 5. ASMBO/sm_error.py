@@ -16,7 +16,7 @@ from __common__.plotter import save_plot
 from __common__.surrogate import Model
 
 # Paths
-ASMBO_DIR     = "2025-06-11 (vh_x_sm8_i52_val)/"
+ASMBO_DIR     = "2025-07-08 (vh_x_sm8_i32_cv2)"
 SIM_DATA_PATH = f"/mnt/c/Users/janzen/OneDrive - UNSW/H0419460/results/asmbo/{ASMBO_DIR}"
 EXP_DATA_PATH = "data/617_s3_40um_exp.csv"
 RESULTS_PATH  = "results"
@@ -48,35 +48,34 @@ def sm_error(sim_path:str=""):
 
     # Get surrogate model errors
     errors_dict = get_errors_dict(sim_data_path)
+    dict_to_stdout(errors_dict)
 
     # Calculate termination iteration
-    error_grid = [errors_dict["se"], errors_dict["ge"]]
+    error_grid = [errors_dict["se"]]
+    # error_grid = [errors_dict["se"], errors_dict["ge"]]
     termination = get_termination(error_grid, [SE_THRESHOLD, GE_THRESHOLD])+1
     knee_point = find_knee_point([error_list[:termination] for error_list in error_grid])+1
 
     # If undefined, plot
     if sim_path == "":
 
-        # Display errors
-        dict_to_stdout(errors_dict)
-
-        # Plot stress errors
-        plot_errors(errors_dict["se"], SE_THRESHOLD)
-        plt.ylabel(r"$E_{\sigma}$", fontsize=14)
-        # plt.ylim(10**-3, 10**9)
-        plt.yscale("log")
-        save_plot("results/sme_se.png")
-        
-        # Plot stress errors
-        plot_errors(errors_dict["ge"], GE_THRESHOLD)
-        plt.ylabel(r"$E_{\Phi}$", fontsize=14)
-        # plt.ylim(10**-3, 10**9)
-        plt.yscale("log")
-        save_plot("results/sme_ge.png")
-
         # Display calibration summary
         print(f"Termination Iteration: {termination}")
         print(f"Knee Point Iteration:  {knee_point}")
+
+        # # Plot stress errors
+        # plot_errors(errors_dict["se"], SE_THRESHOLD)
+        # plt.ylabel(r"$E_{\sigma}$", fontsize=14)
+        # # plt.ylim(10**-3, 10**9)
+        # plt.yscale("log")
+        # save_plot("results/sme_se.png")
+        
+        # # Plot stress errors
+        # plot_errors(errors_dict["ge"], GE_THRESHOLD)
+        # plt.ylabel(r"$E_{\Phi}$", fontsize=14)
+        # # plt.ylim(10**-3, 10**9)
+        # plt.yscale("log")
+        # save_plot("results/sme_ge.png")
     
     # Otherwise, just return termination iteration
     return termination, knee_point, errors_dict
@@ -111,7 +110,7 @@ def find_knee_point(error_grid:list) -> int:
 
     Returns the index of the knee point
     """
-    
+
     # Extract Pareto-efficient errors
     pe_list = find_pareto_efficiency(error_grid)
     pe_error_grid = [[error for error, pe in zip(error_list, pe_list) if pe] for error_list in error_grid]

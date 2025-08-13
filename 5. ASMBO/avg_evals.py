@@ -15,9 +15,10 @@ from __common__.plotter import save_plot, lighten_colour
 
 # Calibration results
 MODEL_INFO = [
-    {"model": "VH",  "colour": "tab:cyan",   "init": 8,  "adpt": np.average([18, 16, 8, 8, 13])},
-    {"model": "LH2", "colour": "tab:orange", "init": 8,  "adpt": np.average([7, 16, 18, 10, 29])},
-    {"model": "LH6", "colour": "tab:purple", "init": 16, "adpt": np.average([6, 23, 27, 36, 20])},
+    # {"model": "VH",  "colour": "tab:cyan",   "init": 8,  "adpt": np.average([18, 16, 8, 8, 13])},
+    # {"model": "LH2", "colour": "tab:orange", "init": 8,  "adpt": np.average([7, 16, 18, 10, 29])},
+    # {"model": "LH6", "colour": "tab:purple", "init": 16, "adpt": np.average([6, 23, 27, 36, 20])},
+    {"model": "VH cv2",  "colour": "tab:cyan",   "init": 8,  "adpt": np.average([9, 9, 13, 14, 17])},
 ]
 
 # Plotting parameters
@@ -36,6 +37,12 @@ def main():
     """
     Main function
     """
+
+    # Print
+    for mi in MODEL_INFO:
+        mi_init = mi["init"]
+        mi_adpt = mi["adpt"]
+        print(f"init: {mi_init}\tadpt: {mi_adpt}")
 
     # Initialise plot
     plt.figure(figsize=(5,5), dpi=200)

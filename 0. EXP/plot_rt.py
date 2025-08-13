@@ -71,7 +71,7 @@ def main():
         # Format and save IPF plot
         handles = [
             plt.plot([], [], color=RAW_COLOUR, label="Raw",        linewidth=3)[0],
-            plt.plot([], [], color=PRC_COLOUR, label="Smoothened", linewidth=2)[0],
+            plt.plot([], [], color=PRC_COLOUR, label="Smoothed", linewidth=2)[0],
         ]
         legend = plt.legend(handles=handles, framealpha=1, edgecolor="black", fancybox=True, facecolor="white", fontsize=12, loc="upper left")
         plt.gca().add_artist(legend)

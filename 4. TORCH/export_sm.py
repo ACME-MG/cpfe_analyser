@@ -1,6 +1,6 @@
 """
- Title:         Plot Surrogate
- Description:   Plots the response of the surrogate model
+ Title:         Exports Surrogate
+ Description:   Exports the response of the surrogate model
  Author:        Janzen Choi
 
 """

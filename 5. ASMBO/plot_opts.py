@@ -25,54 +25,67 @@ EXP_EBSD_ID = "ebsd_4"
 ASMBO_PATH = "/mnt/c/Users/janzen/OneDrive - UNSW/H0419460/results/asmbo"
 MOOSE_PATH = "/mnt/c/Users/janzen/OneDrive - UNSW/H0419460/results/moose_sim"
 SIM_INFO_LIST = [
-
-    # VH Model with validation data
-    # {"label": "Run X", "ebsd_id": "ebsd_4", "colour": "tab:green", "path": f"{ASMBO_PATH}/2025-06-11 (vh_x_sm8_i28_val)/250609013152_i7_simulate"},
-    # {"label": "Run X", "ebsd_id": "ebsd_4", "colour": "tab:green", "path": f"{ASMBO_PATH}/2025-06-11 (vh_x_sm8_i32_val)/250608124145_i6_simulate"},
-    # {"label": "Run 1", "ebsd_id": "ebsd_4", "colour": "tab:green", "path": f"{ASMBO_PATH}/2025-06-03 (vh_x_sm8_i97_val)/250601032309_i20_simulate"},
-    # {"label": "Run 2", "ebsd_id": "ebsd_4", "colour": "tab:green", "path": f"{ASMBO_PATH}/2025-06-11 (vh_x_sm8_i13_val)/250609093847_i7_simulate"},
-    # {"label": "Run 3", "ebsd_id": "ebsd_4", "colour": "tab:green", "path": f"{ASMBO_PATH}/2025-06-11 (vh_x_sm8_i28_val)/250608021510_i6_simulate"},
-    # {"label": "Run 4", "ebsd_id": "ebsd_4", "colour": "tab:green", "path": f"{ASMBO_PATH}/2025-06-11 (vh_x_sm8_i52_val)/250608004520_i6_simulate"},
-    # {"label": "Run 5", "ebsd_id": "ebsd_4", "colour": "tab:green", "path": f"{ASMBO_PATH}/2025-06-11 (vh_x_sm8_i52_val)/250609222901_i8_simulate"},
-    # {"label": "Low-Fidelity",  "ebsd_id": "ebsd_4", "colour": "tab:green", "path": f"{ASMBO_PATH}/2025-06-11 (vh_x_sm8_i52_val)/250609222901_i8_simulate"},
-    # {"label": "High-Fidelity", "ebsd_id": "ebsd_2", "colour": "tab:red",   "path": f"{MOOSE_PATH}/2025-06-12 (617_s3_vh_di_x_hr_val)"},
     
     # VH Model
-    # {"label": "Run 1", "ebsd_id": "ebsd_4", "colour": "tab:green", "path": f"{ASMBO_PATH}/2025-03-09 (vh_pin2_sm8_i25)/250308143546_i4_simulate"},
+    # {"label": "Run 1", "ebsd_id": "ebsd_4", "colour": "tab:green", "path": f"{ASMBO_PATH}/2025-03-10 (vh_pin2_sm8_i25)/250310145710_i22_simulate"},
+    # # {"label": "Run 1", "ebsd_id": "ebsd_4", "colour": "tab:green", "path": f"{ASMBO_PATH}/2025-03-09 (vh_pin2_sm8_i25)/250308143546_i4_simulate"},
     # {"label": "Run 2", "ebsd_id": "ebsd_4", "colour": "tab:green", "path": f"{ASMBO_PATH}/2025-03-10 (vh_pin2_sm8_i25)/250310145710_i22_simulate"},
-    # {"label": "Run 3", "ebsd_id": "ebsd_4", "colour": "tab:green", "path": f"{ASMBO_PATH}/2025-03-18 (vh_x_sm8_i41)/250318014435_i21_simulate"},
+    # {"label": "Run 3", "ebsd_id": "ebsd_4", "colour": "tab:red",   "path": f"{ASMBO_PATH}/2025-03-18 (vh_x_sm8_i41)/250318014435_i21_simulate"},
     # {"label": "Run 4", "ebsd_id": "ebsd_4", "colour": "tab:green", "path": f"{ASMBO_PATH}/2025-03-25 (vh_x_sm8_i31)/250325072901_i16_simulate"},
     # {"label": "Run 5", "ebsd_id": "ebsd_4", "colour": "tab:green", "path": f"{ASMBO_PATH}/2025-03-10 (vh_pin2_sm8_i25)/250310161708_i25_simulate"},
-    # {"label": "Low-Fidelity",  "ebsd_id": "ebsd_4", "colour": "tab:green", "path": f"{ASMBO_PATH}/2025-03-18 (vh_x_sm8_i41)/250318014435_i21_simulate"},
-    # {"label": "High-Fidelity", "ebsd_id": "ebsd_2", "colour": "tab:red",   "path": f"{MOOSE_PATH}/2025-03-15 (617_s3_vh_x_hr)"},
+    {"label": "Surrogate", "ebsd_id": "ebsd_4", "colour": "black",  "path": f"data"},
+    {"label": "Low-Fidelity", "ebsd_id": "ebsd_4", "colour": "tab:red",  "path": f"{ASMBO_PATH}/2025-03-18 (vh_x_sm8_i41)/250318014435_i21_simulate"},
+    # {"label": "High-Fidelity", "ebsd_id": "ebsd_2", "colour": "tab:blue", "path": f"{MOOSE_PATH}/2025-03-15 (617_s3_vh_x_hr)"},
 
     # LH2 Model
     # {"label": "Run 1", "ebsd_id": "ebsd_4", "colour": "tab:green", "path": f"{ASMBO_PATH}/2025-03-25 (lh2_x_sm8_i19)/250323214745_i7_simulate"},
-    # {"label": "Run 2", "ebsd_id": "ebsd_4", "colour": "tab:green", "path": f"{ASMBO_PATH}/2025-03-28 (lh2_x_sm8_i29)/250327093649_i16_simulate"}, # OPT
+    # {"label": "Run 2", "ebsd_id": "ebsd_4", "colour": "tab:red",   "path": f"{ASMBO_PATH}/2025-03-28 (lh2_x_sm8_i29)/250327093649_i16_simulate"}, # OPT
     # {"label": "Run 3", "ebsd_id": "ebsd_4", "colour": "tab:green", "path": f"{ASMBO_PATH}/2025-03-31 (lh2_x_sm8_i31)/250330063457_i18_simulate"},
     # {"label": "Run 4", "ebsd_id": "ebsd_4", "colour": "tab:green", "path": f"{ASMBO_PATH}/2025-04-02 (lh2_x_sm8_i23)/250401051359_i10_simulate"},
     # {"label": "Run 5", "ebsd_id": "ebsd_4", "colour": "tab:green", "path": f"{ASMBO_PATH}/2025-03-31 (lh2_x_sm8_i31)/250330213453_i29_simulate"},
-    # {"label": "Low-Fidelity",  "ebsd_id": "ebsd_4", "colour": "tab:green", "path": f"{ASMBO_PATH}/2025-03-28 (lh2_x_sm8_i29)/250327093649_i16_simulate"},
-    # {"label": "High-Fidelity", "ebsd_id": "ebsd_2", "colour": "tab:red",   "path": f"{MOOSE_PATH}/2025-04-05 (617_s3_lh2_di_x_hr)"},
+    # {"label": "Low-Fidelity",  "ebsd_id": "ebsd_4", "colour": "tab:red",  "path": f"{ASMBO_PATH}/2025-03-28 (lh2_x_sm8_i29)/250327093649_i16_simulate"},
+    # {"label": "High-Fidelity", "ebsd_id": "ebsd_2", "colour": "tab:blue", "path": f"{MOOSE_PATH}/2025-04-05 (617_s3_lh2_di_x_hr)"},
 
     # LH6 Model
     # {"label": "Run 1", "ebsd_id": "ebsd_4", "colour": "tab:green", "path": f"{ASMBO_PATH}/2025-04-09 (lh6_x_sm8_i44)/250407052902_i6_simulate"},
     # {"label": "Run 2", "ebsd_id": "ebsd_4", "colour": "tab:green", "path": f"{ASMBO_PATH}/2025-04-14 (lh6_x_sm8_i32)/250413031321_i23_simulate"},
     # {"label": "Run 3", "ebsd_id": "ebsd_4", "colour": "tab:green", "path": f"{ASMBO_PATH}/2025-04-18 (lh6_x_sm8_i27)/250418123844_i27_simulate"},
-    # {"label": "Run 4", "ebsd_id": "ebsd_4", "colour": "tab:green", "path": f"{ASMBO_PATH}/2025-04-23 (lh6_x_sm8_i51)/250422034348_i36_simulate"},
+    # {"label": "Run 4", "ebsd_id": "ebsd_4", "colour": "tab:red",   "path": f"{ASMBO_PATH}/2025-04-23 (lh6_x_sm8_i51)/250422034348_i36_simulate"},
     # {"label": "Run 5", "ebsd_id": "ebsd_4", "colour": "tab:green", "path": f"{ASMBO_PATH}/2025-04-23 (lh6_x_sm8_i51)/250420224600_i20_simulate"},
-    # {"label": "Low-Fidelity",  "ebsd_id": "ebsd_4", "colour": "tab:green", "path": f"{ASMBO_PATH}/2025-04-23 (lh6_x_sm8_i51)/250422034348_i36_simulate"},
-    # {"label": "High-Fidelity", "ebsd_id": "ebsd_2", "colour": "tab:red",   "path": f"{MOOSE_PATH}/2025-04-28 (617_s3_lh6_di_x_hr)"},
+    # {"label": "Low-Fidelity",  "ebsd_id": "ebsd_4", "colour": "tab:red",  "path": f"{ASMBO_PATH}/2025-04-23 (lh6_x_sm8_i51)/250422034348_i36_simulate"},
+    # {"label": "High-Fidelity", "ebsd_id": "ebsd_2", "colour": "tab:blue", "path": f"{MOOSE_PATH}/2025-04-28 (617_s3_lh6_di_x_hr)"},
 
-    # All Models (Low-Fidelity)
-    {"label": "VH",  "ebsd_id": "ebsd_4", "colour": "tab:cyan",   "path": f"{ASMBO_PATH}/2025-03-18 (vh_x_sm8_i41)/250318014435_i21_simulate"},
-    {"label": "LH2", "ebsd_id": "ebsd_4", "colour": "tab:orange", "path": f"{ASMBO_PATH}/2025-03-28 (lh2_x_sm8_i29)/250327093649_i16_simulate"},
-    {"label": "LH6", "ebsd_id": "ebsd_4", "colour": "tab:purple", "path": f"{ASMBO_PATH}/2025-04-23 (lh6_x_sm8_i51)/250422034348_i36_simulate"},
+    # # All Models (Low-Fidelity)
+    # {"label": "VH",  "ebsd_id": "ebsd_4", "colour": "tab:cyan",   "path": f"{ASMBO_PATH}/2025-03-18 (vh_x_sm8_i41)/250318014435_i21_simulate"},
+    # {"label": "LH2", "ebsd_id": "ebsd_4", "colour": "tab:orange", "path": f"{ASMBO_PATH}/2025-03-28 (lh2_x_sm8_i29)/250327093649_i16_simulate"},
+    # {"label": "LH6", "ebsd_id": "ebsd_4", "colour": "tab:purple", "path": f"{ASMBO_PATH}/2025-04-23 (lh6_x_sm8_i51)/250422034348_i36_simulate"},
+
+    # VH Model, cross-validation 1
+    # {"label": "Run 1", "ebsd_id": "ebsd_4", "colour": "tab:green", "path": f"{ASMBO_PATH}/2025-06-03 (vh_x_sm8_i97_val)/250601025336_i19_simulate"},
+    # {"label": "Run 2", "ebsd_id": "ebsd_4", "colour": "tab:green", "path": f"{ASMBO_PATH}/2025-06-11 (vh_x_sm8_i13_val)/250609093847_i7_simulate"},
+    # {"label": "Run 3", "ebsd_id": "ebsd_4", "colour": "tab:red",   "path": f"{ASMBO_PATH}/2025-03-10 (vh_pin2_sm8_i25)/250310145710_i22_simulate"},
+    # {"label": "Run 4", "ebsd_id": "ebsd_4", "colour": "tab:green", "path": f"{ASMBO_PATH}/2025-06-11 (vh_x_sm8_i52_val)/250608004520_i6_simulate"},
+    # {"label": "Run 5", "ebsd_id": "ebsd_4", "colour": "tab:green", "path": f"{ASMBO_PATH}/2025-06-11 (vh_x_sm8_i52_val)/250609222901_i8_simulate"}, #
+    # # {"label": "Low-Fidelity",  "ebsd_id": "ebsd_4", "colour": "tab:green", "path": f"{ASMBO_PATH}/2025-06-11 (vh_x_sm8_i52_val)/250609222901_i8_simulate"},
+    # # {"label": "High-Fidelity", "ebsd_id": "ebsd_2", "colour": "tab:red",   "path": f"{MOOSE_PATH}/2025-06-12 (617_s3_vh_di_x_hr_val)"},
+
+    # VH Model, cross-validation 2
+    # {"label": "Run 1", "ebsd_id": "ebsd_4", "colour": "tab:green", "path": f"{ASMBO_PATH}/2025-07-08 (vh_x_sm8_i14_cv2)/250708043252_i4_simulate"},
+    # {"label": "Run 2", "ebsd_id": "ebsd_4", "colour": "tab:green", "path": f"{ASMBO_PATH}/2025-07-08 (vh_x_sm8_i26_cv2)/250707055737_i4_simulate"},
+    # {"label": "Run 3", "ebsd_id": "ebsd_4", "colour": "tab:green", "path": f"{ASMBO_PATH}/2025-07-08 (vh_x_sm8_i29_cv2)/250707093811_i6_simulate"},
+    # {"label": "Run 4", "ebsd_id": "ebsd_4", "colour": "tab:green", "path": f"{ASMBO_PATH}/2025-07-08 (vh_x_sm8_i30_cv2)/250708071533_i13_simulate"}, #
+    # {"label": "Run 5", "ebsd_id": "ebsd_4", "colour": "tab:red",   "path": f"{ASMBO_PATH}/2025-07-08 (vh_x_sm8_i32_cv2)/250708043852_i9_simulate"},
+    # {"label": "Low-Fidelity",  "ebsd_id": "ebsd_4", "colour": "tab:green", "path": f"{ASMBO_PATH}/2025-07-08 (vh_x_sm8_i30_cv2)/250708071533_i13_simulate"},
+    # {"label": "High-Fidelity", "ebsd_id": "ebsd_2", "colour": "tab:red",   "path": f"{MOOSE_PATH}/2025-07-10 (617_s3_vh_di_x_hr_val2)"},
     
-    # All Models (High-Fidelity)
-    # {"label": "VH",  "ebsd_id": "ebsd_2", "colour": "tab:cyan",   "path": f"{MOOSE_PATH}/2025-03-15 (617_s3_vh_x_hr)"},
-    # {"label": "LH2", "ebsd_id": "ebsd_2", "colour": "tab:orange", "path": f"{MOOSE_PATH}/2025-04-05 (617_s3_lh2_di_x_hr)"},
-    # {"label": "LH6", "ebsd_id": "ebsd_2", "colour": "tab:purple", "path": f"{MOOSE_PATH}/2025-04-28 (617_s3_lh6_di_x_hr)"},
+    # VH Model, cross-validation 2 (SS)
+    # {"label": "Run 1", "ebsd_id": "ebsd_4", "colour": "tab:green", "path": f"{ASMBO_PATH}/2025-06-11 (vh_x_sm8_i52_val)/250609222901_i8_simulate"},
+    # {"label": "Run 2", "ebsd_id": "ebsd_4", "colour": "tab:green", "path": f"{ASMBO_PATH}/2025-03-10 (vh_pin2_sm8_i25)/250310145710_i22_simulate"},
+    # {"label": "Run 3", "ebsd_id": "ebsd_4", "colour": "tab:green", "path": f"{ASMBO_PATH}/2025-03-10 (vh_pin2_sm8_i25)/250310161708_i25_simulate"},
+    # {"label": "Run 4", "ebsd_id": "ebsd_4", "colour": "tab:green", "path": f"{ASMBO_PATH}/2025-03-18 (vh_x_sm8_i41)/250318014435_i21_simulate"},
+    # {"label": "Run 5", "ebsd_id": "ebsd_4", "colour": "tab:red",   "path": f"{ASMBO_PATH}/2025-03-25 (vh_x_sm8_i31)/250325072901_i16_simulate"},
+    # {"label": "Low-Fidelity", "ebsd_id": "ebsd_4", "colour": "tab:green", "path": f"{ASMBO_PATH}/2025-03-25 (vh_x_sm8_i31)/250325072901_i16_simulate"},
+    # {"label": "High-Fidelity", "ebsd_id": "ebsd_4", "colour": "tab:red", "path": f"{ASMBO_PATH}/2025-03-10 (vh_pin2_sm8_i25)/250310161708_i25_simulate"},
 ]
 for si in SIM_INFO_LIST:
     si["data"] = csv_to_dict(f"{si['path']}/summary.csv")
@@ -85,18 +98,19 @@ GRAIN_IDS = [
 
 # Plotting parameters
 OPT_ALPHA = 1.0
-OTH_ALPHA = 0.3
-# SPACING, FORCE_ALPHA = -5.25, None # Runs
-# SPACING, FORCE_ALPHA = -2.25, 1.0  # Fidelity
-SPACING, FORCE_ALPHA = -6.25, 1.0  # Models
+OTH_ALPHA = 0.4
+# SPACING, FORCE_OPT, KNEE_POINT = -5.25, [0,1,2,3,4], None # Runs
+SPACING, FORCE_OPT, KNEE_POINT = -2.25, [0,1], -1 # Fidelity
+# SPACING, FORCE_OPT, KNEE_POINT = -6.25, [0,1,2], -1 # Models
 
 # Script parameters
 SHOW_LEGEND   = True
 SHOW_GRAIN_ID = False
 SHOW_ERROR    = True
-STRAIN_FIELD = "average_strain"
-STRESS_FIELD = "average_stress"
-RES_DATA_MAP = "data/res_grain_map.csv"
+SHOW_OTH      = True # whether to show optimal keys in the legend
+STRAIN_FIELD  = "average_strain"
+STRESS_FIELD  = "average_stress"
+RES_DATA_MAP  = "data/res_grain_map.csv"
 
 # Main function
 def main():
@@ -108,14 +122,43 @@ def main():
     # Calculate simulation errors
     ge_list = get_geodesic_errors(SIM_INFO_LIST, exp_dict, eval_strains, GRAIN_IDS[0]) # calibration
     se_list = get_stress_errors([si["data"] for si in SIM_INFO_LIST], exp_dict, eval_strains)
+    # se_list[0] *= 1.1
 
-    # Calculate knee point and determine alpha list
-    if FORCE_ALPHA == None:
+    # Calculate knee point
+    if KNEE_POINT != None:
+        kp_index = KNEE_POINT
+    else:
         kp_index = find_knee_point([ge_list, ge_list, se_list])
         print(f"Knee Point at: Run {kp_index+1}")
-        alpha_list = [OTH_ALPHA]*kp_index + [OPT_ALPHA] + [OTH_ALPHA]*(len(SIM_INFO_LIST)-kp_index-1)
-    else:
-        alpha_list = [OPT_ALPHA]*len(SIM_INFO_LIST)
+    
+    # Determine alpha list
+    alpha_list = [OTH_ALPHA]*kp_index + [OPT_ALPHA] + [OTH_ALPHA]*(len(SIM_INFO_LIST)-kp_index-1)
+    if FORCE_OPT != None:
+        for i in FORCE_OPT:
+            alpha_list[i] = OPT_ALPHA
+
+    # Initialise stress-strain plot
+    plotter = Plotter("strain", "stress", "mm/mm", "MPa")
+    plotter.prep_plot(size=14)
+    plotter.set_limits((0,0.5), (0,1800))
+
+    # Plot stress-strain data
+    plt.scatter(exp_dict["strain"], exp_dict["stress"], color=EXP_COLOUR, s=8**2)
+    for j, (si, alpha) in enumerate(zip(SIM_INFO_LIST, alpha_list)):
+        zorder = 4 if j == kp_index else 3
+        plt.plot(si["data"][STRAIN_FIELD], si["data"][STRESS_FIELD], color=si["colour"], alpha=alpha, linewidth=3, zorder=zorder)
+
+    # Add stress errors to legend
+    if SHOW_LEGEND:
+        se_list = [f"{round(se*100, 1)}" for se in se_list]
+        add_supp_legend(se_list, alpha_list, SPACING, "%")
+
+    # Format and save
+    plt.xticks(fontsize=12)
+    plt.yticks(fontsize=12)
+    for spine in plt.gca().spines.values():
+        spine.set_linewidth(1)
+    save_plot("results/plot_opts_ss.png")
 
     # Plot reorientation trajectories
     for i, grain_ids in enumerate(GRAIN_IDS):
@@ -136,7 +179,7 @@ def main():
         ipf.plot_ipf_trajectory([[et[0]] for et in exp_trajectories], direction, "scatter", {"color": EXP_COLOUR, "s": 8**2})
 
         # Iterate through simulations
-        for si, alpha in zip(SIM_INFO_LIST, alpha_list):
+        for j, (si, alpha) in enumerate(zip(SIM_INFO_LIST, alpha_list)):
 
             # Get simulated reorientation trajectories
             sim_grain_ids = [get_sim_grain_id(grain_id, si["ebsd_id"]) for grain_id in grain_ids]
@@ -144,11 +187,14 @@ def main():
             if 44 in sim_grain_ids:
                 sim_trajectories[sim_grain_ids.index(44)] = sim_trajectories[sim_grain_ids.index(44)][:-9] 
             
+            # Determine zorder
+            zorder = 4 if j == kp_index else 3
+
             # Plot simulated reorientation trajectories
             sim_colour = si["colour"]
-            ipf.plot_ipf_trajectory(sim_trajectories, direction, "plot", {"color": sim_colour, "linewidth": 2, "zorder": 3, "alpha": alpha})
-            ipf.plot_ipf_trajectory(sim_trajectories, direction, "arrow", {"color": sim_colour, "head_width": 0.0075, "head_length": 0.0075*1.5, "zorder": 3, "alpha": alpha})
-            ipf.plot_ipf_trajectory([[st[0]] for st in sim_trajectories], direction, "scatter", {"color": sim_colour, "s": 6**2, "zorder": 3, "alpha": alpha})
+            ipf.plot_ipf_trajectory(sim_trajectories, direction, "plot", {"color": sim_colour, "linewidth": 2, "zorder": zorder, "alpha": alpha})
+            ipf.plot_ipf_trajectory(sim_trajectories, direction, "arrow", {"color": sim_colour, "head_width": 0.0075, "head_length": 0.0075*1.5, "zorder": zorder, "alpha": alpha})
+            ipf.plot_ipf_trajectory([[st[0]] for st in sim_trajectories], direction, "scatter", {"color": sim_colour, "s": 6**2, "zorder": zorder, "alpha": alpha})
 
             # Plot grain IDs
             if SHOW_GRAIN_ID:
@@ -158,33 +204,13 @@ def main():
         # Add geodesic errors to legend
         if SHOW_LEGEND:
             ge_list = get_geodesic_errors(SIM_INFO_LIST, exp_dict, eval_strains, grain_ids)
-            add_supp_legend(ge_list, alpha_list, SPACING)
+            ge_list = [f"{round(ge*180/np.pi, 1)}" for ge in ge_list]
+            add_supp_legend(ge_list, alpha_list, SPACING, "°")
         
         # Save IPF plot
         save_plot(f"results/plot_opts_rt_{i+1}.png")
 
-    # Initialise stress-strain plot
-    plotter = Plotter("strain", "stress", "mm/mm", "MPa")
-    plotter.prep_plot(size=14)
-    plotter.set_limits((0,0.5), (0,1800))
-
-    # Plot stress-strain data
-    plt.scatter(exp_dict["strain"], exp_dict["stress"], color=EXP_COLOUR, s=8**2)
-    for si, alpha in zip(SIM_INFO_LIST, alpha_list):
-        plt.plot(si["data"][STRAIN_FIELD], si["data"][STRESS_FIELD], color=si["colour"], alpha=alpha, linewidth=3)
-
-    # Add stress errors to legend
-    if SHOW_LEGEND:
-        add_supp_legend(se_list, alpha_list, SPACING)
-
-    # Format and save
-    plt.xticks(fontsize=12)
-    plt.yticks(fontsize=12)
-    for spine in plt.gca().spines.values():
-        spine.set_linewidth(1)
-    save_plot("results/plot_opts_ss.png")
-
-def add_supp_legend(error_list:list, alpha_list:list, spacing:float=-5.5) -> None:
+def add_supp_legend(error_list:list, alpha_list:list, spacing:float=-5.5, units:str="") -> None:
     """
     Adds supplementary information to a legend that is aligned
     horizontally to the main keys; note that this immediately
@@ -194,16 +220,22 @@ def add_supp_legend(error_list:list, alpha_list:list, spacing:float=-5.5) -> Non
     * `error_list`: Error values to add as supplementary information
     * `alpha_list`: List of alpha values for each simulation
     * `spacing`:    Spacing between main keys and information
+    * `units`:      Units for the errors
     """
 
     # Define main keys of the legend
     handles = [plt.scatter([], [], color=EXP_COLOUR, label="Experiment", s=8**2)]
-    handles += [plt.plot([], [], color=si["colour"], label=si['label'], alpha=alpha, linewidth=3)[0] for si, alpha in zip(SIM_INFO_LIST, alpha_list)]
+    if SHOW_OTH:
+        handles += [plt.plot([], [], color=si["colour"], label=si['label'], alpha=alpha, linewidth=3)[0] for si, alpha in zip(SIM_INFO_LIST, alpha_list)]
+    else:
+        handles += [plt.plot([], [], color=si["colour"], label=si['label'], alpha=alpha, linewidth=3)[0] for si, alpha in zip(SIM_INFO_LIST, alpha_list)
+                    if alpha == OPT_ALPHA]
 
     # Define supplementary information
     if SHOW_ERROR:
-        formatted_error_list = [round(error, 4) for error in error_list]
-        formatted_error_list = [str(fe) if len(str(fe)) == 6 else str(fe)+(6-len(str(fe)))*"0" for fe in formatted_error_list]
+        formatted_error_list = [f"{error}{units}" for error in error_list]
+        if not SHOW_OTH:
+            formatted_error_list = [fe for fe, alpha in zip(formatted_error_list, alpha_list) if alpha == OPT_ALPHA]
         se_label_list = [" "] + [f"({fe})" for fe in formatted_error_list]
         handles += [plt.scatter([], [], color="white", label=se_label, marker="o", s=0) for se_label in se_label_list]
 

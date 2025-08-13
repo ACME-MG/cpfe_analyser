@@ -49,7 +49,7 @@ def main():
 
     # Plot reorientation trajectories
     plot_trajectories(exp_dict, res_dict, CAL_GRAIN_IDS, CAL_COLOUR, "Calibration", "results/plot_opt_cal_rt.png")
-    plot_trajectories(exp_dict, res_dict, VAL_GRAIN_IDS, VAL_COLOUR, "Validation", f"results/plot_opt_val_rt.png")
+    plot_trajectories(exp_dict, res_dict, VAL_GRAIN_IDS, VAL_COLOUR, "Validation",  "results/plot_opt_val_rt.png")
 
     # Plot stress-strain curve
     res_dict["strain"] = res_dict[STRAIN_FIELD]

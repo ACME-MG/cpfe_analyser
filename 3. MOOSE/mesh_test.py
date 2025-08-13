@@ -23,16 +23,16 @@ RESOLUTIONS = [
     {"resolution": 30, "ebsd_id": "ebsd_3", "colour": "magenta","time": 0.424},
     {"resolution": 35, "ebsd_id": "ebsd_2", "colour": "purple", "time": 0.231},
     {"resolution": 40, "ebsd_id": "ebsd_4", "colour": "blue",   "time": 0.157},
-    {"resolution": 45, "ebsd_id": "ebsd_3", "colour": "cyan",   "time": 0.113},
+    {"resolution": 45, "ebsd_id": "ebsd_3", "colour": "cyan",   "time": 0.113}
     # {"resolution": 50, "ebsd_id": "ebsd_4", "colour": "green"},
 ]
 PARAM_KW_LIST  = ["p0", "p1", "p2", "p3", "p4", "p5", "p6", "p7"]
 GRAIN_MAP      = "data/res_grain_map.csv"
-SIM_PATH       = "/mnt/c/Users/janzen/OneDrive - UNSW/H0419460/results/moose_sim/2024-09-26 (617_s3_converge_5pct_8p)"
+SIM_PATH       = "/mnt/c/Users/janzen/OneDrive - UNSW/H0419460/results/moose_sim/2024/2024-09-26 (617_s3_converge_5pct_8p)"
 STRAIN_FIELD   = "average_strain"
 STRESS_FIELD   = "average_stress"
 EVAL_STRAINS   = np.linspace(0, 0.05, 50)
-COLOUR         = (0.6, 1.0, 1.0)
+COLOUR         = "tab:cyan" # (0.6, 1.0, 1.0)
 TICK_SIZE      = 12
 LABEL_SIZE     = 14
 INCREMENT      = 5
@@ -121,19 +121,15 @@ def main():
             # Compile errors
             errors_dict[res_kw]["stress"].append(stress_error)
             errors_dict[res_kw]["orientation"].append(geodesic_error)
-            
-    # Prepare error plotting
-    stress_error_grid      = [[0]] + [errors_dict[res_kw]["stress"] for res_kw in errors_dict.keys()]
-    orientation_error_grid = [[0]] + [errors_dict[res_kw]["orientation"] for res_kw in errors_dict.keys()]
-    resolution_list        = [res["resolution"] for res in RESOLUTIONS[1:]]
 
     # Plot the evaluation times first
+    resolution_list = [res["resolution"] for res in RESOLUTIONS]
     plt.figure(figsize=(5,5), dpi=200)
     plt.gca().set_position([0.17, 0.12, 0.75, 0.75])
     plt.gca().grid(which="major", axis="both", color="SlateGray", linewidth=1, linestyle=":", alpha=0.5)
     plt.xlabel("Resolution (µm)", fontsize=LABEL_SIZE)
-    plt.ylabel("Evaluation time (h)", fontsize=LABEL_SIZE)
-    plt.bar([r["resolution"] for r in RESOLUTIONS], [r["time"] for r in RESOLUTIONS], color=COLOUR, zorder=3, width=WIDTH, edgecolor="black")
+    plt.ylabel("Average evaluation time (h)", fontsize=LABEL_SIZE)
+    plt.bar(resolution_list, [r["time"] for r in RESOLUTIONS], color=COLOUR, zorder=3, width=WIDTH, edgecolor="black")
     padding = INCREMENT-WIDTH/2
     plt.xlim(min(resolution_list)-padding, max(resolution_list)+padding)
     plt.yscale("log")
@@ -143,25 +139,32 @@ def main():
     for spine in plt.gca().spines.values():
         spine.set_linewidth(1)
     save_plot("results/mt_times.png")
+            
+    # Prepare error plotting
+    stress_error_grid      = [errors_dict[res_kw]["stress"]*10 for res_kw in errors_dict.keys()]
+    orientation_error_grid = [errors_dict[res_kw]["orientation"]*10 for res_kw in errors_dict.keys()]
+    resolution_list        = [res["resolution"] for res in RESOLUTIONS[1:]]
 
     # Plot stress errors
+    stress_error_grid = [[se*100 for se in stress_error_list] for stress_error_list in stress_error_grid]
     plot_boxplots(resolution_list, stress_error_grid, COLOUR)
     plt.xlabel("Resolution (µm)", fontsize=LABEL_SIZE)
-    plt.ylabel(r"$E_{\sigma}$", fontsize=LABEL_SIZE)
+    plt.ylabel(r"$E_{\sigma}$"+" (%)", fontsize=LABEL_SIZE)
     plt.xlim(min(resolution_list)-2.5, max(resolution_list)+2.5)
-    plt.ylim(0, 0.016)
-    plt.gca().ticklabel_format(axis="y", style="sci", scilimits=(-3,-3))
+    plt.ylim(0, 1.6)
+    # plt.gca().ticklabel_format(axis="y", style="sci", scilimits=(-2,-2))
     plt.gca().yaxis.major.formatter._useMathText = True
     plt.gca().yaxis.get_offset_text().set_fontsize(TICK_SIZE)
     save_plot("results/mt_se.png")
 
     # Plot geodesic errors
+    orientation_error_grid = [[oe*180/np.pi for oe in orientation_error_list] for orientation_error_list in orientation_error_grid]
     plot_boxplots(resolution_list, orientation_error_grid, COLOUR)
     plt.xlabel("Resolution (µm)", fontsize=LABEL_SIZE)
-    plt.ylabel(r"$E_{\Phi}$", fontsize=LABEL_SIZE)
+    plt.ylabel(r"$E_{\Phi}$"+" (°)", fontsize=LABEL_SIZE)
     plt.xlim(min(resolution_list)-2.5, max(resolution_list)+2.5)
-    plt.ylim(0, 0.008)
-    plt.gca().ticklabel_format(axis="y", style="sci", scilimits=(-3,-3))
+    plt.ylim(0, 0.5)
+    # plt.gca().ticklabel_format(axis="y", style="sci", scilimits=(-2,-2))
     plt.gca().yaxis.major.formatter._useMathText = True
     plt.gca().yaxis.get_offset_text().set_fontsize(TICK_SIZE)
     save_plot("results/mt_ge.png")

@@ -23,27 +23,27 @@ OLV_COLOUR = {"base": "tab:olive",  "start": [1.0, 1.0, 0.9], "end": [0.8, 0.8, 
 BLU_COLOUR = {"base": "tab:blue",   "start": [0.9, 0.9, 1.0], "end": [0.1, 0.1, 0.7]}
 
 # Simulation parameters
-HEADERS, KP_INDEX, COLOURS = ["Experimental"] + [f"Run {i+1}" for i in range(5)], 4, [EXP_COLOUR]+5*[CAL_COLOUR] # Runs
-COLOURS[KP_INDEX+1] = VAL_COLOUR
-# HEADERS, KP_INDEX, COLOURS = ["Experimental", "Low-Fidelity", "High-Fidelity"], 1, [EXP_COLOUR, VAL_COLOUR, BLU_COLOUR] # Fidelities
-# HEADERS, KP_INDEX, COLOURS = ["Experimental", "VH", "LH2", "LH6"], 1, [EXP_COLOUR, VH_COLOUR, LH2_COLOUR, LH6_COLOUR] # Models
+# HEADERS, LABELS, COLOURS = ["Experimental", "VH", "LH2", "LH6"], ["   Exp.", "VH", "LH2", "LH6"], [EXP_COLOUR, VH_COLOUR, LH2_COLOUR, LH6_COLOUR]
+# HEADERS, LABELS, COLOURS = ["Experimental", "Low-Fidelity", "High-Fidelity"], ["   Exp.", "LF  ", "HF  "], [EXP_COLOUR, CAL_COLOUR, VAL_COLOUR]
+# HEADERS, LABELS, COLOURS = ["Experimental", "CPFEM"], ["Exp.  ", "CPFEM"], [EXP_COLOUR, VAL_COLOUR]
+# HEADERS, LABELS, COLOURS = ["Experimental", "Run 1", "Run 2", "Run 3", "Run 4", "Run 5"], ["Exp.  ", "Runs   "], [EXP_COLOUR]+[CAL_COLOUR]*5
+HEADERS, LABELS, COLOURS = ["Experimental", "Runs"], ["Exp.  ", "Runs"], [EXP_COLOUR]+[CAL_COLOUR]
+# HEADERS, LABELS, COLOURS = ["Experimental", "CPFEM 1", "CPFEM 2", "CPFEM 3"], ["  Exp.", "1  ", "2  ", "3  "], [EXP_COLOUR, VAL_COLOUR, OLV_COLOUR, BLU_COLOUR]
 
 # Paths
-DATA_PATH    = "/mnt/c/Users/janzen/Desktop/texture/scripts/results/texture_indexes.csv"
-# DATA_PATH    = "data/texture_indexes.csv"
+DATA_PATH    = "data/texture_indexes.csv"
 RESULTS_PATH = "results"
 
 # Formatting parameters
 FONTSIZE     = 14
-TI_SCALE     = 5/4
-FIGURE_X     = 5*(3/10)
-FIGURE_Y     = 5*(8/10)
-# FIGURE_X     = 5*(10/10)
-# FIGURE_Y     = 5*(2.5/10)
+# LINEWIDTH    = 1.5
+FIGURE_X     = 5*(5/10)
+FIGURE_Y     = 5*(6.5/10)
 SCALE_FACTOR = 10/FIGURE_Y
+# DIM_RATIO    = (FIGURE_X/FIGURE_Y)
 
 # Alpha parameters (None to deactivate)
-ALPHA_LIST = None
+ALPHA_LIST = [1.0, 0.4, 0.4, 1.0, 0.4, 0.4]
 
 # Plotting constants
 EVAL_STRAINS = [0, 0.00063414, 0.00153, 0.00494, 0.0098, 0.01483, 0.02085, 0.02646, 0.03516, 0.04409, 0.05197, 0.06013, 0.07059, 0.08208, 0.09406, 0.10561, 0.11929, 0.13656, 0.15442, 0.18237, 0.20849, 0.23627, 0.26264, 0.28965]
@@ -55,18 +55,24 @@ def main():
     """
     
     # Plot texture indexes
-    plot_ti(
-        ti_dict    = csv_to_dict(DATA_PATH),
-        ti_colours = [c["base"] for c in COLOURS]
-    )
+    # plot_ti(
+    #     ti_dict    = csv_to_dict(DATA_PATH),
+    #     ti_colours = [c["base"] for c in COLOURS]
+    # )
     
-    # # Plot MRD colour chart
-    # colour_grid = [np.linspace(c["start"], c["end"], len(LEVELS)) for c in COLOURS]
+    # Plot MRD colour chart
+    # colour_grid = [np.linspace(c["start"], c["end"], len(LEVELS)) for c in [EXP_COLOUR, VAL_COLOUR, CAL_COLOUR]]
     # plot_mrd(
     #     mrd_labels      = ["Exp.", "LF ", "HF "],
     #     mrd_values      = LEVELS,
     #     mrd_colour_grid = colour_grid
     # )
+    colour_grid = [np.linspace(c["start"], c["end"], len(LEVELS)) for c in COLOURS]
+    plot_mrd(
+        mrd_labels      = LABELS,
+        mrd_values      = LEVELS,
+        mrd_colour_grid = colour_grid
+    )
 
 def plot_ti(ti_dict:list, ti_colours:list) -> None:
     """
@@ -82,23 +88,30 @@ def plot_ti(ti_dict:list, ti_colours:list) -> None:
 
     # Initialise plot
     plotter = Plotter()
-    plotter.prep_plot(size=FONTSIZE*TI_SCALE)
-    plt.xlabel("Strain (mm/mm)", fontsize=FONTSIZE*TI_SCALE)
-    plt.ylabel("Texture Indexes", fontsize=FONTSIZE*TI_SCALE)
+    plotter.prep_plot(size=FONTSIZE)
+    plt.xlabel("Strain (mm/mm)", fontsize=FONTSIZE)
+    plt.ylabel("Texture Indexes", fontsize=FONTSIZE)
     plotter.set_limits((0,0.3), (1.0,1.6))
 
     # Plot data
     for i, (ti_list, ti_colour) in enumerate(zip(ti_grid, ti_colours)):
         alpha = ALPHA_LIST[i] if ALPHA_LIST != None and len(ALPHA_LIST) > i else 1.0
-        zorder = 4 if i == KP_INDEX+1 else 3
-        plt.scatter([EVAL_STRAINS[-1]], ti_list[-1], color=ti_colour, s=(8*TI_SCALE)**2, alpha=alpha, zorder=zorder)
-        plt.plot(EVAL_STRAINS, ti_list, color=ti_colour, linewidth=3*TI_SCALE, alpha=alpha, zorder=zorder)
+        plt.scatter([EVAL_STRAINS[-1]], ti_list[-1], color=ti_colour, s=8**2, alpha=alpha)
+        plt.plot(EVAL_STRAINS, ti_list, color=ti_colour, linewidth=3, alpha=alpha)
+
+    # Add legend
+    handles = []
+    for i, (header, ti_colour) in enumerate(zip(HEADERS, ti_colours)):
+        alpha = ALPHA_LIST[i] if ALPHA_LIST != None and len(ALPHA_LIST) > i else 1.0
+        handles.append(plt.plot([], [], color=ti_colour, linewidth=3, label=header, alpha=alpha)[0])
+    legend = plt.legend(handles=handles, framealpha=1, edgecolor="black", fancybox=True, facecolor="white", fontsize=12, loc="upper left")
+    plt.gca().add_artist(legend)
 
     # Format and save
-    plt.xticks(fontsize=12*TI_SCALE)
-    plt.yticks(fontsize=12*TI_SCALE)
+    plt.xticks(fontsize=12)
+    plt.yticks(fontsize=12)
     for spine in plt.gca().spines.values():
-        spine.set_linewidth(1*TI_SCALE)
+        spine.set_linewidth(1)
     save_plot(f"{RESULTS_PATH}/plot_ti.png")
 
 def plot_mrd(mrd_labels:list, mrd_values:list, mrd_colour_grid:list) -> None:
@@ -127,9 +140,14 @@ def plot_mrd(mrd_labels:list, mrd_values:list, mrd_colour_grid:list) -> None:
         spine.set_linewidth(1)
 
     # Format ticks
+    x_ticks = [i+1.4 for i in range(len(mrd_labels))]
     y_ticks = [i+0.5 for i in range(len(mrd_values))]
-    plt.yticks(ticks=y_ticks, labels=mrd_values, fontsize=FONTSIZE-2)
-    plt.xticks(ticks=[], labels=[])
+    plt.xticks(ticks=x_ticks, labels=mrd_labels, ha="right", fontsize=FONTSIZE-4)
+    plt.yticks(ticks=y_ticks, labels=mrd_values, fontsize=FONTSIZE-4)
+    # plt.xticks(ticks=x_ticks, labels=mrd_labels, ha="right", fontsize=FONTSIZE-2)
+    # plt.yticks(ticks=y_ticks, labels=mrd_values, fontsize=FONTSIZE-2)
+    plt.tick_params(axis="x", which="both", bottom=False, top=False)
+    plt.tick_params(axis="y", which="both", left=False, right=False)
 
     # Apply labels and limits
     plt.ylabel("MRD", fontsize=FONTSIZE)
