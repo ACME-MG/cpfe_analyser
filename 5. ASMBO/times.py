@@ -15,9 +15,9 @@ from __common__.plotter import save_plot, lighten_colour
 # Model information
 RESULTS_PATH = "/mnt/c/Users/janzen/OneDrive - UNSW/H0419460/results/"
 MODEL_INFO = [
-    {"name": "VH",  "colour": "tab:cyan",   "init": 8,  "adpt": np.average([13]), "vald": 6.7,  "path": f"{RESULTS_PATH}/asmbo/2025-03-25 (vh_x_sm8_i31)"},
-    {"name": "LH2", "colour": "tab:orange", "init": 8,  "adpt": np.average([16]), "vald": 73.7, "path": f"{RESULTS_PATH}/asmbo/2025-03-25 (lh2_x_sm8_i19)"},
-    {"name": "LH6", "colour": "tab:purple", "init": 16, "adpt": np.average([22]), "vald": 69.2, "path": f"{RESULTS_PATH}/asmbo/2025-04-23 (lh6_x_sm8_i51)"},
+    {"name": "VH",  "colour": "tab:cyan",   "time": 0.23, "init": 8,  "adpt": np.average([13]), "vald": 6.7,  "path": f"{RESULTS_PATH}/asmbo/2025-03-25 (vh_x_sm8_i31)"},
+    {"name": "LH2", "colour": "tab:orange", "time": 1.46, "init": 8,  "adpt": np.average([16]), "vald": 73.7, "path": f"{RESULTS_PATH}/asmbo/2025-03-25 (lh2_x_sm8_i19)"},
+    {"name": "LH6", "colour": "tab:purple", "time": 1.46, "init": 16, "adpt": np.average([22]), "vald": 69.2, "path": f"{RESULTS_PATH}/asmbo/2025-04-23 (lh6_x_sm8_i51)"},
 ] # "init" and "adpt" initially contain number of simulations; "vald" contains total hours
 
 # Plotting parameters
@@ -46,25 +46,27 @@ def main():
     # Iterate through models
     for mi in MODEL_INFO:
 
-        # Print information
-        print("init", mi["init"], "adpt", mi["adpt"])
+        # # Print information
+        # print("init", mi["init"], "adpt", mi["adpt"])
 
-        # Get paths
-        log_dir = mi["path"]
-        log_paths = [f"{log_dir}/{lp}" for lp in os.listdir(log_dir)]
-        log_paths = [lp for lp in log_paths if os.path.isfile(lp) and lp.endswith(SUFFIX)]
+        # # Get paths
+        # log_dir = mi["path"]
+        # log_paths = [f"{log_dir}/{lp}" for lp in os.listdir(log_dir)]
+        # log_paths = [lp for lp in log_paths if os.path.isfile(lp) and lp.endswith(SUFFIX)]
 
-        # Get times
-        time_list = []
-        for log_path in log_paths:
-            time_list += get_times(log_path)
-        time_list = sorted(time_list, reverse=True)[:56]
+        # # Get times
+        # time_list = []
+        # for log_path in log_paths:
+        #     time_list += get_times(log_path)
+        # time_list = sorted(time_list, reverse=True)[:56]
 
-        # Calculate average time and apply
-        average_time = np.average(time_list)#/4*1.2
-        print(f"{mi['name']} {average_time}\tTotal: {average_time*mi['init']*mi['adpt']}")
+        # # Calculate average time and apply
+        # average_time = np.average(time_list)#/4*1.2
+        # print(f"{mi['name']} {average_time}\tTotal: {average_time*mi['init']*mi['adpt']}")
+        average_time = mi["time"]
         mi["init"] *= average_time
         mi["adpt"] *= average_time
+        print(mi["name"], mi["init"]+mi["adpt"])
 
     # Initialise plot
     plt.figure(figsize=(5,5), dpi=200)

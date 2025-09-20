@@ -103,7 +103,7 @@ def add_legend() -> None:
     handles = [
         plt.plot([], [],    color=SIM_COLOUR,       label="Surrogate",   linewidth=1.5, marker="o", markersize=4)[0],
         plt.plot([], [],    color=THRESHOLD_COLOUR, label="Threshold",   linewidth=2, linestyle="--")[0],
-        plt.scatter([], [], color="white",          label="Termination", edgecolor=TERMINATION_COLOUR, linewidth=2),
+        plt.scatter([], [], color="white",          label="Convergence", edgecolor=TERMINATION_COLOUR, linewidth=2),
     ]
     legend = plt.legend(handles=handles, framealpha=1, edgecolor="black", fancybox=True, facecolor="white", fontsize=12, loc="upper right")
     plt.gca().add_artist(legend)
@@ -133,7 +133,7 @@ def plot_errors(error_list_list:list, termination_list:list, threshold:float) ->
     plt.xticks(ticks=ticks, labels=ticks)
 
     # Add other formatting
-    plt.xlabel("Iterations", fontsize=14)
+    plt.xlabel("Cycles", fontsize=14)
 
     # Plot threshold line and termination
     plt.plot([0, max_odd_iteration+1], 2*[threshold], color=THRESHOLD_COLOUR, linewidth=2, linestyle="--")

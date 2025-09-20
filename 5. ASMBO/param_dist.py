@@ -19,11 +19,11 @@ MOOSE_PATH = "/mnt/c/Users/janzen/OneDrive - UNSW/H0419460/results/moose_sim"
 SIM_PATH_LIST = [
 
     # Voce hardening
-    f"{ASMBO_PATH}/2025-03-09 (vh_pin2_sm8_i25)/250308143546_i4_simulate",
-    f"{ASMBO_PATH}/2025-03-10 (vh_pin2_sm8_i25)/250310145710_i22_simulate",
-    f"{ASMBO_PATH}/2025-03-18 (vh_x_sm8_i41)/250318014435_i21_simulate",
-    f"{ASMBO_PATH}/2025-03-25 (vh_x_sm8_i31)/250325072901_i16_simulate",
-    f"{ASMBO_PATH}/2025-03-10 (vh_pin2_sm8_i25)/250310161708_i25_simulate",
+    # f"{ASMBO_PATH}/2025-03-09 (vh_pin2_sm8_i25)/250308143546_i4_simulate",
+    # f"{ASMBO_PATH}/2025-03-10 (vh_pin2_sm8_i25)/250310145710_i22_simulate",
+    # f"{ASMBO_PATH}/2025-03-18 (vh_x_sm8_i41)/250318014435_i21_simulate",
+    # f"{ASMBO_PATH}/2025-03-25 (vh_x_sm8_i31)/250325072901_i16_simulate",
+    # f"{ASMBO_PATH}/2025-03-10 (vh_pin2_sm8_i25)/250310161708_i25_simulate",
 
     # Voce hardening cross-validation 1
     # f"{ASMBO_PATH}/2025-06-03 (vh_x_sm8_i97_val)/250601032309_i20_simulate",
@@ -32,12 +32,12 @@ SIM_PATH_LIST = [
     # f"{ASMBO_PATH}/2025-06-11 (vh_x_sm8_i52_val)/250608004520_i6_simulate",
     # f"{ASMBO_PATH}/2025-06-11 (vh_x_sm8_i52_val)/250609222901_i8_simulate",
     
-    # # Voce hardening cross-validation 2
-    # f"{ASMBO_PATH}/2025-07-08 (vh_x_sm8_i14_cv2)/250708122843_i14_simulate",
-    # f"{ASMBO_PATH}/2025-07-08 (vh_x_sm8_i26_cv2)/250707132454_i17_simulate",
-    # f"{ASMBO_PATH}/2025-07-08 (vh_x_sm8_i29_cv2)/250707105726_i9_simulate",
-    # f"{ASMBO_PATH}/2025-07-08 (vh_x_sm8_i30_cv2)/250708071533_i13_simulate",
-    # f"{ASMBO_PATH}/2025-07-08 (vh_x_sm8_i32_cv2)/250708043852_i9_simulate",
+    # Voce hardening cross-validation 2
+    f"{ASMBO_PATH}/2025-07-08 (vh_x_sm8_i14_cv2)/250708122843_i14_simulate",
+    f"{ASMBO_PATH}/2025-07-08 (vh_x_sm8_i26_cv2)/250707132454_i17_simulate",
+    f"{ASMBO_PATH}/2025-07-08 (vh_x_sm8_i29_cv2)/250707105726_i9_simulate",
+    f"{ASMBO_PATH}/2025-07-08 (vh_x_sm8_i30_cv2)/250708071533_i13_simulate",
+    f"{ASMBO_PATH}/2025-07-08 (vh_x_sm8_i32_cv2)/250708043852_i9_simulate",
 
     # Latent hardening 2
     # f"{ASMBO_PATH}/2025-03-25 (lh2_x_sm8_i19)/250323214745_i7_simulate",

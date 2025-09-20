@@ -23,10 +23,10 @@ OLV_COLOUR = {"base": "tab:olive",  "start": [1.0, 1.0, 0.9], "end": [0.8, 0.8, 
 BLU_COLOUR = {"base": "tab:blue",   "start": [0.9, 0.9, 1.0], "end": [0.1, 0.1, 0.7]}
 
 # Simulation parameters
-HEADERS, KP_INDEX, COLOURS = ["Experimental"] + [f"Run {i+1}" for i in range(5)], 4, [EXP_COLOUR]+5*[CAL_COLOUR] # Runs
-COLOURS[KP_INDEX+1] = VAL_COLOUR
+# HEADERS, KP_INDEX, COLOURS = ["Experimental"] + [f"Run {i+1}" for i in range(5)], 3, [EXP_COLOUR]+5*[CAL_COLOUR] # Runs
+# COLOURS[KP_INDEX+1] = VAL_COLOUR
 # HEADERS, KP_INDEX, COLOURS = ["Experimental", "Low-Fidelity", "High-Fidelity"], 1, [EXP_COLOUR, VAL_COLOUR, BLU_COLOUR] # Fidelities
-# HEADERS, KP_INDEX, COLOURS = ["Experimental", "VH", "LH2", "LH6"], 1, [EXP_COLOUR, VH_COLOUR, LH2_COLOUR, LH6_COLOUR] # Models
+HEADERS, KP_INDEX, COLOURS = ["Experimental", "VH", "LH2", "LH6"], 1, [EXP_COLOUR, VH_COLOUR, LH2_COLOUR, LH6_COLOUR] # Models
 
 # Paths
 DATA_PATH    = "/mnt/c/Users/janzen/Desktop/texture/scripts/results/texture_indexes.csv"

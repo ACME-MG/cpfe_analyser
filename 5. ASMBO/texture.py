@@ -31,7 +31,7 @@ SIM_INFO_LIST = [
     # f"{ASMBO_PATH}/2025-03-18 (vh_x_sm8_i41)/250318014435_i21_simulate",
     # f"{MOOSE_PATH}/2025-03-15 (617_s3_vh_x_hr)",
 
-    # # LH2
+    # LH2
     # f"{ASMBO_PATH}/2025-03-25 (lh2_x_sm8_i19)/250323214745_i7_simulate",
     # f"{ASMBO_PATH}/2025-03-28 (lh2_x_sm8_i29)/250327093649_i16_simulate",
     # f"{ASMBO_PATH}/2025-03-31 (lh2_x_sm8_i31)/250330063457_i18_simulate",
@@ -41,14 +41,13 @@ SIM_INFO_LIST = [
     # f"{ASMBO_PATH}/2025-03-28 (lh2_x_sm8_i29)/250327093649_i16_simulate",
     # f"{MOOSE_PATH}/2025-04-05 (617_s3_lh2_di_x_hr)",
 
-    # # LH6
+    # LH6
     f"{ASMBO_PATH}/2025-04-09 (lh6_x_sm8_i44)/250407052902_i6_simulate",
     f"{ASMBO_PATH}/2025-04-14 (lh6_x_sm8_i32)/250413031321_i23_simulate",
     f"{ASMBO_PATH}/2025-04-18 (lh6_x_sm8_i27)/250418123844_i27_simulate",
     f"{ASMBO_PATH}/2025-04-23 (lh6_x_sm8_i51)/250422034348_i36_simulate",
     f"{ASMBO_PATH}/2025-04-23 (lh6_x_sm8_i51)/250420224600_i20_simulate",
     # ===================================================================
-    # f"{ASMBO_PATH}/2025-04-09 (lh6_x_sm8_i44)/250407052902_i6_simulate",
     # f"{ASMBO_PATH}/2025-04-23 (lh6_x_sm8_i51)/250422034348_i36_simulate",
     # f"{MOOSE_PATH}/2025-04-28 (617_s3_lh6_di_x_hr)",
 
@@ -57,13 +56,20 @@ SIM_INFO_LIST = [
     # f"{ASMBO_PATH}/2025-06-11 (vh_x_sm8_i13_val)/250609093847_i7_simulate",
     # # f"{ASMBO_PATH}/2025-03-10 (vh_pin2_sm8_i25)/250310145710_i22_simulate",
     # # f"{ASMBO_PATH}/2025-06-11 (vh_x_sm8_i52_val)/250608004520_i6_simulate",
-    # f"{ASMBO_PATH}/2025-07-08 (vh_x_sm8_i29_cv2)/250707105726_i9_simulate",
+    # # f"{ASMBO_PATH}/2025-07-08 (vh_x_sm8_i29_cv2)/250707105726_i9_simulate",
+    # f"{ASMBO_PATH}/2025-03-10 (vh_pin2_sm8_i25)/250310161708_i25_simulate",
     # f"{ASMBO_PATH}/2025-06-11 (vh_x_sm8_i28_val)/250608021510_i6_simulate",
     # f"{ASMBO_PATH}/2025-06-11 (vh_x_sm8_i52_val)/250609222901_i8_simulate",
     
     # VH CV2
     # f"{ASMBO_PATH}/2025-07-08 (vh_x_sm8_i14_cv2)/250708043252_i4_simulate",
     # f"{ASMBO_PATH}/2025-07-08 (vh_x_sm8_i14_cv2)/250708020621_i1_simulate",
+    # # f"{ASMBO_PATH}/2025-07-08 (vh_x_sm8_i26_cv2)/250707055737_i4_simulate",
+    # f"{ASMBO_PATH}/2025-07-08 (vh_x_sm8_i29_cv2)/250707093811_i6_simulate",
+    # f"{ASMBO_PATH}/2025-07-08 (vh_x_sm8_i30_cv2)/250708071533_i13_simulate",
+    # f"{ASMBO_PATH}/2025-07-08 (vh_x_sm8_i32_cv2)/250708043852_i9_simulate",
+
+    # f"{ASMBO_PATH}/2025-07-08 (vh_x_sm8_i14_cv2)/250708043252_i4_simulate",
     # f"{ASMBO_PATH}/2025-07-08 (vh_x_sm8_i26_cv2)/250707055737_i4_simulate",
     # f"{ASMBO_PATH}/2025-07-08 (vh_x_sm8_i29_cv2)/250707093811_i6_simulate",
     # f"{ASMBO_PATH}/2025-07-08 (vh_x_sm8_i30_cv2)/250708071533_i13_simulate",
