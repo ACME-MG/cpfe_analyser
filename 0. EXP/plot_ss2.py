@@ -21,7 +21,7 @@ TRU_SS_SHEET = "Sheet1"
 # Colours
 INL_COLOUR    = "silver"
 TRU_COLOUR    = "gray"
-UNLOAD_COLOUR = "tab:blue"
+UNLOAD_COLOUR = "tab:red"
 
 def main():
     """
@@ -46,11 +46,11 @@ def main():
     plotter.set_limits((0,0.5), (0,1800))
     plt.scatter(inl_strain_list, inl_stress_list, color=INL_COLOUR, s=8**2)
     plt.scatter(tru_strain_list, tru_stress_list, color=TRU_COLOUR, s=6**2)
-    plt.scatter(unl_strain_list, unl_stress_list, color=UNLOAD_COLOUR, s=6**2, zorder=3, marker="s")
+    plt.scatter(unl_strain_list, unl_stress_list, color="None", linewidths=2, marker="o", edgecolor=UNLOAD_COLOUR, s=8**2, zorder=3)
     handles = [
         plt.scatter([], [], color=INL_COLOUR,    label="Standard Specimen", s=8**2),
         plt.scatter([], [], color=TRU_COLOUR,    label="Miniaturised Specimen", s=6**2),
-        plt.scatter([], [], color=UNLOAD_COLOUR, label="EBSD Data Acquisition", marker="s", s=6**2),
+        plt.scatter([], [], color="None", label="EBSD Data Acquisition", linewidths=2, marker="o", edgecolor=UNLOAD_COLOUR, s=8**2),
     ]
     legend = plt.legend(handles=handles, framealpha=1, edgecolor="black", fancybox=True, facecolor="white", fontsize=12, loc="upper left")
     plt.gca().add_artist(legend)

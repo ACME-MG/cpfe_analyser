@@ -144,6 +144,50 @@ class Plotter:
                 plt.plot([], [], color=self.colour_list[i], label=self.name_list[i], linewidth=2)
         plt.legend(framealpha=1, edgecolor="black", fancybox=True, facecolor="white")
 
+def prep_plot(x_label:str, y_label:str, x_units:str="", y_units:str="", title:str="", size:int=14) -> None:
+    """
+    Prepares the plot
+    
+    Parameters:
+    * `x_label`: Label for the x-axis
+    * `y_label`: Label for the y-axis
+    * `x_units`: Units for the x-axis
+    * `y_units`: Units for the y-axis
+    * `title`:   The title of the plot
+    * `size`:    The size of the font
+    """
+
+    # Set figure size and title
+    plt.figure(figsize=(5,5), dpi=200)
+    plt.title(title, fontsize=size+3, fontweight="bold", y=1.05)
+    plt.gca().set_position([0.17, 0.12, 0.75, 0.75])
+    plt.gca().grid(which="major", axis="both", color="SlateGray", linewidth=1, linestyle=":", alpha=0.5)
+
+    # Set x and y labels
+    x_unit_str = f" ({x_units})" if x_units != "" else ""
+    y_unit_str = f" ({y_units})" if y_units != "" else ""
+    plt.xlabel(f"{x_label}{x_unit_str}", fontsize=size)
+    plt.ylabel(f"{y_label}{y_unit_str}", fontsize=size)
+    
+    # Format
+    plt.xticks(fontsize=12)
+    plt.yticks(fontsize=12)
+    for spine in plt.gca().spines.values():
+        spine.set_linewidth(2)
+
+def set_limits(x_limits:tuple=None, y_limits:tuple=None) -> None:
+    """
+    Sets the limits of the x and y scales
+
+    Parameters:
+    * `x_limits`: The upper and lower bounds of the plot for the x scale
+    * `y_limits`: The upper and lower bounds bound of the plot for the y scale
+    """
+    if x_limits != None:
+        plt.xlim(*x_limits)
+    if y_limits != None:
+        plt.ylim(*y_limits)
+
 def define_legend(colour_list:list, label_list:list, type_list:list, **kwargs) -> None:
     """
     Manually defines the plot legend
